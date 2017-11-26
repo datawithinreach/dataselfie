@@ -1,0 +1,20 @@
+.textField input[type="text"]{
+  font-size: 18px;
+  padding: 6px;
+  border: none;
+  border-bottom: solid 2px #BDBDBD;
+  transition: border 0.3s;
+  box-sizing: border-box;
+  font-family: inherit;
+  width: 100%;
+
+}
+.textField input[type="text"]:focus,
+.textField input[type="text"].focus {
+  border-bottom: solid 2px #212121;
+  outline: none;
+  color:#212121;
+}
+.textField input[type="text"]::placeholder {
+  color:#BDBDBD ;
+}

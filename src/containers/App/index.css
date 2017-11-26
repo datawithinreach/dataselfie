@@ -1,0 +1,10 @@
+.app{
+  width: 1280px;
+  margin: auto;
+  padding: 25px;
+  box-sizing: border-box;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color:#212121;
+}
