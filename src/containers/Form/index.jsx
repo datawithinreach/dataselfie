@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import TextField from '../../components/TextField';
+import TextArea from '../../components/TextArea';
 import css from './index.css';
 // import bindActionCreators from 'redux'; import css from './index.css'; import
 /* // {actions as uiActions} from '../ducks/ui'; Show either PageList or Page
@@ -27,12 +28,32 @@ export class Form extends React.Component {
 					<div className={css.menuItem}>Responses</div>
 				</div>
 				<div className={css.title}>
-					<TextField placeholder={'Enter Title'} fontSize={24}/>
+					<TextField placeholder={'Enter title'} fontSize={24}/>
 				</div>
+				<div className={css.description}>
+					<TextArea placeholder={'Enter description'} fontSize={14}/>
+				</div>
+
 
 				<div className={css.content}>
 
 					<div className={css.questions}>
+						<div className={css.question}>
+							
+						</div>
+						<div className={css.question}>
+
+						</div>
+						<div className={css.question}>
+
+						</div>
+						<div className={css.question}>
+
+						</div>
+						<div className={css.question}>
+
+						</div>
+
 						<div className={css.addQuestion}>
 							<div className={css.label}>Add question</div>
 							<div className={css.typeContainer}>
@@ -61,7 +82,7 @@ export class Form extends React.Component {
 						</div>
 					</div>
 					<div className={css.drawings}>
-
+						<canvas className={css.canvas}></canvas>
 					</div>
 				</div>
 

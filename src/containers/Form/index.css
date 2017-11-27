@@ -26,21 +26,29 @@
   width: 80%;
   margin-top: 35px;
 }
+.description{
+  width: 80%;
+  margin-top: 20px;
+}
 .content{
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
 }
 
 .questions{
   width: 50%;
 }
+.question{
+  height: 500px;
+}
+
 .addQuestion{
   display: block;
   margin-top: 10px;
   padding: 10px;
   text-align: center;
-  width: 100%;
+  /*width: 100%;*/
   color: #9E9E9E;
   border:2px dashed #9E9E9E;
 
@@ -56,7 +64,7 @@
   margin-top: 20px;
 }
 .type{
-  width: 100px;
+  width: 18%;
   border: 2px solid #9e9e9e;
   cursor: pointer;
 }
@@ -75,4 +83,10 @@
 
   width: 50%;
 
+}
+.canvas{
+  background-color: #EEEEEE;
+  width: 350px;
+  height: 350px;
+  margin: auto;
 }
