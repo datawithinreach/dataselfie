@@ -1,0 +1,23 @@
+.textArea textarea{
+  font-size: 18px;
+  border: none;
+  border-bottom: solid 1px #BDBDBD;
+  transition: border 0.3s;
+  box-sizing: border-box;
+  font-family: inherit;
+  width: 100%;
+
+  resize: none;
+  line-height: 100%;
+  overflow:hidden
+
+}
+.textArea textarea:focus,
+.textArea textarea.focus {
+  border-bottom: solid 2px #212121;
+  outline: none;
+  color:#212121;
+}
+.textArea textarea::placeholder {
+  color:#BDBDBD ;
+}
