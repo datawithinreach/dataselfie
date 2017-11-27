@@ -1,8 +1,7 @@
 .textField input[type="text"]{
   font-size: 18px;
-  padding: 6px;
   border: none;
-  border-bottom: solid 2px #BDBDBD;
+  border-bottom: solid 1px #BDBDBD;
   transition: border 0.3s;
   box-sizing: border-box;
   font-family: inherit;

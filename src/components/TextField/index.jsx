@@ -7,6 +7,7 @@ class TextField extends Component {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 	}
+
 	handleChange(e) {
 		if (this.props.onChange) {
 			this.props.onChange(e);
@@ -20,7 +21,7 @@ class TextField extends Component {
 					placeholder={this.props.placeholder}
 					onChange={this.handleChange}
 					style={{fontSize:this.props.fontSize+'px',
-						padding: Math.round(this.props.fontSize/3.5)+'px'}}
+						paddingBottom: Math.round(this.props.fontSize/3.5)+'px'}}
 				/>
 			</div>
 		);
@@ -36,6 +37,6 @@ TextField.propTypes = {
 
 TextField.defaultProps = {
 	placeholder: 'Enter Text',
-	fontSize: 18
+	fontSize: 16
 };
 export default TextField;
