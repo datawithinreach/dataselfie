@@ -1,0 +1,33 @@
+{
+	"env": {
+	  "browser": true,
+	  "es6": true,
+	  "node": true
+	},
+	"extends": [
+	  "eslint:recommended", "plugin:react/recommended"
+	], 
+	"parserOptions": {
+	  "ecmaVersion": 6,
+	  "sourceType": "module",
+	  "ecmaFeatures": {
+		"experimentalObjectRestSpread": true
+	  }
+  
+	},
+	"rules": {
+	  "process.env": ["off"],
+	  "indent": [
+		"error", "tab", {"SwitchCase": 1}
+	  ],
+	  "quotes": [
+		"error", "single"
+	  ],
+	  "semi": [
+		"error", "always"
+	  ],
+	  
+	  "no-console": 0
+	},
+	"plugins": ["react"]
+  }
