@@ -69,15 +69,11 @@ let loadData = new Promise((resolve, reject)=>{
 // create redux store
 loadData.then(data=>{
 	let store = createStore(rootReducer,
-		data?{
-			past:[],
-			present:data,
-			future:[]
-		}:undefined,
+		data?data:undefined,
 		applyMiddleware(...middleware));
 	
 	store.subscribe(throttle(()=>{
-		let state = {...store.getState().present};
+		let state = {...store.getState()};
 		delete state['ui']; //don't save ui state
 		delete state['router']; // and router
 		localforage.setItem('state', state);

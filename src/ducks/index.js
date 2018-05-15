@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-
-
-const state = (state={})=>{
-
-	return state;
-};
-
+// import ui from './ui';
+import forms from './forms';
+import { routerReducer as router } from 'react-router-redux';
 export default combineReducers({
-	state
+	// ui,
+	forms,
+	router
 });
