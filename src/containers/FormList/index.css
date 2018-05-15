@@ -1,23 +1,21 @@
 .container{
-    width: 1280px;
-    margin: auto;
-    padding: 25px;
-    box-sizing: border-box;
+    /* width: 1024px;
+    padding: 5px;
+    box-sizing: border-box; */
   }
-  .header{
+  .menu{
     display: flex;
     justify-content: space-between;
   }
   .formList{
-    /*display: flex;
-    flex-flow: row wrap;*/
-    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    /* position: relative; */
     margin-top: 20px;
     width: 100%;
-    height: 100%;
   }
   
-  .comicTitle{
+  /* .comicTitle{
     flex: 1 1 auto;
   }
   .comicTitle input[type="text"]{
@@ -40,17 +38,17 @@
   .comicTitle input[type="text"]::placeholder {
     color:#BDBDBD ;
   }
-  
-  .rightMenu{
+   */
+  /* .rightMenu{
     flex: 0 1 auto;
     margin-left: 40px;
     margin-right: 10px;
-  }
+  } */
   .button{
     width: 60px;
     height: 60px;
     box-sizing: border-box;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     background-color: #212121;
     font-family: inherit;
     font-size: 42px;
