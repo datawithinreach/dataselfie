@@ -17,7 +17,8 @@ module.exports = {
 	devServer:{
 		contentBase: tgtDir,
 		port: 8888,
-		host: '0.0.0.0'
+		host: '0.0.0.0',
+		historyApiFallback: true
 		// ,
 		// public: 'www.namwkim.org:8888'
 	},
@@ -27,7 +28,7 @@ module.exports = {
 	},
 	output: {
 		path: tgtFullPath, // Path to where webpack will build stuffs
-		publicPath: '', // This is used to generate URLs to e.g. images
+		publicPath: '/', // This is used to generate URLs to e.g. images
 		filename: '[name].js' // This is used to name bundled files from entry points.
 	},
 	module: {
