@@ -11,7 +11,7 @@ export const DELETE_ANSWER = 'DELETE_ANSWER';
 // actions
 
 export const createItem = (formId) => {
-	return {type: CREATE_ITEM, formId, itemId: uniqueId()};
+	return {type: CREATE_ITEM, formId, itemId: uniqueId('item_')};
 };
 
 export const updateQuestion = (itemId, question) => {
@@ -19,15 +19,15 @@ export const updateQuestion = (itemId, question) => {
 };
 
 export const addAnswer = (itemId, answer) => {
-	return {type: ADD_ANSWER, answer};
+	return {type: ADD_ANSWER, itemId, answer};
 };
 
 export const updateAnswer = (itemId, index, answer) => {
-	return {type: UPDATE_ANSWER, index, answer};
+	return {type: UPDATE_ANSWER, itemId, index, answer};
 };
 
 export const deleteAnswer = (itemId, index) => {
-	return {type: DELETE_ANSWER, index};
+	return {type: DELETE_ANSWER, itemId, index};
 };
 
 export const deleteItem = (itemId) =>{
@@ -48,8 +48,8 @@ export default  (state = {}, action)=>{
 			let newItem = {
 				id: action.itemId,
 				formId: action.formId,
-				question:'Enter Question',
-				answers:[]
+				question:undefined,
+				answers:[undefined]
 			};
 			return {
 				...state,
@@ -94,7 +94,10 @@ export default  (state = {}, action)=>{
 				...state,
 				[action.itemId]:{
 					...state[action.itemId],
-					answers: state[action.itemId].answers.slice().splice(action.index,1)
+					answers: [
+						...state[action.itemId].answers.slice(0, action.index),
+						...state[action.itemId].answers.slice(action.index+1)
+					]
 				}
 			};
 		default:
