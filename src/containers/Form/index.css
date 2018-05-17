@@ -6,7 +6,7 @@
 .menuItem{
     padding: 10px 20px;
     box-sizing: border-box;
-    border: 2px solid black;
+    border-bottom: 4px solid black;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -17,8 +17,13 @@
 	text-transform: uppercase;
 	margin-right:20px;
 	transition-duration: 0.2s;
+	font-weight: 400;
   }
   
+.menuItem.selected{
+	color:white;
+	background-color: black;
+}
 
 .menuItem:hover{
   color:white;

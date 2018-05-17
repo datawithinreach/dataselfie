@@ -5,6 +5,7 @@ import css from './index.css';
 import Designer from 'containers/Designer';
 import Viewer from 'containers/Viewer';
 import Analyzer from 'containers/Analyzer';
+import classNames from 'utils/classNames';
 // import { withRouter } from 'react-router';
 // import { Link } from 'react-router-dom';
 // import bindActionCreators from 'redux'; import css from './index.css'; import
@@ -37,9 +38,9 @@ export class Form extends React.Component {
 		return (
 			<div className={css.container}>
 				<div className={css.menu}>
-					<div className={css.menuItem} data-mode='design' onMouseUp={this.changeMode}>Design</div>
-					<div className={css.menuItem} data-mode='view' onMouseUp={this.changeMode}>Preview</div>
-					<div className={css.menuItem} data-mode='analyze' onMouseUp={this.changeMode}>Results</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='design'})} data-mode='design' onMouseUp={this.changeMode}>Design</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='view'})} data-mode='view' onMouseUp={this.changeMode}>Preview</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='analyze'})} data-mode='analyze' onMouseUp={this.changeMode}>Results</div>
 				</div>
 				<div className={css.content}>
 					{this.renderMode()}
