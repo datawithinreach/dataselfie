@@ -1,5 +1,8 @@
+.textField{
+  margin:10px 0px;
+}
 .textField input[type="text"]{
-  font-size: 18px;
+  font-size: 16px;
   border: none;
   border-bottom: solid 1px #BDBDBD;
   transition: border 0.3s;

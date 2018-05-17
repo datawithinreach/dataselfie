@@ -16,12 +16,13 @@ class TextField extends Component {
 	render() {
 
 		return (
-			<div className={css.textField}>
+			<div className={css.textField} style={this.props.style}>
 				<input type="text"
 					placeholder={this.props.placeholder}
 					onChange={this.handleChange}
-					style={{fontSize:this.props.fontSize+'px',
-						paddingBottom: Math.round(this.props.fontSize/3.5)+'px'}}
+					style={{fontSize:this.props.size+'px',
+						paddingBottom: Math.round(this.props.size/3.5)+'px'}}
+					disabled={this.props.disabled}
 				/>
 			</div>
 		);
@@ -32,11 +33,14 @@ class TextField extends Component {
 TextField.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
-	fontSize: PropTypes.number
+	size: PropTypes.number,
+	style: PropTypes.string,
+	disabled:PropTypes.bool
 };
 
 TextField.defaultProps = {
 	placeholder: 'Enter Text',
-	fontSize: 16
+	size: 16,
+	disabled:false
 };
 export default TextField;

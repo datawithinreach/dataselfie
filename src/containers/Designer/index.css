@@ -5,27 +5,16 @@
 	padding: 40px 0px;
 }
 
-.start{
-	position: relative;
-}
 
-.start .marker{
-	left:0px;
-}
-
-.step{
-	width:100px;
-	position: relative;
-}
 .bar{
-	margin-left:10px;
+	/* margin-left:10px; */
 	width:90px;
 	height: 2px;
 	background-color:#212121;
 }
 .marker{
-	position: absolute;
-	left:100px;
+	/* position: absolute; */
+	/* left:100px; */
 	width: 25px;
 	height: 25px;
 	box-sizing: border-box;
@@ -41,16 +30,12 @@
 	border:2px solid #212121;
 	background-color: white;
 }
-.current .marker{
+.current.marker{
 	border:2px solid #212121;
 	background-color: white;
 }
-.end{
-	width:100px;
-	position: relative;
-}
 
-.end .marker{
+.end.marker{
 	background-color: white;
 	width: 50px;
 	height: 50px;
@@ -60,7 +45,7 @@
 	color: #212121;
 	border:2px solid #212121;
 }
-.end .marker:hover{
+.end.marker:hover{
 	color:white;
 	background-color: #212121;
 }

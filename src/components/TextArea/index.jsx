@@ -21,7 +21,7 @@ class TextArea extends Component {
 	handleChange(e) {
 		let lineLength = e.target.value.split(/\r*\n/).length;
 
-		this.setState({height:25+(lineLength-1)*(this.props.fontSize)});
+		this.setState({height:25+(lineLength-1)*(this.props.size)});
 		if (this.props.onChange) {
 			this.props.onChange(e);
 		}
@@ -29,13 +29,13 @@ class TextArea extends Component {
 	render() {
 
 		return (
-			<div className={css.textArea}>
+			<div className={css.textArea} style={this.props.style}>
 				<textarea placeholder={this.props.placeholder}
 					onChange={this.handleChange}
 					// onKeyPress={this.handleKeyPress}
 					style={{
-						fontSize:this.props.fontSize+'px',
-						paddingBottom: Math.round(this.props.fontSize/3.5)+'px',
+						fontSize:this.props.size+'px',
+						paddingBottom: Math.round(this.props.size/3.5)+'px',
 						height: this.state.height+'px'
 					}}
 				/>
@@ -48,11 +48,12 @@ class TextArea extends Component {
 TextArea.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
-	fontSize: PropTypes.number
+	size: PropTypes.number,
+	style: PropTypes.string
 };
 
 TextArea.defaultProps = {
 	placeholder: 'Enter Text',
-	fontSize: 18
+	size: 18
 };
 export default TextArea;

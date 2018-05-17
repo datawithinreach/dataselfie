@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {updateForm} from 'ducks/forms';
+import {createItem,deleteItem,updateQuestion,addAnswer,updateAnswer, deleteAnswer} from 'ducks/items';
 import css from './index.css';
 import TextField from 'components/TextField';
+import TextArea from 'components/TextArea';
+import classNames from 'utils/classNames';
 class Designer extends Component {
 	constructor(props){
 		super(props);
@@ -11,56 +16,71 @@ class Designer extends Component {
 			curStep: -1
 		};
 		this.changeStep = this.changeStep.bind(this);
+		this.addItem = this.addItem.bind(this);
+		this.handleTitleChange = this.handleTitleChange.bind(this);
+		this.handleDescChange = this.handleDescChange.bind(this);
 	}
-	changeStep(){
-
+	changeStep(e){
+		this.setState({curStep:e.target.dataset.step});
 	}
-	renderQuestion(){
-		if (this.state.curStep==-1){
-			// render the title and responseId field?
-			return <TextField placeholder='Enter Title' fontSize={42}/>;
-		}else{
-			// let item = this.props.items[this.curStep];
-			// render current question
-			return <TextField placeholder='Enter Question'/>;
-
-		}
-
+	addItem(){
+		console.log('add a new item');
+		// set current step
+		this.props.createItem(this.props.formId);
+		
 	}
-	renderEncoding(){
-
+	handleTitleChange(title){
+		this.props.updateForm(this.props.formId, {title});
+	}
+	handleDescChange(desc){
+		this.props.updateForm(this.props.formId, {desc});
 	}
 	render() {
 		return (
 			<div>				
 				<div className={css.progress}>
-					<div className={css.start}>
-						<div className={css.marker} data-step={0} onMouseUp={this.changeStep}/>
-					</div>
-					<div className={css.step}>
-						<div className={css.bar}/>
-						<div className={css.marker}/>
-					</div>
-					<div className={[css.step, css.current].join(' ')}>
-						<div className={css.bar}/>
-						<div className={css.marker}/>
-					</div>
-					<div className={css.end}>
-						<div className={css.bar}/>
-						<div className={css.marker}>
+					<div className={classNames(css.start,css.marker,{[css.current]:-1==this.state.curStep})} data-step={-1} onMouseUp={this.changeStep}/>
+					{this.props.items.map((item, i)=>
+						<Fragment key={i}>
+							<div className={css.bar}/>
+							<div className={classNames(css.marker,{[css.current]:i==this.state.curStep})} data-step={i} onMouseUp={this.changeStep}/>
+						</Fragment>
+					)
+					}
+					<div className={css.bar}/>			
+						
+					<div className={classNames(css.end,css.marker)} onMouseUp={this.addItem}>
 						+
-						</div>
 					</div>
+					
 
 				</div>
-				<div className={css.designArea}>
-					<div className={css.question}>
-						{this.renderQuestion()}
+				{this.state.curStep==-1&&(
+					<div>
+						<br/>
+						<TextField placeholder='Title' size={48} onChange={this.handleTitleChange}/>
+						<br/>
+						<TextArea placeholder='Description' onChange={this.handleDescChange}/>
 					</div>
-					<div className={css.encoding}>
-						Encoding
+				)}
+				{this.state.curStep!=-1&&(
+					<div className={css.designArea}>
+					
+						<div className={css.question}>
+							<div>
+								Question.<TextArea placeholder='Description' onChange={this.handleDescChange}/>
+							</div>
+							<div>
+								Answer.<TextArea placeholder='Description' onChange={this.handleDescChange}/>
+							</div>
+						</div>
+						<div className={css.encoding}>
+							Encoding
+						</div>
 					</div>
-				</div>
+				)}
+
+			
 			</div>
 		);
 	}
@@ -69,6 +89,13 @@ class Designer extends Component {
 Designer.propTypes = {
 	formId:PropTypes.string,
 	items:PropTypes.array,
+	updateForm:PropTypes.func,
+	createItem:PropTypes.func,
+	deleteItem:PropTypes.func,
+	updateQuestion:PropTypes.func,
+	addAnswer:PropTypes.func,
+	updateAnswer:PropTypes.func,
+	deleteAnswer:PropTypes.func
 
 };
 
@@ -76,18 +103,27 @@ const mapStateToProps = (state, ownProps) => {
 	let formId = ownProps.formId;
 
 	// collect items and encodings (use selectors)
+	let items = Object.values(state.items).filter(item=>item.formId==formId);
 
-
-	console.log('ownProps.match', ownProps.match);
+	console.log('items', items);
 	let form = state.forms[formId];
 	return {
 		...form,
-		items:[],
+		items,
 		encodings:{}
 	};
 };
 
-// const mapDispatchToProps = (dispatch) => { 	return
-// {bindActionCreators(uiActions, dispatch)}; };
+const mapDispatchToProps = (dispatch) => { 	
+	return bindActionCreators({
+		updateForm,
+		createItem,
+		deleteItem,
+		updateQuestion,
+		addAnswer,
+		updateAnswer,
+		deleteAnswer
+	}, dispatch);
+};
 
-export default connect(mapStateToProps)(Designer);
+export default connect(mapStateToProps,mapDispatchToProps)(Designer);
