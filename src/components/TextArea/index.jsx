@@ -38,6 +38,8 @@ class TextArea extends Component {
 						paddingBottom: Math.round(this.props.size/3.5)+'px',
 						height: this.state.height+'px'
 					}}
+					disabled={this.props.disabled}
+					value = {this.props.value}
 				/>
 			</div>
 		);
@@ -49,7 +51,9 @@ TextArea.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	size: PropTypes.number,
-	style: PropTypes.string
+	style: PropTypes.object,
+	value: PropTypes.string,
+	disabled:PropTypes.bool
 };
 
 TextArea.defaultProps = {

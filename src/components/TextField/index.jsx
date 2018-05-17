@@ -23,6 +23,7 @@ class TextField extends Component {
 					style={{fontSize:this.props.size+'px',
 						paddingBottom: Math.round(this.props.size/3.5)+'px'}}
 					disabled={this.props.disabled}
+					value = {this.props.value}
 				/>
 			</div>
 		);
@@ -34,7 +35,8 @@ TextField.propTypes = {
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
 	size: PropTypes.number,
-	style: PropTypes.string,
+	style: PropTypes.object,
+	value: PropTypes.string,
 	disabled:PropTypes.bool
 };
 
