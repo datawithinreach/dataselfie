@@ -9,7 +9,7 @@ export const DELETE_FORM = 'DELETE_FORM';
 // actions
 
 export const createForm = () => {
-	return {type: CREATE_FORM, formId: uniqueId('form_')};
+	return {type: CREATE_FORM, formId: uniqueId()};
 };
 
 export const updateForm = (formId, attrs) => {
@@ -33,9 +33,9 @@ export default  (state = {}, action)=>{
 		case CREATE_FORM:{
 			let newPage = {
 				id: action.formId,
-				title:null,
-				description: null,
-				thumbnail: null
+				title:'',
+				description: '',
+				thumbnail: undefined
 			};
 			return {
 				...state,
