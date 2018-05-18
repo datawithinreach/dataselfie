@@ -8,13 +8,15 @@ import css from './index.css';
 import TextField from 'components/TextField';
 import TextArea from 'components/TextArea';
 import classNames from 'utils/classNames';
+import DrawingCanvas from 'containers/DrawingCanvas';
 // import throttle from 'utils/throttle';
 class Designer extends Component {
 	constructor(props){
 		super(props);
 
 		this.state = {
-			curStep: -1
+			curStep: -1,
+			curAnsIdx:-1
 		};
 		this.changeStep = this.changeStep.bind(this);
 		this.addItem = this.addItem.bind(this);
@@ -23,6 +25,7 @@ class Designer extends Component {
 		this.deleteItem = this.deleteItem.bind(this);
 		this.addAnswer = this.addAnswer.bind(this);
 		this.deleteAnswer = this.deleteAnswer.bind(this);
+		this.editEncoding = this.editEncoding.bind(this);
 		
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleDescChange = this.handleDescChange.bind(this);
@@ -71,24 +74,38 @@ class Designer extends Component {
 	}
 	addAnswer(){
 		let item = this.props.items[this.state.curStep];
-		this.props.addAnswer(item.id, null);
+		this.props.addAnswer(item.id, '');
 	}
 	deleteAnswer(event){
 		let item = this.props.items[this.state.curStep];
-		let index = parseInt(event.target.dataset.index);
-		if (isNaN(index)==false){
-			this.props.deleteAnswer(item.id, index);
-		}
+		let index = parseInt(event.currentTarget.dataset.index);
+		this.props.deleteAnswer(item.id, index);
 	}
 	handleAnswerChange(index, event){
 		let item = this.props.items[this.state.curStep];
 		// let index = parseInt(event.target.dataset.index);
 		this.props.updateAnswer(item.id, index, event.target.value);
 	}
-	render() {
+	editEncoding(event){
+		
+		let index = parseInt(event.currentTarget.dataset.index);
+		console.log('editEncoding', this.state.curAnsIdx, index, event.currentTarget.dataset);
+		if (index == this.state.curAnsIdx){
+			this.setState({curAnsIdx:-1});
+		}else{
+			this.setState({curAnsIdx:index});
+		}
+		
+	}
+	getCurItem(){
 		let {curStep} = this.state;
 		let {items} = this.props;
-		let curItem = curStep>=0 && curStep<items.length? items[curStep]:null;
+		return curStep>=0 && curStep<items.length? items[curStep]:null;
+	}
+	render() {
+		let {curStep, curAnsIdx} = this.state;
+		let {items} = this.props;
+		let curItem = this.getCurItem();
 		return (
 			<div>				
 				<div className={css.progress}>
@@ -142,7 +159,7 @@ class Designer extends Component {
 									{curItem&&curItem.answers.map((answer, i)=>
 										<div key={i} className={css.answer}>											
 											<TextField placeholder='Answer' style={{width:'100%'}} value={answer} onChange={this.handleAnswerChange.bind(this,i)}/>	
-											<div className={css.button} data-index={i} onMouseUp={this.editEncoding}><i className="fas fa-pencil-alt"></i></div>
+											<div className={classNames(css.button,{[css.selectedAnswer]: curAnsIdx==i})} data-index={i} onMouseUp={this.editEncoding}><i className="fas fa-pencil-alt"></i></div>
 											<div className={css.button} data-index={i} onMouseUp={this.deleteAnswer}><i className="fas fa-times"></i></div>
 										</div>
 									)}
@@ -151,7 +168,10 @@ class Designer extends Component {
 								<div className={css.button} onMouseUp={this.addAnswer}>Add Answer</div>
 							</div>
 							<div className={css.column}>
-								Encoding
+								<DrawingCanvas formId={this.props.formId} 
+									itemId={curItem.id} 
+									answerIdx={curAnsIdx}
+									answer={curAnsIdx!=-1?curItem.answers[curAnsIdx]:null}  />
 							</div>
 						</div>
 					)}
