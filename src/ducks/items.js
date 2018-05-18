@@ -48,8 +48,8 @@ export default  (state = {}, action)=>{
 			let newItem = {
 				id: action.itemId,
 				formId: action.formId,
-				question:undefined,
-				answers:[undefined]
+				question:'',
+				answers:['']
 			};
 			return {
 				...state,
