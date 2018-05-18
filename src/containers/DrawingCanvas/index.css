@@ -1,0 +1,13 @@
+
+.canvasContainer{
+    width:100%;
+    margin-left:30px;
+    box-sizing: border-box;
+}
+.canvas{
+    border: 1px solid #BDBDBD;
+    width:450px;
+    height:450px;
+    border-radius: 50%;
+    
+}
