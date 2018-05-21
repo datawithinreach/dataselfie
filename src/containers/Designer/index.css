@@ -113,13 +113,13 @@
 .question{
 	margin:30px 0px 10px 5px;
 }
-.answers{
+.choices{
 	margin:20px 0px 10px 5px;
 }
-.answer{
+.choice{
 	display:flex;
 }
-.selectedAnswer{
+.selectedChoice{
 	color:white;
 	background-color: #212121;
 }
