@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {updateForm} from 'ducks/forms';
-import {createItem,deleteItem,updateQuestion,addAnswer,updateAnswer, deleteAnswer} from 'ducks/items';
+import {createItem,deleteItem,updateQuestion} from 'ducks/items';
+import {createChoice, updateChoiceText, deleteChoice} from 'ducks/choices';
+
 import css from './index.css';
 import TextField from 'components/TextField';
 import TextArea from 'components/TextArea';
@@ -16,25 +18,30 @@ class Designer extends Component {
 
 		this.state = {
 			curStep: -1,
-			curAnsIdx:-1
+			curChoiceId:null
 		};
+		this.handleTitleChange = this.handleTitleChange.bind(this);
+		this.handleDescChange = this.handleDescChange.bind(this);
+
 		this.changeStep = this.changeStep.bind(this);
-		this.addItem = this.addItem.bind(this);
+
+		this.createItem = this.createItem.bind(this);
 		this.nextItem = this.nextItem.bind(this);
 		this.prevItem = this.prevItem.bind(this);
 		this.deleteItem = this.deleteItem.bind(this);
-		this.addAnswer = this.addAnswer.bind(this);
-		this.deleteAnswer = this.deleteAnswer.bind(this);
+
+
+		this.createChoice = this.createChoice.bind(this);
+		// this.deleteChoice = this.deleteChoice.bind(this);
 		this.editEncoding = this.editEncoding.bind(this);
 		
-		this.handleTitleChange = this.handleTitleChange.bind(this);
-		this.handleDescChange = this.handleDescChange.bind(this);
+
 		this.handleQuestionChange = this.handleQuestionChange.bind(this);
 	}
 	changeStep(e){
-		this.setState({curStep:parseInt(e.target.dataset.step)});
+		this.setState({curStep:parseInt(e.target.dataset.step), curChoiceId:null});
 	}
-	addItem(){
+	createItem(){
 		
 		// set current step
 		this.props.createItem(this.props.formId);
@@ -56,7 +63,7 @@ class Designer extends Component {
 		
 		if (curStep>=0){
 			let item = this.props.items[curStep];
-			this.props.deleteItem(item.id);
+			this.props.deleteItem(this.props.formId, item.id);
 			if (curStep==this.props.items.length-1){ // if last item
 				this.setState({curStep: curStep-1}); // move the cursor to the next last item
 			}
@@ -68,42 +75,44 @@ class Designer extends Component {
 	handleDescChange(event){
 		this.props.updateForm(this.props.formId, {description:event.target.value});
 	}
+	
 	handleQuestionChange(event){
 		let item = this.props.items[this.state.curStep];
 		this.props.updateQuestion(item.id, event.target.value);
-	}
-	addAnswer(){
-		let item = this.props.items[this.state.curStep];
-		this.props.addAnswer(item.id, '');
-	}
-	deleteAnswer(event){
-		let item = this.props.items[this.state.curStep];
-		let index = parseInt(event.currentTarget.dataset.index);
-		this.props.deleteAnswer(item.id, index);
-	}
-	handleAnswerChange(index, event){
-		let item = this.props.items[this.state.curStep];
-		// let index = parseInt(event.target.dataset.index);
-		this.props.updateAnswer(item.id, index, event.target.value);
-	}
-	editEncoding(event){
-		
-		let index = parseInt(event.currentTarget.dataset.index);
-		console.log('editEncoding', this.state.curAnsIdx, index, event.currentTarget.dataset);
-		if (index == this.state.curAnsIdx){
-			this.setState({curAnsIdx:-1});
-		}else{
-			this.setState({curAnsIdx:index});
-		}
-		
 	}
 	getCurItem(){
 		let {curStep} = this.state;
 		let {items} = this.props;
 		return curStep>=0 && curStep<items.length? items[curStep]:null;
 	}
+
+	createChoice(){
+		let item = this.props.items[this.state.curStep];
+		this.props.createChoice(item.id, '');
+	}
+	deleteChoice(id){
+		let item = this.props.items[this.state.curStep];
+		// let id = event.currentTarget.dataset.id;
+		this.props.deleteChoice(item.id, id);
+	}
+	handleChoiceChange(id, event){
+		// let index = parseInt(event.target.dataset.index);
+		this.props.updateChoiceText(id, event.target.value);
+	}
+	editEncoding(id){
+		
+		// let index = parseInt(event.currentTarget.dataset.index);
+		// console.log('editEncoding', this.state.curChoiceId, index, event.currentTarget.dataset);
+		if (id == this.state.curChoiceId){
+			this.setState({curChoiceId:null});
+		}else{
+			this.setState({curChoiceId:id});
+		}
+		
+	}
+
 	render() {
-		let {curStep, curAnsIdx} = this.state;
+		let {curStep, curChoiceId} = this.state;
 		let {items} = this.props;
 		let curItem = this.getCurItem();
 		return (
@@ -123,7 +132,7 @@ class Designer extends Component {
 					}
 					<div className={css.bar}/>			
 						
-					<div className={classNames(css.end,css.marker)} onMouseUp={this.addItem}>
+					<div className={classNames(css.end,css.marker)} onMouseUp={this.createItem}>
 						+
 					</div>
 					
@@ -133,12 +142,19 @@ class Designer extends Component {
 					{curStep==-1&&(	
 						<Fragment>
 							<div>
-								<div className={css.button} onMouseUp={this.prevItem}><i className="fas fa-arrow-left"></i></div>
-								<div className={css.button} onMouseUp={this.nextItem}><i className="fas fa-arrow-right"></i></div>
+								<div className={css.button} onMouseUp={this.prevItem}>
+									<i className="fas fa-arrow-left"></i>
+								</div>
+								<div className={css.button} onMouseUp={this.nextItem}>
+									<i className="fas fa-arrow-right"></i>
+								</div>
 							</div>
-							<TextField placeholder='Title' value={this.props.title} size={48} onChange={this.handleTitleChange}/>
+							<TextField placeholder='Title' value={this.props.title} 
+								size={48} onChange={this.handleTitleChange}/>
 							<br/>
-							<TextArea placeholder='Description'  value={this.props.description} onChange={this.handleDescChange}/>
+							<TextArea placeholder='Description' 
+								value={this.props.description} 
+								onChange={this.handleDescChange}/>
 						</Fragment>
 						
 					)}
@@ -146,32 +162,48 @@ class Designer extends Component {
 						<div className={css.columns}>						
 							<div className={css.column}>
 								<div>
-									<div className={css.button} onMouseUp={this.prevItem}><i className="fas fa-arrow-left"></i></div>
-									<div className={css.button} onMouseUp={this.nextItem}><i className="fas fa-arrow-right"></i></div>
-									<div className={css.button} onMouseUp={this.deleteItem}>Delete</div>
+									<div className={css.button} onMouseUp={this.prevItem}>
+										<i className="fas fa-arrow-left"></i>
+									</div>
+									<div className={css.button} onMouseUp={this.nextItem}>
+										<i className="fas fa-arrow-right"></i>
+									</div>
+									<div className={css.button} onMouseUp={this.deleteItem}>
+										Delete
+									</div>
 								</div>
 								
 								<div className={css.question}>
-									<TextField placeholder='Question' value={curItem.question} onChange={this.handleQuestionChange}/>
+									<TextField placeholder='Question' 
+										value={curItem.question} 
+										onChange={this.handleQuestionChange}/>
 								</div>
 								
-								<div className={css.answers}>
-									{curItem&&curItem.answers.map((answer, i)=>
-										<div key={i} className={css.answer}>											
-											<TextField placeholder='Answer' style={{width:'100%'}} value={answer} onChange={this.handleAnswerChange.bind(this,i)}/>	
-											<div className={classNames(css.button,{[css.selectedAnswer]: curAnsIdx==i})} data-index={i} onMouseUp={this.editEncoding}><i className="fas fa-pencil-alt"></i></div>
-											<div className={css.button} data-index={i} onMouseUp={this.deleteAnswer}><i className="fas fa-times"></i></div>
+								<div className={css.choices}>
+									{curItem&&curItem.choices.map((choice)=>
+										<div key={choice.id} className={css.choice}>											
+											<TextField placeholder='Choice' 
+												style={{width:'100%'}} 
+												value={choice.text} 
+												onChange={this.handleChoiceChange.bind(this,choice.id)}/>	
+											<div className={classNames(css.button,{[css.selectedChoice]: curChoiceId==choice.id})} 
+												onMouseUp={this.editEncoding.bind(this,choice.id)}>
+												<i className="fas fa-pencil-alt"></i>
+											</div>
+											<div className={css.button} 
+												onMouseUp={this.deleteChoice.bind(this,choice.id)}>
+												<i className="fas fa-times"></i>
+											</div>
 										</div>
 									)}
 									
 								</div>
-								<div className={css.button} onMouseUp={this.addAnswer}>Add Answer</div>
+								<div className={css.button} onMouseUp={this.createChoice}>Add Choice</div>
 							</div>
 							<div className={css.column}>
 								<DrawingCanvas formId={this.props.formId} 
 									itemId={curItem.id} 
-									answerIdx={curAnsIdx}
-									answer={curAnsIdx!=-1?curItem.answers[curAnsIdx]:null}  />
+									choiceId={curChoiceId} />
 							</div>
 						</div>
 					)}
@@ -192,24 +224,26 @@ Designer.propTypes = {
 	createItem:PropTypes.func,
 	deleteItem:PropTypes.func,
 	updateQuestion:PropTypes.func,
-	addAnswer:PropTypes.func,
-	updateAnswer:PropTypes.func,
-	deleteAnswer:PropTypes.func
+	createChoice:PropTypes.func,
+	updateChoiceText:PropTypes.func,
+	deleteChoice:PropTypes.func
 
 };
 
 const mapStateToProps = (state, ownProps) => {
 	let formId = ownProps.formId;
-
-	// collect items and encodings (use selectors)
-	let items = Object.values(state.items).filter(item=>item.formId==formId);
-
-	console.log('items', items);
 	let form = state.forms[formId];
+	let items = form.items.map(iid=>{
+		let item = state.items[iid];
+		return {
+			...item,
+			choices: item.choices.map(cid=>state.choices[cid])
+		};
+	});
+	console.log('form, items', form, items);
 	return {
 		...form,
-		items,
-		encodings:{}
+		items
 	};
 };
 
@@ -219,9 +253,9 @@ const mapDispatchToProps = (dispatch) => {
 		createItem,
 		deleteItem,
 		updateQuestion,
-		addAnswer,
-		updateAnswer,
-		deleteAnswer
+		createChoice,
+		updateChoiceText,
+		deleteChoice
 	}, dispatch);
 };
 
