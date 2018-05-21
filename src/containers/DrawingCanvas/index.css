@@ -2,12 +2,38 @@
 .canvasContainer{
     width:100%;
     margin-left:30px;
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 .canvas{
     border: 1px solid #BDBDBD;
     width:450px;
     height:450px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     
+}
+
+.drawing{
+	fill: none;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+  
+}
+.label{
+	font-size: 14px;
+	border-radius: 2px;
+	background-color: #EEEEEE;
+	box-sizing: border-box;
+	color: #757575;
+	padding: 4px;
+	margin: 2px;
+	display: inline-block;
+}
+
+.eraser{
+	fill: none;
+	stroke:gray;
+	stroke-width: 2;
+	stroke-dasharray: 5,5;
+	stroke-opacity: 1;
+	vector-effect: non-scaling-stroke;
 }
