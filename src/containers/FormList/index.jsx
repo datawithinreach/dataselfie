@@ -23,6 +23,10 @@ class FormList extends Component {
 	componentDidMount(){
 		window.addEventListener('mouseup', this.handleDeselect);
 	}
+	componentWillUnmount(){
+		console.log('unmounted!!');
+		window.removeEventListener('mouseup', this.handleDeselect);
+	}
 	handleDeselect(){
 		this.props.selectForm(null);
 	}
