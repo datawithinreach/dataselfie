@@ -1,12 +1,10 @@
 import uniqueId from 'utils/uniqueId';
-
+import {CREATE_CHOICE,DELETE_CHOICE} from 'ducks/choices';
 // action types
 export const CREATE_ITEM = 'CREATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const UPDATE_QUESTION = 'UPDATE_QUESTION';
-export const ADD_ANSWER = 'ADD_ANSWER';
-export const UPDATE_ANSWER = 'UPDATE_ANSWER';
-export const DELETE_ANSWER = 'DELETE_ANSWER';
+
 
 // actions
 
@@ -18,21 +16,10 @@ export const updateQuestion = (itemId, question) => {
 	return {type: UPDATE_QUESTION, itemId, question};
 };
 
-export const addAnswer = (itemId, answer) => {
-	return {type: ADD_ANSWER, itemId, answer};
-};
-
-export const updateAnswer = (itemId, index, answer) => {
-	return {type: UPDATE_ANSWER, itemId, index, answer};
-};
-
-export const deleteAnswer = (itemId, index) => {
-	return {type: DELETE_ANSWER, itemId, index};
-};
-
-export const deleteItem = (itemId) =>{
+export const deleteItem = (formId, itemId) =>{
 	return {
 		type: DELETE_ITEM,
+		formId,
 		itemId
 	};
 };
@@ -49,7 +36,7 @@ export default  (state = {}, action)=>{
 				id: action.itemId,
 				formId: action.formId,
 				question:'',
-				answers:['']
+				choices:[]
 			};
 			return {
 				...state,
@@ -72,32 +59,21 @@ export default  (state = {}, action)=>{
 					question:action.question
 				}
 			};
-		case ADD_ANSWER:
+		case CREATE_CHOICE:
 			return {
 				...state,
 				[action.itemId]:{
 					...state[action.itemId],
-					answers: state[action.itemId].answers.concat(action.answer)
+					choices: state[action.itemId].choices.concat(action.choiceId)
 				}
 			};
-		case UPDATE_ANSWER:
+
+		case DELETE_CHOICE:
 			return {
 				...state,
 				[action.itemId]:{
 					...state[action.itemId],
-					answers: state[action.itemId].answers
-						.map((answer, index)=>index==action.index?action.answer:answer)
-				}
-			};
-		case DELETE_ANSWER:
-			return {
-				...state,
-				[action.itemId]:{
-					...state[action.itemId],
-					answers: [
-						...state[action.itemId].answers.slice(0, action.index),
-						...state[action.itemId].answers.slice(action.index+1)
-					]
+					choices: state[action.itemId].choices.filter(aid=>aid!=action.choiceId)
 				}
 			};
 		default:
