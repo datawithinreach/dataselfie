@@ -85,7 +85,7 @@
 
 .button:hover{
   color:white;
-  background-color: black;
+  background-color: #212121;
 }
 
 
@@ -121,5 +121,5 @@
 }
 .selectedAnswer{
 	color:white;
-	background-color: #1DE9B6;
+	background-color: #212121;
 }
