@@ -33,6 +33,7 @@ export class Style extends React.PureComponent{
 	}
 	
 	static getDerivedStateFromProps (nextProps){
+		console.log('nextProps', nextProps);
 		return {
 			color: nextProps.color,
 			stroke: nextProps.stroke,
@@ -103,11 +104,12 @@ export class Style extends React.PureComponent{
 	
 	handleSelectStroke(stroke){
 		this.setState({stroke});
-		this.props.onStyleUpdate({...this.state});
+		this.props.onStyleUpdate({...this.state, stroke});
 	}
 	handleSelectColor(color){
+		
 		this.setState({color});
-		this.props.onStyleUpdate({...this.state});
+		this.props.onStyleUpdate({...this.state, color});
 	}
 	render(){
 

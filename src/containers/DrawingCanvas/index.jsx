@@ -8,6 +8,7 @@ import {line,curveCardinal} from 'd3-shape';
 import {drag} from 'd3-drag';
 import intersect from 'utils/intersect';
 import Style from 'components/Style';
+import classNames from 'utils/classNames';
 import css from './index.css';
 class DrawingCanvas extends React.Component {
 	constructor(props){
@@ -18,7 +19,9 @@ class DrawingCanvas extends React.Component {
 				color:'#000000',
 				stroke:1,
 				opacity:1.0
-			}
+			},
+			showPenOptionMenu:false,
+			mode:'pen'
 		};
 		this.drag = drag()
 			.container(function() {// initiating element = lasso target
@@ -29,6 +32,8 @@ class DrawingCanvas extends React.Component {
 		this.line = line().curve(curveCardinal.tension(0.5));//.curve(curveBasis);	
 
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
+		this.togglePenOption = this.togglePenOption.bind(this);
+		this.handleChangeMode = this.handleChangeMode.bind(this);
 
 	}
 	componentDidMount(){
@@ -36,7 +41,7 @@ class DrawingCanvas extends React.Component {
 			.call(this.drag);
 	}
 	drawStart() {
-		let erasing = event.sourceEvent.buttons==32;
+		let erasing = this.state.mode=='eraser';//event.sourceEvent.buttons==32;
 		
 		let g = select(this.container);
 
@@ -90,7 +95,8 @@ class DrawingCanvas extends React.Component {
 	erase(d){
 		// delete drawings 
 		this.props.drawings.forEach(drawing=>{
-			if (!intersect(drawing.path,d)){
+			// console.log(drawing.path);
+			if (intersect(drawing.path,d)){
 				this.props.deleteDrawing(this.props.choiceId, drawing.id);
 			}
 		});		
@@ -99,17 +105,44 @@ class DrawingCanvas extends React.Component {
 		console.log('style', style);
 		this.setState({penOption:{...style}});
 	}
+	handleChangeMode(event){
+		this.setState({mode:event.currentTarget.dataset.mode});
+
+	}
+	togglePenOption(){
+		this.setState({showPenOptionMenu:!this.state.showPenOptionMenu});
+
+	}
 	render() {
 		return (
 			<div className={css.canvasContainer}>
-				{this.props.choiceText!='' && 
+				{/* {this.props.choiceText!='' && 
 				<div className={css.label}>
 					{this.props.choiceText}
-				</div>}
-				<Style color={this.state.penOption.color}
-					stroke={this.state.penOption.color}
-					opacity={this.state.penOption.color}
-					onStyleUpdate={this.handleStyleUpdate}/>
+				</div>} */}
+				<div className={css.menu}>
+					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='pen'})} 
+						data-mode='pen' 
+						onMouseUp={this.handleChangeMode}>
+						<i className="fas fa-pencil-alt"></i>
+					</div>
+					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='eraser'})} 
+						data-mode='eraser' 
+						onMouseUp={this.handleChangeMode}>
+						<i className="fas fa-eraser"></i>
+					</div>
+					<div className={css.button} onMouseUp={this.togglePenOption}>
+						<i className="fas fa-palette"></i>
+					</div>
+				</div>
+				{this.state.showPenOptionMenu&&
+					<div className={css.penOption}>
+						<Style color={this.state.penOption.color}
+							stroke={this.state.penOption.stroke}
+							opacity={this.state.penOption.opacity}
+							onStyleUpdate={this.handleStyleUpdate}/>
+					</div>
+				}
 				<svg className={css.canvas} 
 					ref={node=>this.container=node}
 				>

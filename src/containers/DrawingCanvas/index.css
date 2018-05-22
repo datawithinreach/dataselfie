@@ -1,5 +1,6 @@
 
 .canvasContainer{
+    position: relative;
     width:100%;
     margin-left:30px;
 	box-sizing: border-box;
@@ -9,6 +10,7 @@
     width:450px;
     height:450px;
     /* border-radius: 50%; */
+    margin-left: 5px;
     
 }
 
@@ -36,4 +38,46 @@
 	stroke-dasharray: 5,5;
 	stroke-opacity: 1;
 	vector-effect: non-scaling-stroke;
+}
+.penOption{
+    position: absolute;
+    display: inline-block;
+    box-sizing: border-box; 
+    margin-left:10px;
+    margin-top:10px;
+    width:300px;
+    /* border: 1px solid  rgba(0, 0, 0, 0.28); */
+    /* box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.28); */
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    background-color: #FFF;
+    text-align: center;
+    pointer-events: all;
+    padding:10px 10px;
+    transition: 0.5s all;
+    
+    
+}
+.button{
+    padding: 8px 16px;
+    box-sizing: border-box;
+    border: 2px solid black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+	text-decoration: none;
+	text-transform: uppercase;
+	margin:5px;
+	transition-duration: 0.2s;
+  }
+
+.button:hover{
+    color:white;
+    background-color: #212121;
+  }
+
+.selectedMode{
+	color:white;
+	background-color: #212121;
 }
