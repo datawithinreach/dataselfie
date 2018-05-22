@@ -1,4 +1,4 @@
-import {uniqueId} from 'utils';
+import uniqueId from 'utils/uniqueId';
 
 // action types
 export const ADD_RESPONSE = 'ADD_RESPONSE';
@@ -9,17 +9,17 @@ export const DELETE_RESPONSE = 'DELETE_RESPONSE';
 
 // actions
 
-export const addHighlight = (formId, attrs = {}) => {
+export const createResponse = (formId, attrs = {}) => {
 	return {type: ADD_RESPONSE, formId, responseId: uniqueId('response_'), attrs};
 };
 
 
-export const updateHighlight = (responseId, attrs) => {
+export const updateResponse = (responseId, attrs) => {
 	return {type: UPDATE_RESPONSE, responseId, attrs};
 };
 
 
-export const deleteHighlight = (formId, responseId) => {
+export const deleteResponse = (formId, responseId) => {
 	return {type: DELETE_RESPONSE, formId, responseId};
 };
 
