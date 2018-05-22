@@ -42,7 +42,7 @@ TextField.propTypes = {
 
 TextField.defaultProps = {
 	placeholder: 'Enter Text',
-	size: 16,
+	size: 18,
 	disabled:false
 };
 export default TextField;
