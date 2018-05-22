@@ -138,7 +138,7 @@ class Designer extends Component {
 					
 
 				</div>
-				<div className={css.editItem}>
+				<div className={css.content}>
 					{curStep==-1&&(	
 						<Fragment>
 							<div>
@@ -188,7 +188,7 @@ class Designer extends Component {
 												onChange={this.handleChoiceChange.bind(this,choice.id)}/>	
 											<div className={classNames(css.button,{[css.selectedChoice]: curChoiceId==choice.id})} 
 												onMouseUp={this.editEncoding.bind(this,choice.id)}>
-												<i className="fas fa-pencil-alt"></i>
+												<i className="fas fa-edit"></i>
 											</div>
 											<div className={css.button} 
 												onMouseUp={this.deleteChoice.bind(this,choice.id)}>
@@ -240,7 +240,6 @@ const mapStateToProps = (state, ownProps) => {
 			choices: item.choices.map(cid=>state.choices[cid])
 		};
 	});
-	console.log('form, items', form, items);
 	return {
 		...form,
 		items
