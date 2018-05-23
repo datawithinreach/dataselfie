@@ -1,7 +1,7 @@
 import uniqueId from 'utils/uniqueId';
 
 // action types
-export const ADD_RESPONSE = 'ADD_RESPONSE';
+export const CREATE_RESPONSE = 'CREATE_RESPONSE';
 
 export const UPDATE_RESPONSE = 'UPDATE_RESPONSE';
 
@@ -10,7 +10,7 @@ export const DELETE_RESPONSE = 'DELETE_RESPONSE';
 // actions
 
 export const createResponse = (formId, attrs = {}) => {
-	return {type: ADD_RESPONSE, formId, responseId: uniqueId('response_'), attrs};
+	return {type: CREATE_RESPONSE, formId, responseId: uniqueId('response_'), attrs};
 };
 
 
@@ -25,7 +25,7 @@ export const deleteResponse = (formId, responseId) => {
 
 export default (state = {}, action)=>{
 	switch (action.type) {
-		case ADD_RESPONSE:
+		case CREATE_RESPONSE:
 			return {
 				...state,
 				[action.responseId]:{
