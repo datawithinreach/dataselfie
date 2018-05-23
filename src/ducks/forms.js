@@ -1,5 +1,6 @@
 import uniqueId from 'utils/uniqueId';
 import {CREATE_ITEM, DELETE_ITEM } from 'ducks/items';
+import {CREATE_RESPONSE, DELETE_RESPONSE } from 'ducks/responses';
 // action types
 export const CREATE_FORM = 'CREATE_FORM';
 export const UPDATE_FORM = 'UPDATE_FORM';
@@ -36,7 +37,8 @@ export default  (state = {}, action)=>{
 				title:'',
 				description: '',
 				thumbnail: undefined,
-				items:[]
+				items:[],
+				responses:[]
 			};
 			return {
 				...state,
@@ -76,6 +78,23 @@ export default  (state = {}, action)=>{
 					items: state[action.formId].items.filter(iid=>iid!=action.itemId)
 				}
 			};
+		case CREATE_RESPONSE:
+			return {
+				...state,
+				[action.formId]:{
+					...state[action.formId],
+					responses: state[action.formId].responses.concat(action.responseId)
+				}
+			};
+
+		case DELETE_RESPONSE:
+			return {
+				...state,
+				[action.formId]:{
+					...state[action.formId],
+					responses: state[action.formId].responses.filter(iid=>iid!=action.responseId)
+				}
+			};			
 		default:
 			return state;
 
