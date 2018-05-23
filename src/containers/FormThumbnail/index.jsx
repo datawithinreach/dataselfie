@@ -65,6 +65,7 @@ export class FormThumbnail extends React.Component {
 					<div className={css.overlay} >
 						<div className={css.deleteBtn}
 							onMouseUp={this.handleDelete}>
+							{/* <i className="fas fa-trash-alt"></i> */}
 							<img src="assets/icons/trash.svg"/>
 						</div>
 						{this.state.confirmDelete?
