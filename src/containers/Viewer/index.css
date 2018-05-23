@@ -90,7 +90,14 @@
 }
 
 .error{
-	color:#FF1744;
+	color:#FF1744;	
+	transition: opacity 0.2s;
+	display: none;
+	opacity: 0.0;
+}
+.showError{
+	display: inline-block;
+	opacity: 1.0;
 }
 
 .content{
