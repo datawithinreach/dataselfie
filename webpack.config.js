@@ -7,7 +7,6 @@ const srcDir = 'src';
 const tgtDir = 'dist';
 const srcFullPath = path.join(__dirname, srcDir);
 const tgtFullPath = path.join(__dirname, tgtDir);
-
 module.exports = {
 	entry: {
 		polyfill: ['babel-polyfill'],
@@ -28,7 +27,7 @@ module.exports = {
 	},
 	output: {
 		path: tgtFullPath, // Path to where webpack will build stuffs
-		publicPath: '/', // This is used to generate URLs to e.g. images
+		publicPath: '', // This is used to generate URLs to e.g. images
 		filename: '[name].js' // This is used to name bundled files from entry points.
 	},
 	module: {
