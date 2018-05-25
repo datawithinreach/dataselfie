@@ -6,6 +6,7 @@ import {createResponse} from 'ducks/responses';
 import classNames from 'utils/classNames';
 import TextField from 'components/TextField';
 import RadioGroup from 'components/RadioGroup';
+
 import css from './index.css';
 
 
@@ -14,7 +15,8 @@ class Viewer extends Component {
 		super(props);
 		this.state = {
 			curStep: -1,
-			response:{}
+			response:{},
+			showError:false
 		};
 		this.changeStep = this.changeStep.bind(this);
 		this.nextItem = this.nextItem.bind(this);
@@ -28,7 +30,8 @@ class Viewer extends Component {
 		// restart the form
 		return  {
 			curStep: -1,
-			response:{}
+			response:{},
+			showError:false
 		};
 	}
 
@@ -68,11 +71,19 @@ class Viewer extends Component {
 		let {response} = this.state;
 		let {items} = this.props;
 		if (response.id && items.every(item=>response[item.id])){
-			console.log('success');
+			console.log('submitting', this.state.response);			
+			this.props.createResponse(this.props.formId, {response});
 		}else{
-			console.log('error');
+			let missing =  items.length - items.filter(item=>response[item.id]).length;
+			missing += (response.id?0:1);
+			this.setState({showError:true, error:`There ${missing>1?'are':'is'} ${missing} missing fields in this form.`});
+
+			setTimeout(() => {
+				console.log('hide error');
+				this.setState({showError:false});
+			}, 2000);
 		}
-		console.log(this.state.response);
+		
 	}
 	render() {
 		let {curStep, response} = this.state;
@@ -96,6 +107,9 @@ class Viewer extends Component {
 					}
 				</div>
 				<div className={css.content}>
+					<div className={classNames(css.error,{[css.showError]:this.state.showError==true})}>
+						{this.state.error}
+					</div>
 					{curStep==-1&&(	
 						<Fragment>
 							{/* <div>
@@ -161,6 +175,7 @@ Viewer.propTypes = {
 	title:PropTypes.string,
 	description:PropTypes.string,
 	items:PropTypes.array,
+	createResponse:PropTypes.func
 };
 
 const mapStateToProps = (state, ownProps) => {

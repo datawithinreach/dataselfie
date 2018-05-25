@@ -1,0 +1,19 @@
+.responses{
+	display: flex;
+	flex-wrap: wrap;
+}
+.canvas{
+    border: 1px solid #BDBDBD;
+    width:225px;
+    height:225px;
+    /* border-radius: 50%; */
+    margin-left: 5px;
+    
+}
+
+.drawing{
+	fill: none;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+  
+}
