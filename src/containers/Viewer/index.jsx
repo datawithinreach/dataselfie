@@ -26,13 +26,18 @@ class Viewer extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
-	static getDerivedStateFromProps (){
+	static getDerivedStateFromProps (prop, state){
 		// restart the form
-		return  {
-			curStep: -1,
-			response:{},
-			showError:false
-		};
+		console.log('getDerivedStateFromProps');
+		if (state.curStep>=prop.items.length){
+			return {
+				curStep:  -1,
+				response:{},
+				showError:false
+			};
+		}else{
+			return null;
+		}
 	}
 
 	changeStep(e){
