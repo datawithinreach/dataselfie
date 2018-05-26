@@ -28,7 +28,7 @@ class Viewer extends Component {
 	
 	static getDerivedStateFromProps (prop, state){
 		// restart the form
-		console.log('getDerivedStateFromProps');
+		// console.log('getDerivedStateFromProps');
 		if (state.curStep>=prop.items.length){
 			return {
 				curStep:  -1,
@@ -41,7 +41,7 @@ class Viewer extends Component {
 	}
 
 	changeStep(e){
-		console.log('changeStep',e.target);
+		// console.log('changeStep',e.target);
 		this.setState({curStep:parseInt(e.target.dataset.step)});
 	}
 	prevItem(){
@@ -68,7 +68,7 @@ class Viewer extends Component {
 		}});
 	}
 	handleIdChange(event){
-		console.log('handleIdChange',event.target.value);
+		// console.log('handleIdChange',event.target.value);
 		let response = {
 			...this.state.response,
 			id:event.target.value
@@ -96,7 +96,7 @@ class Viewer extends Component {
 	}
 	render() {
 		let {curStep, response} = this.state;
-		console.log('response',response.id);
+		// console.log('response',response.id);
 		let {items} = this.props;
 		let curItem = this.getCurItem();
 		return (
