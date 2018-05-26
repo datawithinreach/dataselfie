@@ -63,7 +63,7 @@ class Viewer extends Component {
 		}});
 	}
 	handleIdChange(event){
-		console.log('handleIdChange',event.target);
+		console.log('handleIdChange',event.target.value);
 		this.setState({response:{
 			...this.state.response,
 			id:event.target.value
