@@ -36,6 +36,7 @@ class Viewer extends Component {
 	}
 
 	changeStep(e){
+		console.log('changeStep',e.target);
 		this.setState({curStep:parseInt(e.target.dataset.step)});
 	}
 	prevItem(){
@@ -62,6 +63,7 @@ class Viewer extends Component {
 		}});
 	}
 	handleIdChange(event){
+		console.log('handleIdChange',event.target);
 		this.setState({response:{
 			...this.state.response,
 			id:event.target.value
@@ -188,6 +190,7 @@ const mapStateToProps = (state, ownProps) => {
 			choices: item.choices.map(cid=>state.choices[cid])
 		};
 	});
+	console.log('items', items);
 	return {
 		...form,
 		items
