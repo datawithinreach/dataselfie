@@ -89,6 +89,7 @@ class Viewer extends Component {
 	}
 	render() {
 		let {curStep, response} = this.state;
+		console.log('response',response);
 		let {items} = this.props;
 		let curItem = this.getCurItem();
 		return (
