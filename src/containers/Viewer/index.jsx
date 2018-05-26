@@ -64,10 +64,12 @@ class Viewer extends Component {
 	}
 	handleIdChange(event){
 		console.log('handleIdChange',event.target.value);
-		this.setState({response:{
+		let response = {
 			...this.state.response,
 			id:event.target.value
-		}});
+		};
+		console.log('response', response);
+		this.setState({response});
 	}
 	handleSubmit(){
 		let {response} = this.state;
