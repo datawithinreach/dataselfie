@@ -60,7 +60,7 @@ class Viewer extends Component {
 		return curStep>=0 && curStep<items.length? items[curStep]:null;
 	}
 	handleSelect(event){
-		console.log('selected',event.target.value);
+		// console.log('selected',event.target.value);
 		let curItem = this.getCurItem();
 		this.setState({response:{
 			...this.state.response,
@@ -73,7 +73,7 @@ class Viewer extends Component {
 			...this.state.response,
 			id:event.target.value
 		};
-		console.log('response', response);
+		// console.log('response', response);
 		this.setState({response});
 	}
 	handleSubmit(){
