@@ -26,16 +26,22 @@ class Viewer extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
-	static getDerivedStateFromProps (){
+	static getDerivedStateFromProps (prop, state){
 		// restart the form
-		return  {
-			curStep: -1,
-			response:{},
-			showError:false
-		};
+		// console.log('getDerivedStateFromProps');
+		if (state.curStep>=prop.items.length){
+			return {
+				curStep:  -1,
+				response:{},
+				showError:false
+			};
+		}else{
+			return null;
+		}
 	}
 
 	changeStep(e){
+		// console.log('changeStep',e.target);
 		this.setState({curStep:parseInt(e.target.dataset.step)});
 	}
 	prevItem(){
@@ -54,7 +60,7 @@ class Viewer extends Component {
 		return curStep>=0 && curStep<items.length? items[curStep]:null;
 	}
 	handleSelect(event){
-		console.log('selected',event.target.value);
+		// console.log('selected',event.target.value);
 		let curItem = this.getCurItem();
 		this.setState({response:{
 			...this.state.response,
@@ -62,10 +68,13 @@ class Viewer extends Component {
 		}});
 	}
 	handleIdChange(event){
-		this.setState({response:{
+		// console.log('handleIdChange',event.target.value);
+		let response = {
 			...this.state.response,
 			id:event.target.value
-		}});
+		};
+		// console.log('response', response);
+		this.setState({response});
 	}
 	handleSubmit(){
 		let {response} = this.state;
@@ -87,6 +96,7 @@ class Viewer extends Component {
 	}
 	render() {
 		let {curStep, response} = this.state;
+		// console.log('response',response.id);
 		let {items} = this.props;
 		let curItem = this.getCurItem();
 		return (
@@ -188,6 +198,7 @@ const mapStateToProps = (state, ownProps) => {
 			choices: item.choices.map(cid=>state.choices[cid])
 		};
 	});
+	console.log('items', items);
 	return {
 		...form,
 		items
