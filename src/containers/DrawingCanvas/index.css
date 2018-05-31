@@ -81,3 +81,17 @@
 	color:white;
 	background-color: #212121;
 }
+
+.suggestions{
+	display: flex;
+	flex-wrap: wrap;
+	
+}
+.suggestion{
+	margin:5px;
+}
+
+.suggestion img{
+	width:35px;
+	height:35px;
+}

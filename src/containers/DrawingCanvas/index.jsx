@@ -10,6 +10,7 @@ import intersect from 'utils/intersect';
 import Style from 'components/Style';
 import classNames from 'utils/classNames';
 import css from './index.css';
+import autodraw from 'utils/autodraw';
 class DrawingCanvas extends React.Component {
 	constructor(props){
 		super(props);
@@ -21,7 +22,9 @@ class DrawingCanvas extends React.Component {
 				opacity:1.0
 			},
 			showPenOptionMenu:false,
-			mode:'pen'
+			mode:'pen',
+			shapes:[],
+			recognized:[],
 		};
 		this.drag = drag()
 			.container(function() {// initiating element = lasso target
@@ -85,10 +88,24 @@ class DrawingCanvas extends React.Component {
 	}
 	add(d){
 		if (this.props.choiceId){
+
 			this.props.createDrawing(this.props.choiceId, {
 				path:d,
 				...this.state.penOption
 			});
+			if (this.state.mode=='autodraw'){
+				let shapes = this.state.shapes.concat(
+					[d.map(p=>({x:p[0],y:p[1]}))]
+				);
+				this.setState({	shapes});
+				console.log('shapes',shapes);
+				autodraw(shapes).then(results=>{
+					console.log('recognized',results);
+					this.setState({
+						recognized:results
+					});
+				});
+			}
 		}
 		
 	}
@@ -106,7 +123,11 @@ class DrawingCanvas extends React.Component {
 		this.setState({penOption:{...style}});
 	}
 	handleChangeMode(event){
-		this.setState({mode:event.currentTarget.dataset.mode});
+		this.setState({
+			mode:event.currentTarget.dataset.mode,
+			shapes:[], // reset shapes
+			recognized:[]
+		});
 
 	}
 	togglePenOption(){
@@ -131,10 +152,27 @@ class DrawingCanvas extends React.Component {
 						onMouseUp={this.handleChangeMode}>
 						<i className="fas fa-eraser"></i>
 					</div>
+					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='autodraw'})} 
+						data-mode='autodraw' 
+						onMouseUp={this.handleChangeMode}>
+						<i className="fas fa-magic"></i>
+					</div>
 					<div className={css.button} onMouseUp={this.togglePenOption}>
 						<i className="fas fa-palette"></i>
 					</div>
 				</div>
+				{this.state.mode=='autodraw' && 
+					<div className={css.suggestions}>
+						{this.state.recognized.slice(0,10).map(shape=>
+							shape.icons.map((icon,i)=>
+								<figure key={[shape.name,i].join('-')} className={css.suggestion}>
+									<img src={icon} alt={shape.name} title={shape.name}/>
+								</figure>
+							)
+							
+						)}
+					</div>						
+				}
 				{this.state.showPenOptionMenu&&
 					<div className={css.penOption}>
 						<Style color={this.state.penOption.color}
