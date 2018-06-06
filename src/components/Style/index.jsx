@@ -42,7 +42,6 @@ export class Style extends React.PureComponent{
 	}
 	
 	handleOpacityStart(e){
-		e = e.nativeEvent;
 		this.opacity = this.state.opacity;
 		this.opacitySliderWidth = e.target.parentNode.getBoundingClientRect().width;
 		this.opacitySliderX = e.clientX;
@@ -53,7 +52,6 @@ export class Style extends React.PureComponent{
 		if (!this.opacitySliderX){
 			return;
 		}
-		e = e.nativeEvent;
 		let dx = e.clientX-this.opacitySliderX;
 		let da = dx/this.opacitySliderWidth;
 		let newOpacity = this.opacity + da;
@@ -69,7 +67,7 @@ export class Style extends React.PureComponent{
 		this.setState({
 			opacity:newOpacity
 		});
-		this.props.onStyleUpdate({...this.state});
+		this.props.onStyleUpdate({...this.state, opacity:newOpacity});
 	}
 	handleOpacityEnd(){
 		if (!this.opacitySliderX){
@@ -99,7 +97,7 @@ export class Style extends React.PureComponent{
 		this.setState({
 			opacity:newOpacity
 		});
-		this.props.onStyleUpdate({...this.state});
+		this.props.onStyleUpdate({...this.state, opacity:newOpacity});
 	}
 	
 	handleSelectStroke(stroke){

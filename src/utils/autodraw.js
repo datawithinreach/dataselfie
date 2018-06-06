@@ -3,7 +3,6 @@
 import stencils from 'assets/stencils.json';
 
 var API_ENDPOINT = 'https://inputtools.google.com/request?ime=handwriting&app=autodraw&dbg=1&cs=1&oe=UTF-8';
-// var SVG_ENDPOINT = 'https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/';
 
 function boundingRect (shapes) {
 	var res = shapes.reduce(function (prev, shape) {
@@ -26,7 +25,10 @@ function boundingRect (shapes) {
 		minY: Infinity,
 		maxY: -Infinity
 	});
-
+	shapes.forEach(shape=>shape.forEach(point=>{
+		point.x -= res.minX;
+		point.y -= res.minY; 
+	}));
 	return {
 		width: res.maxX - res.minX,
 		height: res.maxY - res.minY
@@ -67,6 +69,7 @@ export default function (shapes, frame, startDate) {
 
 	if (!frame) {
 		frame = boundingRect(shapes);
+		console.log(shapes,frame);
 	}
 	let body = JSON.stringify({
 		input_type: 0,
@@ -94,11 +97,12 @@ export default function (shapes, frame, startDate) {
 			}
 			var results = getResults(data);
 			return results.map(function (result) {
-				var escapedName = result[0].replace(/ /g, '-');
+				// var escapedName = result[0].replace(/ /g, '-');
+				// console.log(escapedName, stencils[escapedName]);
 				return {
 					name: result[0],
 					confidence: result[1],
-					icons: (stencils[escapedName] || []).map(icon => icon.src)
+					icons: (stencils[result[0]] || []).map(icon => icon.src)
 				};
 			});
 		});

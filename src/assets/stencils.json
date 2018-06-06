@@ -691,7 +691,7 @@
       "collection": "Pei Liew"
     }
   ],
-  "rabbits foot-keychain": [
+  "rabbits foot keychain": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/Pei-Liew/rabbits-foot-keychain-01.svg",
       "collection": "Pei Liew"
@@ -953,6 +953,18 @@
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/Tori-Hinn/female-symbol-01.svg",
       "collection": "Tori Hinn"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/female-symbol-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/female-symbol-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/female-symbol-04.svg",
+      "collection": "selman"
     }
   ],
   "fist": [
@@ -1089,6 +1101,20 @@
       "collection": "selman"
     }
   ],
+  "alien": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/alien-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/alien-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/alien-03.svg",
+      "collection": "selman"
+    }
+  ],
   "ambulance": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ambulance-01.svg",
@@ -1215,6 +1241,20 @@
       "collection": "selman"
     }
   ],
+  "asian temple": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/asian-temple-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/asian-temple-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/asian-temple-03.svg",
+      "collection": "selman"
+    }
+  ],
   "asparagus": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/asparagus-01.svg",
@@ -1268,6 +1308,16 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/backpack-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "ballerina": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ballerina-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ballerina-02.svg",
       "collection": "selman"
     }
   ],
@@ -1341,6 +1391,18 @@
       "collection": "selman"
     }
   ],
+  "baseball player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/baseball-player-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "baseballbat": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/baseballbat-03.svg",
+      "collection": "selman"
+    }
+  ],
   "basket": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/basket-01.svg",
@@ -1366,6 +1428,12 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/basketball-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "basketball player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/basketball-player-01.svg",
       "collection": "selman"
     }
   ],
@@ -1453,6 +1521,30 @@
       "collection": "selman"
     }
   ],
+  "beer": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/beer-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/beer-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/beer-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "bell": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bell-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bell-02.svg",
+      "collection": "selman"
+    }
+  ],
   "belt": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/belt-01.svg",
@@ -1492,6 +1584,12 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bicycle-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "big ben": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/big-ben-01.svg",
       "collection": "selman"
     }
   ],
@@ -1537,6 +1635,20 @@
       "collection": "selman"
     }
   ],
+  "blouse": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/blouse-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/blouse-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/blouse-03.svg",
+      "collection": "selman"
+    }
+  ],
   "blueberry": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/blueberry-01.svg",
@@ -1548,6 +1660,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/blueberry-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "bone": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bone-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bone-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bone-03.svg",
       "collection": "selman"
     }
   ],
@@ -1579,6 +1705,20 @@
       "collection": "selman"
     }
   ],
+  "boots": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/boots-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/boots-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/boots-03.svg",
+      "collection": "selman"
+    }
+  ],
   "bottle cap": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bottle-cap-01.svg",
@@ -1604,6 +1744,26 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/bow-tie-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "box": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/box-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/box-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/box-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "boxer": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/boxer-01.svg",
       "collection": "selman"
     }
   ],
@@ -1859,6 +2019,20 @@
       "collection": "selman"
     }
   ],
+  "cap": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cap-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cap-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cap-03.svg",
+      "collection": "selman"
+    }
+  ],
   "carrot": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/carrot-01.svg",
@@ -1957,6 +2131,30 @@
       "collection": "selman"
     }
   ],
+  "chat bubble": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chat-bubble-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chat-bubble-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chat-bubble-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "chef hat": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chef-hat-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chef-hat-02.svg",
+      "collection": "selman"
+    }
+  ],
   "cherry": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cherry-01.svg",
@@ -1968,6 +2166,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cherry-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "cherry blossom": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cherry-blossom-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cherry-blossom-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cherry-blossom-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "chicken": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chicken-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chicken-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/chicken-03.svg",
       "collection": "selman"
     }
   ],
@@ -1999,6 +2225,20 @@
       "collection": "selman"
     }
   ],
+  "clipboard": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clipboard-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clipboard-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clipboard-03.svg",
+      "collection": "selman"
+    }
+  ],
   "clock": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clock-01.svg",
@@ -2013,6 +2253,34 @@
       "collection": "selman"
     }
   ],
+  "clover": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clover-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clover-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/clover-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "coat": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/coat-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/coat-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/coat-03.svg",
+      "collection": "selman"
+    }
+  ],
   "coffee cup": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/coffee-cup-01.svg",
@@ -2024,6 +2292,40 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/coffee-cup-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "colosseum": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/colosseum-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "comb": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comb-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comb-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comb-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "comet": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comet-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comet-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/comet-03.svg",
       "collection": "selman"
     }
   ],
@@ -2066,6 +2368,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/computer-mouse-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "confetti": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/confetti-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/confetti-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/confetti-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "constellations": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/constellations-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/constellations-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/constellations-03.svg",
       "collection": "selman"
     }
   ],
@@ -2139,6 +2469,16 @@
       "collection": "selman"
     }
   ],
+  "cricket bat": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cricket-bat-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cricket-bat-02.svg",
+      "collection": "selman"
+    }
+  ],
   "crocodile": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/crocodile-01.svg",
@@ -2192,6 +2532,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/cup-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "daisy": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/daisy-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/daisy-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/daisy-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "deer": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/deer-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/deer-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/deer-03.svg",
       "collection": "selman"
     }
   ],
@@ -2295,6 +2663,16 @@
       "collection": "selman"
     }
   ],
+  "diploma": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/diploma-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/diploma-02.svg",
+      "collection": "selman"
+    }
+  ],
   "dishwasher": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dishwasher-01.svg",
@@ -2309,6 +2687,12 @@
       "collection": "selman"
     }
   ],
+  "diver helmet": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/diver-helmet-01.svg",
+      "collection": "selman"
+    }
+  ],
   "diving board": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/diving-board-01.svg",
@@ -2320,6 +2704,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/diving-board-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "dog house": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dog-house-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dog-house-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dog-house-03.svg",
       "collection": "selman"
     }
   ],
@@ -2386,6 +2784,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dragon-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "dress": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dress-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dress-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/dress-03.svg",
       "collection": "selman"
     }
   ],
@@ -2488,6 +2900,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/earth-04.svg",
+      "collection": "selman"
+    }
+  ],
+  "egg": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/egg-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/egg-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/egg-03.svg",
       "collection": "selman"
     }
   ],
@@ -2673,6 +3099,20 @@
       "collection": "selman"
     }
   ],
+  "fishing rod": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/fishing-rod-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/fishing-rod-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/fishing-rod-03.svg",
+      "collection": "selman"
+    }
+  ],
   "flamingo": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/flamingo-01.svg",
@@ -2743,6 +3183,16 @@
       "collection": "selman"
     }
   ],
+  "foam finger": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/foam-finger-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/foam-finger-02.svg",
+      "collection": "selman"
+    }
+  ],
   "foot": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/foot-01.svg",
@@ -2754,6 +3204,146 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/foot-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football cleats": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-cleats-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-cleats-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-cleats-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football field": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-05.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-field-06.svg",
+      "collection": "selman"
+    }
+  ],
+  "football helmet": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-helmet-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-helmet-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-helmet-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football jersey": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-jersey-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-jersey-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-jersey-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-player-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "football shoulder pads": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-shoulder-pads-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-shoulder-pads-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "football stadium": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-stadium-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-stadium-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-stadium-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football trophy": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-trophy-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-trophy-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-trophy-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "football yard marker": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-yard-marker-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-yard-marker-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/football-yard-marker-03.svg",
       "collection": "selman"
     }
   ],
@@ -2785,6 +3375,34 @@
       "collection": "selman"
     }
   ],
+  "galaxy": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/galaxy-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/galaxy-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/galaxy-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "gamepad": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gamepad-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gamepad-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gamepad-03.svg",
+      "collection": "selman"
+    }
+  ],
   "garden": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/garden-01.svg",
@@ -2813,6 +3431,34 @@
       "collection": "selman"
     }
   ],
+  "gear": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gear-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gear-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/gear-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "ghost": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ghost-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ghost-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ghost-03.svg",
+      "collection": "selman"
+    }
+  ],
   "giraffe": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/giraffe-01.svg",
@@ -2824,6 +3470,40 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/giraffe-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "glass dropper": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/glass-dropper-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/glass-dropper-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/glass-dropper-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "glove": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/glove-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "goalpost": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/goalpost-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/goalpost-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/goalpost-03.svg",
       "collection": "selman"
     }
   ],
@@ -2852,6 +3532,26 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/golf-club-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "golfer": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/golfer-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "graduation cap": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/graduation-cap-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/graduation-cap-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/graduation-cap-03.svg",
       "collection": "selman"
     }
   ],
@@ -2897,6 +3597,20 @@
       "collection": "selman"
     }
   ],
+  "hairbrush": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hairbrush-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hairbrush-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hairbrush-03.svg",
+      "collection": "selman"
+    }
+  ],
   "hamburger": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hamburger-01.svg",
@@ -2922,6 +3636,12 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hammer-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "handicap symbol": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/handicap-symbol-01.svg",
       "collection": "selman"
     }
   ],
@@ -3023,6 +3743,40 @@
       "collection": "selman"
     }
   ],
+  "high heels": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/high-heels-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/high-heels-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/high-heels-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "hippo": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hippo-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hippo-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hippo-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "hockey player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hockey-player-01.svg",
+      "collection": "selman"
+    }
+  ],
   "hockey puck": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hockey-puck-01.svg",
@@ -3051,6 +3805,20 @@
       "collection": "selman"
     }
   ],
+  "hooded sweatshirt": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hooded-sweatshirt-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hooded-sweatshirt-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hooded-sweatshirt-03.svg",
+      "collection": "selman"
+    }
+  ],
   "hospital": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hospital-01.svg",
@@ -3065,7 +3833,7 @@
       "collection": "selman"
     }
   ],
-  "hot air-balloon": [
+  "hot air balloon": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/hot-air-balloon-01.svg",
       "collection": "selman"
@@ -3215,6 +3983,20 @@
       "collection": "selman"
     }
   ],
+  "kayak": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/kayak-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/kayak-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/kayak-03.svg",
+      "collection": "selman"
+    }
+  ],
   "key": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/key-01.svg",
@@ -3243,6 +4025,12 @@
       "collection": "selman"
     }
   ],
+  "king": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/king-01.svg",
+      "collection": "selman"
+    }
+  ],
   "knee": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/knee-01.svg",
@@ -3254,6 +4042,36 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/knee-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "knight helmet": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/knight-helmet-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/knight-helmet-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "knight shield": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/knight-shield-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "ladybug": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ladybug-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ladybug-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ladybug-03.svg",
       "collection": "selman"
     }
   ],
@@ -3271,7 +4089,7 @@
       "collection": "selman"
     }
   ],
-  "lanyard with-badge": [
+  "lanyard with badge": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lanyard-with-badge-01.svg",
       "collection": "selman"
@@ -3296,6 +4114,16 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/laptop-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "lawn mower": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lawn-mower-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lawn-mower-02.svg",
       "collection": "selman"
     }
   ],
@@ -3324,6 +4152,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/leg-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "lemon": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lemon-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lemon-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lemon-03.svg",
       "collection": "selman"
     }
   ],
@@ -3369,6 +4211,20 @@
       "collection": "selman"
     }
   ],
+  "lily": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lily-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lily-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/lily-03.svg",
+      "collection": "selman"
+    }
+  ],
   "line": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/line-01.svg",
@@ -3380,6 +4236,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/line-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "llama": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/llama-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/llama-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/llama-03.svg",
       "collection": "selman"
     }
   ],
@@ -3429,6 +4299,16 @@
       "collection": "selman"
     }
   ],
+  "magic wand": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/magic-wand-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/magic-wand-02.svg",
+      "collection": "selman"
+    }
+  ],
   "mailbox": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/mailbox-01.svg",
@@ -3440,6 +4320,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/mailbox-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "male symbol": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/male-symbol-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/male-symbol-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/male-symbol-03.svg",
       "collection": "selman"
     }
   ],
@@ -3524,6 +4418,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/microphone-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "microscope": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/microscope-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/microscope-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/microscope-03.svg",
       "collection": "selman"
     }
   ],
@@ -3667,6 +4575,32 @@
       "collection": "selman"
     }
   ],
+  "music notes": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-05.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/music-notes-06.svg",
+      "collection": "selman"
+    }
+  ],
   "nail": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/nail-01.svg",
@@ -3793,6 +4727,20 @@
       "collection": "selman"
     }
   ],
+  "overalls": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/overalls-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/overalls-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/overalls-03.svg",
+      "collection": "selman"
+    }
+  ],
   "paint can": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/paint-can-01.svg",
@@ -3861,6 +4809,18 @@
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pants-03.svg",
       "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pants-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pants-05.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pants-06.svg",
+      "collection": "selman"
     }
   ],
   "paper clip": [
@@ -3905,6 +4865,16 @@
       "collection": "selman"
     }
   ],
+  "party hat": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/party-hat-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/party-hat-03.svg",
+      "collection": "selman"
+    }
+  ],
   "passport": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/passport-01.svg",
@@ -3916,6 +4886,30 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/passport-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "peach": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/peach-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/peach-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "peacock": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/peacock-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/peacock-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/peacock-03.svg",
       "collection": "selman"
     }
   ],
@@ -3961,6 +4955,46 @@
       "collection": "selman"
     }
   ],
+  "pelican": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pelican-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pelican-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pelican-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "pen": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-05.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pen-06.svg",
+      "collection": "selman"
+    }
+  ],
   "pencil": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pencil-01.svg",
@@ -3972,6 +5006,28 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pencil-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "people": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/people-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/people-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/people-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/people-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/people-05.svg",
       "collection": "selman"
     }
   ],
@@ -4028,6 +5084,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/picture-frame-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "pie": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pie-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pie-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pie-03.svg",
       "collection": "selman"
     }
   ],
@@ -4129,6 +5199,12 @@
       "collection": "selman"
     }
   ],
+  "point shoes": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/point-shoes-01.svg",
+      "collection": "selman"
+    }
+  ],
   "police car": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/police-car-01.svg",
@@ -4140,6 +5216,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/police-car-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "polo": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/polo-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/polo-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/polo-03.svg",
       "collection": "selman"
     }
   ],
@@ -4168,6 +5258,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pool-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "poop": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/poop-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/poop-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/poop-03.svg",
       "collection": "selman"
     }
   ],
@@ -4227,6 +5331,20 @@
       "collection": "selman"
     }
   ],
+  "pumpkin": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pumpkin-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pumpkin-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/pumpkin-03.svg",
+      "collection": "selman"
+    }
+  ],
   "purse": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/purse-01.svg",
@@ -4259,6 +5377,12 @@
       "collection": "selman"
     }
   ],
+  "queen": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/queen-01.svg",
+      "collection": "selman"
+    }
+  ],
   "rabbit": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/rabbit-01.svg",
@@ -4284,6 +5408,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/raccoon-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "race car": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/race-car-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/race-car-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/race-car-03.svg",
       "collection": "selman"
     }
   ],
@@ -4329,6 +5467,30 @@
       "collection": "selman"
     }
   ],
+  "ramen": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ramen-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ramen-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "refrigerator": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/refrigerator-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/refrigerator-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/refrigerator-03.svg",
+      "collection": "selman"
+    }
+  ],
   "remote control": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/remote-control-01.svg",
@@ -4354,6 +5516,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/rhinoceros-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "robot": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/robot-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/robot-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/robot-03.svg",
       "collection": "selman"
     }
   ],
@@ -4396,6 +5572,30 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/roller-skates-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "rose": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/rose-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/rose-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/rose-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "safety cone": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/safety-cone-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/safety-cone-02.svg",
       "collection": "selman"
     }
   ],
@@ -4469,6 +5669,20 @@
       "collection": "selman"
     }
   ],
+  "school": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/school-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/school-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/school-03.svg",
+      "collection": "selman"
+    }
+  ],
   "school bus": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/school-bus-01.svg",
@@ -4483,6 +5697,34 @@
       "collection": "selman"
     }
   ],
+  "science beaker": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-beaker-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-beaker-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-beaker-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "science flask": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-flask-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-flask-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/science-flask-03.svg",
+      "collection": "selman"
+    }
+  ],
   "scissors": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scissors-01.svg",
@@ -4494,6 +5736,16 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scissors-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "scooter": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scooter-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scooter-02.svg",
       "collection": "selman"
     }
   ],
@@ -4525,6 +5777,32 @@
       "collection": "selman"
     }
   ],
+  "scroll": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scroll-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scroll-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scroll-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "scuba diver": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scuba-diver-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "scuba mask": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/scuba-mask-01.svg",
+      "collection": "selman"
+    }
+  ],
   "sea turtle": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sea-turtle-01.svg",
@@ -4536,6 +5814,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sea-turtle-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "seahorse": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/seahorse-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/seahorse-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/seahorse-03.svg",
       "collection": "selman"
     }
   ],
@@ -4567,6 +5859,30 @@
       "collection": "selman"
     }
   ],
+  "servers": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/servers-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/servers-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/servers-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "sewing machine": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sewing-machine-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sewing-machine-02.svg",
+      "collection": "selman"
+    }
+  ],
   "sheep": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sheep-01.svg",
@@ -4578,6 +5894,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sheep-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "shell": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shell-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shell-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shell-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "shirt": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shirt-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shirt-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/shirt-03.svg",
       "collection": "selman"
     }
   ],
@@ -4651,6 +5995,36 @@
       "collection": "selman"
     }
   ],
+  "skier": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skier-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "skirt": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skirt-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skirt-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skirt-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "skis": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skis-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skis-02.svg",
+      "collection": "selman"
+    }
+  ],
   "skull": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/skull-01.svg",
@@ -4690,6 +6064,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sleeping-bag-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "sloth": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sloth-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sloth-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sloth-03.svg",
       "collection": "selman"
     }
   ],
@@ -4777,6 +6165,12 @@
       "collection": "selman"
     }
   ],
+  "soccer player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/soccer-player-01.svg",
+      "collection": "selman"
+    }
+  ],
   "sock": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sock-01.svg",
@@ -4791,6 +6185,20 @@
       "collection": "selman"
     }
   ],
+  "socks": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/socks-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/socks-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/socks-03.svg",
+      "collection": "selman"
+    }
+  ],
   "soda can": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/soda-can-01.svg",
@@ -4802,6 +6210,40 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/soda-can-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "solar panel": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/solar-panel-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/solar-panel-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/solar-panel-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "space shuttle": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/space-shuttle-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "spaghetti": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spaghetti-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spaghetti-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spaghetti-03.svg",
       "collection": "selman"
     }
   ],
@@ -4833,6 +6275,20 @@
       "collection": "selman"
     }
   ],
+  "spider web": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spider-web-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spider-web-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spider-web-03.svg",
+      "collection": "selman"
+    }
+  ],
   "spoon": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spoon-01.svg",
@@ -4858,6 +6314,16 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spreadsheet-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "spyglass": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spyglass-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/spyglass-02.svg",
       "collection": "selman"
     }
   ],
@@ -4914,6 +6380,18 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/stairs-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "statue": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/statue-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "statue of liberty": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/statue-of-liberty-01.svg",
       "collection": "selman"
     }
   ],
@@ -5043,6 +6521,20 @@
       "collection": "selman"
     }
   ],
+  "stroller": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/stroller-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/stroller-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/stroller-03.svg",
+      "collection": "selman"
+    }
+  ],
   "submarine": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/submarine-01.svg",
@@ -5082,6 +6574,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sunglasses-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "surfboard": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/surfboard-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/surfboard-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/surfboard-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "sushi": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sushi-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sushi-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/sushi-03.svg",
       "collection": "selman"
     }
   ],
@@ -5169,6 +6689,22 @@
       "collection": "selman"
     }
   ],
+  "taco": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/taco-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/taco-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "taj mahal": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/taj-mahal-01.svg",
+      "collection": "selman"
+    }
+  ],
   "teapot": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/teapot-01.svg",
@@ -5225,6 +6761,12 @@
       "collection": "selman"
     }
   ],
+  "tennis player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tennis-player-01.svg",
+      "collection": "selman"
+    }
+  ],
   "tennis racquet": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tennis-racquet-01.svg",
@@ -5253,7 +6795,7 @@
       "collection": "selman"
     }
   ],
-  "the eiffel-tower": [
+  "the eiffel tower": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/the-eiffel-tower-01.svg",
       "collection": "selman"
@@ -5267,7 +6809,7 @@
       "collection": "selman"
     }
   ],
-  "the great-wall-of-china": [
+  "the great wall of china": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/the-great-wall-of-china-01.svg",
       "collection": "selman"
@@ -5281,7 +6823,7 @@
       "collection": "selman"
     }
   ],
-  "the mona-lisa": [
+  "the mona lisa": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/the-mona-lisa-01.svg",
       "collection": "selman"
@@ -5292,6 +6834,56 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/the-mona-lisa-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "thermometer": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thermometer-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thermometer-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thermometer-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "thumbs up": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thumbs-up-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thumbs-up-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/thumbs-up-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "tie": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tie-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tie-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tie-03.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tie-04.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tie-05.svg",
       "collection": "selman"
     }
   ],
@@ -5348,6 +6940,16 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/toilet-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "tombstone": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tombstone-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tombstone-02.svg",
       "collection": "selman"
     }
   ],
@@ -5421,6 +7023,20 @@
       "collection": "selman"
     }
   ],
+  "toucan": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/toucan-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/toucan-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/toucan-03.svg",
+      "collection": "selman"
+    }
+  ],
   "tractor": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tractor-01.svg",
@@ -5488,6 +7104,26 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/trumpet-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "tutu": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/tutu-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "ufo": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ufo-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ufo-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/ufo-03.svg",
       "collection": "selman"
     }
   ],
@@ -5561,6 +7197,34 @@
       "collection": "selman"
     }
   ],
+  "venus fly trap": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/venus-fly-trap-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/venus-fly-trap-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/venus-fly-trap-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "vest": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/vest-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/vest-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/vest-03.svg",
+      "collection": "selman"
+    }
+  ],
   "violin": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/violin-01.svg",
@@ -5572,6 +7236,42 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/violin-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "volcano": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volcano-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volcano-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volcano-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "volleyball": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volleyball-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volleyball-02.svg",
+      "collection": "selman"
+    }
+  ],
+  "volleyball net": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volleyball-net-01.svg",
+      "collection": "selman"
+    }
+  ],
+  "volleyball player": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/volleyball-player-01.svg",
       "collection": "selman"
     }
   ],
@@ -5631,6 +7331,12 @@
       "collection": "selman"
     }
   ],
+  "weight lifter": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/weight-lifter-01.svg",
+      "collection": "selman"
+    }
+  ],
   "whale": [
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/whale-01.svg",
@@ -5656,6 +7362,34 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/wheel-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "whistle": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/whistle-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/whistle-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/whistle-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "wifi": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/wifi-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/wifi-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/wifi-03.svg",
       "collection": "selman"
     }
   ],
@@ -5712,6 +7446,20 @@
     },
     {
       "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/wine-glass-03.svg",
+      "collection": "selman"
+    }
+  ],
+  "worm": [
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/worm-01.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/worm-02.svg",
+      "collection": "selman"
+    },
+    {
+      "src": "https://storage.googleapis.com/artlab-public.appspot.com/stencils/selman/worm-03.svg",
       "collection": "selman"
     }
   ],
