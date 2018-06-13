@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {createDrawing, deleteDrawing} from 'ducks/drawings';
-// import { select, event } from 'd3-selection';
-// import {line,curveCardinal} from 'd3-shape';
-// import {drag} from 'd3-drag';
-// import intersect from 'utils/intersect';
 import Style from 'components/Style';
 import classNames from 'utils/classNames';
 import css from './index.css';
@@ -27,30 +23,25 @@ class DrawingCanvas extends React.Component {
 			recognized:[]
 		};
 		this.paths = [];
-		// this.drag = drag()
-		// 	.container(function() {// initiating element = lasso target
-		// 		return this;
-		// 	})
-		// 	// .filter(()=>event.pointerType == 'pen')
-		// 	.on('start', this.drawStart.bind(this));
-		// this.line = line().curve(curveCardinal.tension(0.5));//.curve(curveBasis);	
-
+	
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
 		this.togglePenOption = this.togglePenOption.bind(this);
 		this.handleChangeMode = this.handleChangeMode.bind(this);
 
 		this.canvasRef = React.createRef();
-		// this.addSuggestion = this.addSuggestion.bind(this);
+		// this.selectSuggestion = this.selectSuggestion.bind(this);
 
 	}
 	componentDidMount(){
-		// select(this.container)//cover the whole svg area
-		// 	.call(this.drag);
-		console.log('paper',paper);
+		// initialize canvas
 		paper.setup(this.canvasRef.current);
+		
+		// populate
+		console.log(this.props.drawings);
 		this.props.drawings.forEach(d=>{
 			paper.project.activeLayer.importJSON(d.json);
 		});
+		// TODO: separate into multiple tools
 		let penTool = new paper.Tool();
 		let path=null;
 		penTool.on({
@@ -81,8 +72,7 @@ class DrawingCanvas extends React.Component {
 				if (path){
 					path.simplify();
 
-					//add to redux state
-					
+					//add to redux state					
 
 					if (this.state.mode=='eraser'){
 						let removed = [];
@@ -99,15 +89,13 @@ class DrawingCanvas extends React.Component {
 								removed.push(child);
 							}
 						});
+						removed.map(item=>{
+							this.props.deleteDrawing(this.props.choiceId, item.data.id);
+						});
 						removed.forEach(item=>item.remove());
 						path.remove();
 					}else{
-						if (this.props.choiceId){
-							let id = this.props.createDrawing(this.props.choiceId, {
-								json:path.exportJSON()
-							});
-							path.data.id = id;
-						}
+
 						if (this.state.mode=='autodraw'){
 							this.paths.push(path);
 							let query = this.paths.map(path=>path.segments.map(seg=>({x:seg.point.x,y:seg.point.y})));
@@ -118,12 +106,13 @@ class DrawingCanvas extends React.Component {
 									recognized:results
 								});
 							});
+						}else{// add directly only if not auto-draw
+							if (this.props.choiceId){
+								this.props.createDrawing(this.props.choiceId, path);
+							}
 						}
 					}
-					
 					path = null;
-					
-
 				}
 			}
 		});
@@ -133,14 +122,24 @@ class DrawingCanvas extends React.Component {
 		paper.view.draw();
 
 	}
-	addSuggestion(icon){
+	componentDidUpdate(prevProps){
+		// when switched to a new question, clear canvas
+		if (prevProps.itemId!=this.props.itemId){
+			paper.project.clear();
+			this.props.drawings.forEach(d=>{
+				paper.project.activeLayer.importJSON(d.json);				
+			});
+		}
+	
+	}
+	selectSuggestion(icon){
 		let group = new paper.Group({children:this.paths, visible:false});
 		if (this.autodrawn){
 			// console.log('exists!', this.autodrawn);
 			this.autodrawn.remove();
 		}
 		paper.project.activeLayer.importSVG(icon, (item)=>{
-			// console.log('added', item);
+			console.log('added', item);
 			// item.position  = new paper.Point(225, 225);
 			// item.scaling = 0.2;
 			item.strokeWidth = this.state.penOption.stroke;
@@ -148,31 +147,25 @@ class DrawingCanvas extends React.Component {
 			item.opacity = this.state.penOption.opacity;
 			item.fitBounds(group.bounds);
 			group.remove();
+			this.paths = [];
 			this.autodrawn = item;
 		});
+		
 	}
-	// erase(d){
-	// 	// delete drawings 
-	// 	this.props.drawings.forEach(drawing=>{
-	// 		// console.log(drawing.path);
-	// 		if (intersect(drawing.path,d)){
-	// 			this.props.deleteDrawing(this.props.choiceId, drawing.id);
-	// 		}
-	// 	});		
-	// }
 	handleStyleUpdate(style){
 		console.log('style', style);
 		this.setState({penOption:{...style}});
+	}
+	clearAutoDrawState(){
+		this.paths = [];
+		this.autodrawn = null;
 	}
 	handleChangeMode(event){
 		this.setState({
 			mode:event.currentTarget.dataset.mode,
 			recognized:[]
-		});
-		
-		this.paths = [];
-		this.autodrawn = null;
-
+		});	
+		this.clearAutoDrawState();
 	}
 	togglePenOption(){
 		this.setState({showPenOptionMenu:!this.state.showPenOptionMenu});
@@ -181,10 +174,6 @@ class DrawingCanvas extends React.Component {
 	render() {
 		return (
 			<div className={css.canvasContainer}>
-				{/* {this.props.choiceText!='' && 
-				<div className={css.label}>
-					{this.props.choiceText}
-				</div>} */}
 				<div className={css.menu}>
 					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='pen'})} 
 						data-mode='pen' 
@@ -207,15 +196,19 @@ class DrawingCanvas extends React.Component {
 				</div>
 				{this.state.mode=='autodraw' && 
 					<div className={css.suggestions}>
-						{this.state.recognized.map(shape=>
-							shape.icons.map((icon,i)=>
-								<figure key={[shape.name,i].join('-')} className={css.suggestion}
-									onPointerUp={this.addSuggestion.bind(this, icon)}>
-									<img src={icon} alt={shape.name} title={shape.name}/>
-								</figure>
-							)
-							
-						)}
+						{this.state.recognized.length>0 &&
+							<p>Do you mean: </p>
+						}
+						<div className={css.thumbs}>
+							{this.state.recognized.map(shape=>
+								shape.icons.map((icon,i)=>
+									<figure key={[shape.name,i].join('-')} className={css.suggestion}
+										onPointerUp={this.selectSuggestion.bind(this, icon)}>
+										<img src={icon} alt={shape.name} title={shape.name}/>
+									</figure>
+								)							
+							)}
+						</div>
 					</div>						
 				}
 				{this.state.showPenOptionMenu&&
@@ -267,14 +260,14 @@ const mapStateToProps = (state, ownProps) =>{
 const mapDispatchToProps = (dispatch) => {
 	return {
 		...bindActionCreators({
-			// createDrawing,
+			createDrawing,
 			deleteDrawing
-		}, dispatch),
-		createDrawing: (choiceId, attrs)=>{
-			let action = createDrawing(choiceId, attrs);
-			dispatch(action);
-			return action.id;
-		}
+		}, dispatch)//,
+		// createDrawing: (choiceId, attrs)=>{
+		// 	let action = createDrawing(choiceId, attrs);
+		// 	dispatch(action);
+		// 	return action.id;
+		// }
 	};
 };
 

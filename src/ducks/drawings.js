@@ -7,8 +7,11 @@ export const DELETE_DRAWING = 'DELETE_DRAWING';
 export const UPDATE_DRAWING = 'UPDATE_DRAWING';
 
 // actions
-export const createDrawing = (choiceId, attrs = {}) => {
-	return {type: CREATE_DRAWING, choiceId, drawingId: uniqueId('drawing_'), attrs};
+export const createDrawing = (choiceId, path, attrs = {}) => {
+	let id = uniqueId('drawing_');
+	path.data.id = id;
+	attrs.json = path.exportJSON();
+	return {type: CREATE_DRAWING, choiceId, drawingId: id, attrs};
 };
 
 export const updateDrawing = (drawingId, attrs = {}) => {

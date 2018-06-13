@@ -1,6 +1,6 @@
 
 .canvasContainer{
-    position: relative;
+    /* position: relative; */
     width:100%;
     margin-left:30px;
 	box-sizing: border-box;
@@ -84,11 +84,43 @@
 
 .suggestions{
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
+	align-items: center;
+	max-width:450px;
+	margin:0px 5px;
+
+}
+.suggestions p{
+	min-width:120px;
+	margin:0px;	
+}
+.thumbs{
+	display: flex;
+	overflow-x:auto;
+	overflow-y:hidden;
+	align-items: center;
+	margin:0px;
+}
+.thumbs::-webkit-scrollbar-track{
 	
+	background:transparent;
+}
+
+.thumbs::-webkit-scrollbar{
+	height: 8px;
+	
+}
+.thumbs::-webkit-scrollbar-thumb{
+	background:rgba(0,0,0,0);
+	border-radius:5px
+}
+.thumbs:hover::-webkit-scrollbar-thumb{
+    background: rgba(0, 0, 0, 0.15)
 }
 .suggestion{
 	margin:5px;
+	margin-top: 12px;
+	flex: 0 0 auto;
 }
 
 .suggestion img{
