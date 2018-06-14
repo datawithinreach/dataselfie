@@ -62,7 +62,6 @@ const mapStateToProps = (state, ownProps) => {
 	let formId = state.ui.selectedForm?
 		state.ui.selectedForm:
 		ownProps.match.params.formId;
-	console.log('ownProps.match', ownProps.match);
 	let form = state.forms[formId];
 	return {
 		...form

@@ -34,6 +34,7 @@ class DrawingCanvas extends React.Component {
 	}
 	componentDidMount(){
 		// initialize canvas
+		console.log('dc paper', paper);
 		paper.setup(this.canvasRef.current);
 		
 		// populate
@@ -102,6 +103,7 @@ class DrawingCanvas extends React.Component {
 							console.log('query',query);
 							autodraw(query).then(results=>{
 								console.log('recognized',results);
+								this.autodrawn = null;
 								this.setState({
 									recognized:results
 								});
@@ -124,7 +126,8 @@ class DrawingCanvas extends React.Component {
 	}
 	componentDidUpdate(prevProps){
 		// when switched to a new question, clear canvas
-		if (prevProps.itemId!=this.props.itemId){
+		if (prevProps.itemId!=this.props.itemId ||
+			prevProps.choiceId!=this.props.choiceId){
 			paper.project.clear();
 			this.props.drawings.forEach(d=>{
 				paper.project.activeLayer.importJSON(d.json);				
@@ -133,20 +136,32 @@ class DrawingCanvas extends React.Component {
 	
 	}
 	selectSuggestion(icon){
-		let group = new paper.Group({children:this.paths, visible:false});
-		if (this.autodrawn){
-			// console.log('exists!', this.autodrawn);
-			this.autodrawn.remove();
-		}
+		
 		paper.project.activeLayer.importSVG(icon, (item)=>{
 			console.log('added', item);
 			// item.position  = new paper.Point(225, 225);
 			// item.scaling = 0.2;
+	
 			item.strokeWidth = this.state.penOption.stroke;
 			item.strokeColor = this.state.penOption.color;
 			item.opacity = this.state.penOption.opacity;
-			item.fitBounds(group.bounds);
-			group.remove();
+			
+			// bounds
+			if (this.paths.length>0){
+				let group = new paper.Group({children:this.paths, visible:false});
+				item.fitBounds(group.bounds);
+				group.remove();
+			}else if (this.autodrawn){				
+				item.fitBounds(this.autodrawn.bounds);
+				// remove previously drawn path
+				this.autodrawn.remove();
+				if (this.props.choiceId){
+					this.props.createDrawing(this.props.choiceId, this.autodrawn);
+					this.props.deleteDrawing(this.props.choiceId, this.autodrawn.data.id);
+				}
+				
+			}
+
 			this.paths = [];
 			this.autodrawn = item;
 		});
