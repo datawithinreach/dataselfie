@@ -42,7 +42,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --mode=production --display-error-details",
+    "build": "webpack --display-error-details",
     "watch": "webpack --watch",
     "test": "echo \"No unit tests and e2e tests yet\" && exit 1",
     "lint": "eslint --ext .jsx --fix --ignore-path .gitignore || true"
