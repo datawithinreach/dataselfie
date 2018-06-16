@@ -1,6 +1,7 @@
 import uniqueId from 'utils/uniqueId';
 import {CREATE_ITEM, DELETE_ITEM } from 'ducks/items';
 import {CREATE_RESPONSE, DELETE_RESPONSE } from 'ducks/responses';
+import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
 // action types
 export const CREATE_FORM = 'CREATE_FORM';
 export const UPDATE_FORM = 'UPDATE_FORM';
@@ -38,7 +39,8 @@ export default  (state = {}, action)=>{
 				description: '',
 				thumbnail: undefined,
 				items:[],
-				responses:[]
+				responses:[],
+				drawings:[]
 			};
 			return {
 				...state,
@@ -94,7 +96,26 @@ export default  (state = {}, action)=>{
 					...state[action.formId],
 					responses: state[action.formId].responses.filter(iid=>iid!=action.responseId)
 				}
-			};			
+			};	
+		case CREATE_DRAWING:
+			return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
+				{
+					...state,
+					[action.parentId]:{
+						...state[action.parentId],
+						drawings: state[action.parentId].drawings.concat(action.drawingId)
+					}
+				};
+
+		case DELETE_DRAWING:
+			return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
+				{
+					...state,
+					[action.parentId]:{
+						...state[action.parentId],
+						drawings: state[action.parentId].drawings.filter(aid=>aid!=action.drawingId)
+					}
+				};		
 		default:
 			return state;
 

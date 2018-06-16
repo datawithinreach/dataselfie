@@ -56,22 +56,22 @@ export default  (state = {}, action)=>{
 				}
 			};
 		case CREATE_DRAWING:
-			return {
+			return action.parentId.startsWith('choice')?{
 				...state,
-				[action.choiceId]:{
-					...state[action.choiceId],
-					drawings: state[action.choiceId].drawings.concat(action.drawingId)
+				[action.parentId]:{
+					...state[action.parentId],
+					drawings: state[action.parentId].drawings.concat(action.drawingId)
 				}
-			};
+			}:state;
 
 		case DELETE_DRAWING:
-			return {
+			return action.parentId.startsWith('choice')?{
 				...state,
-				[action.choiceId]:{
-					...state[action.choiceId],
-					drawings: state[action.choiceId].drawings.filter(aid=>aid!=action.drawingId)
+				[action.parentId]:{
+					...state[action.parentId],
+					drawings: state[action.parentId].drawings.filter(aid=>aid!=action.drawingId)
 				}
-			};
+			}:state;
 		default:
 			return state;
 

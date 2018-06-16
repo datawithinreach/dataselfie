@@ -7,19 +7,20 @@ export const DELETE_DRAWING = 'DELETE_DRAWING';
 export const UPDATE_DRAWING = 'UPDATE_DRAWING';
 
 // actions
-export const createDrawing = (choiceId, path, attrs = {}) => {
+export const createDrawing = (parentId, path, attrs = {}) => {
 	let id = uniqueId('drawing_');
 	path.data.id = id;
+	path.data.parentId = parentId; 
 	attrs.json = path.exportJSON();
-	return {type: CREATE_DRAWING, choiceId, drawingId: id, attrs};
+	return {type: CREATE_DRAWING, parentId, drawingId: id, attrs};
 };
 
 export const updateDrawing = (drawingId, attrs = {}) => {
 	return {type: UPDATE_DRAWING, drawingId, attrs};
 };
 
-export const deleteDrawing = (choiceId, drawingId) => {
-	return {type: DELETE_DRAWING, choiceId, drawingId};
+export const deleteDrawing = (parentId, drawingId) => {
+	return {type: DELETE_DRAWING, parentId, drawingId};
 };
 
 // reduders
@@ -30,7 +31,7 @@ export default (state = {}, action)=>{
 				...state,
 				[action.drawingId]:{
 					id:action.drawingId,
-					choiceId:action.choiceId,
+					parentId:action.parentId,
 					...action.attrs
 				}
 			};

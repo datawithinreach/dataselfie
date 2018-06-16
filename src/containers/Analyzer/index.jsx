@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createResponse} from 'ducks/responses';
 import css from './index.css';
-import paper, { Size } from 'paper';
+import paper from 'paper';
 class Analyzer extends Component {
 	constructor(props){
 		super(props);
@@ -24,11 +24,17 @@ class Analyzer extends Component {
 			
 		// });
 	}
+	
+	componentWillUnmount(){
+		console.log('will unmount');
+		paper.clear();
+		console.log(paper);
+	}
 	componentDidMount(){
 		console.log('component mount');
 
 		// this.canvasListRef.current.children.forEach(canvas=>{
-		console.log('paper', paper);
+		
 		// });
 
 		// draw each form response
@@ -38,8 +44,9 @@ class Analyzer extends Component {
 			console.log('canvas element', i, canvas);
 			// paper = new paper.PaperScope();
 			paper.setup(canvas);
-
+			
 			paper.view.scale(0.5, new paper.Point(0,0));
+			response.background.map(d=>paper.project.activeLayer.importJSON(d.json));
 			response.encodings.map(enc=>enc.drawings.map(d=>{
 				paper.project.activeLayer.importJSON(d.json);
 			}));
@@ -49,33 +56,20 @@ class Analyzer extends Component {
 		this.props.legend.map(item=>item.choices.map(choice=>{
 			let canvas = document.getElementById(choice.id);
 			paper.setup(canvas);
-			choice.drawings.map(d=>{
-				paper.project.activeLayer.importJSON(d.json);
-				
-			});
-			console.log(item.question, choice.text);
+			item.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
+			choice.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
+			let pos = paper.project.activeLayer.position;
+			let center = paper.view.center;
+			paper.project.activeLayer.translate(-pos.x+center.x, -pos.y+center.y);
 			let rectangle = paper.project.view.bounds;
-			let bounds = paper.project.activeLayer.strokeBounds,
-				itemRatio = bounds.height / bounds.width,
+			let strokeBounds = paper.project.activeLayer.strokeBounds;
+			let itemRatio = strokeBounds.height / strokeBounds.width,
 				rectRatio = rectangle.height / rectangle.width,
-				scale= itemRatio<rectRatio? rectangle.width / bounds.width
-					: rectangle.height / bounds.height,
-				newBounds =new paper.Rectangle(new paper.Point(),
-					new Size(bounds.width * scale, bounds.height * scale));
-			newBounds.setCenter(rectangle.getCenter());
-
-			// console.log('scale', s,b,vb);
-			console.log(scale,rectangle, newBounds);
-			// console.log(paper.project.activeLayer.strokeBounds, paper.project.activeLayer.bounds);
-			// console.log(paper.project.activeLayer.bounds, paper.project.activeLayer.strokeBounds);
-			// console.log(paper.project.activeLayer.strokeScaling);
-			// paper.project.activeLayer.strokeScaling = true;
-			// paper.project.activeLayer.setBounds(newBounds);
-			paper.view.scale(50/450, new paper.Point(0,0));
-			// paper.project.activeLayer.scale(0.0555555556, new paper.Point());
+				scale= itemRatio<rectRatio? rectangle.width / strokeBounds.width
+					: rectangle.height / strokeBounds.height;
+			paper.view.scale(scale);
 		}));
-		// console.log('projects', paper.projects);
-		// paper.projects[0].activate();
+		console.log('paper', paper);
 		
 	}
 
@@ -127,6 +121,7 @@ const mapStateToProps = (state, ownProps) => {
 	// collect all visual mappings
 	let legend = form.items.map(id=>{
 		let item = state.items[id];
+
 		let choices = item.choices.map(cid=>{
 			let choice = state.choices[cid];
 			let drawings = choice.drawings.map(did=>state.drawings[did]);
@@ -137,6 +132,7 @@ const mapStateToProps = (state, ownProps) => {
 		});
 		return {
 			...item,
+			drawings:item.drawings.map(did=>state.drawings[did]),
 			choices
 		};
 	});
@@ -144,10 +140,13 @@ const mapStateToProps = (state, ownProps) => {
 	let responses = form.responses.map(rid=>{// Object.values(state.responses).filter(res=>res.formId==form.id).map(response=>{
 		let response = state.responses[rid];
 		
-		
+		let background = state.forms[response.formId].drawings.map(did=>state.drawings[did]);
 		let encodings = form.items.map(itemId=>{
+			let item = state.items[itemId];
 			let choiceId = response.response[itemId];
-			let drawings = state.choices[choiceId].drawings.map(did=>state.drawings[did]);
+			let drawings = item.drawings.map(did=>state.drawings[did])
+				.concat(state.choices[choiceId].drawings.map(did=>state.drawings[did]));
+			
 			return {
 				itemId,
 				choiceId,
@@ -156,6 +155,7 @@ const mapStateToProps = (state, ownProps) => {
 		});
 		return {
 			...response,
+			background,
 			identifier: response.id,
 			encodings
 		};

@@ -139,27 +139,29 @@ class Designer extends Component {
 
 				</div>
 				<div className={css.content}>
-					{curStep==-1&&(	
-						<Fragment>
-							<div>
-								<div className={css.button} onMouseUp={this.prevItem}>
-									<i className="fas fa-arrow-left"></i>
+					
+				
+					<div className={css.columns}>	
+						{curStep==-1&&(	
+							<div className={css.column}>
+								<div>
+									<div className={css.button} onMouseUp={this.prevItem}>
+										<i className="fas fa-arrow-left"></i>
+									</div>
+									<div className={css.button} onMouseUp={this.nextItem}>
+										<i className="fas fa-arrow-right"></i>
+									</div>
 								</div>
-								<div className={css.button} onMouseUp={this.nextItem}>
-									<i className="fas fa-arrow-right"></i>
-								</div>
+								<TextField placeholder='Title' value={this.props.title} 
+									size={48} onChange={this.handleTitleChange}/>
+								<br/>
+								<TextArea placeholder='Description' 
+									value={this.props.description} 
+									onChange={this.handleDescChange}/>
 							</div>
-							<TextField placeholder='Title' value={this.props.title} 
-								size={48} onChange={this.handleTitleChange}/>
-							<br/>
-							<TextArea placeholder='Description' 
-								value={this.props.description} 
-								onChange={this.handleDescChange}/>
-						</Fragment>
 						
-					)}
-					{curStep!=-1&&(
-						<div className={css.columns}>						
+						)}		
+						{curStep!=-1&&(			
 							<div className={css.column}>
 								<div>
 									<div className={css.button} onMouseUp={this.prevItem}>
@@ -200,13 +202,14 @@ class Designer extends Component {
 								</div>
 								<div className={css.button} onMouseUp={this.createChoice}>Add Choice</div>
 							</div>
-							<div className={css.column}>
-								<DrawingCanvas formId={this.props.formId} 
-									itemId={curItem.id} 
-									choiceId={curChoiceId} />
-							</div>
+						)}
+						<div className={css.column}>
+							<DrawingCanvas formId={this.props.formId} 
+								itemId={curStep==-1?null:curItem.id} 
+								choiceId={curChoiceId} />
 						</div>
-					)}
+					</div>
+					
 				</div>
 
 			
