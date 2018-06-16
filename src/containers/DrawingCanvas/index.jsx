@@ -145,14 +145,24 @@ class DrawingCanvas extends Component {
 		// 	});
 		// }
 		// item changed, reset visible states
+	
+		
+		this.initialize();
+
 		if (prevProps.item!=this.props.item){
 			for (let layer of Object.values(this.layerMap)){
 				layer.visible=false;
 			}
+			let {form, item, choice} = this.props;
+			if (choice){			
+				this.layerMap[choice.id].visible=true;
+				this.layerMap[item.id].visible=true;
+			}else if (item){
+				this.layerMap[item.id].visible=true;
+			}else{
+				this.layerMap[form.id].visible=true;
+			}
 		}
-		
-		this.initialize();
-
 	
 	}
 	initialize(){
@@ -161,7 +171,7 @@ class DrawingCanvas extends Component {
 
 		// add drawings that belong to this form
 		if (!this.layerMap[form.id]){
-			let bgr = new Layer({visible:false});
+			let bgr = new Layer({visible:item==null});
 			form.drawings.forEach(d=>bgr.importJSON(d.json));
 			this.layerMap[form.id] = bgr;
 		}
@@ -170,25 +180,25 @@ class DrawingCanvas extends Component {
 		this.layerMap[form.id].data = form;
 		
 		// add drawings that belong to all items in the form...
-		form.items.forEach(item=>{
-			if (!this.layerMap[item.id]){
+		form.items.forEach(itm=>{
+			if (!this.layerMap[itm.id]){
 				// drawings in an item
-				let itemBgr = new Layer({visible:false});
-				item.drawings.forEach(d=>itemBgr.importJSON(d.json));
-				this.layerMap[item.id] = itemBgr;
+				let itemBgr = new Layer({visible:item&&item.id==itm.id});
+				itm.drawings.forEach(d=>itemBgr.importJSON(d.json));
+				this.layerMap[itm.id] = itemBgr;
 			}
-			this.layerMap[item.id].name = item.question;
-			this.layerMap[item.id].data = item;
+			this.layerMap[itm.id].name = itm.question;
+			this.layerMap[itm.id].data = itm;
 			
 			// drawings of choices
-			item.choices.forEach(choice=>{
-				if (!this.layerMap[choice.id]){
-					let vis = new Layer({visible:false});
-					choice.drawings.forEach(d=>vis.importJSON(d.json));
-					this.layerMap[choice.id] = vis;
+			itm.choices.forEach(chc=>{
+				if (!this.layerMap[chc.id]){
+					let vis = new Layer({visible:choice&&choice.id==chc.id});
+					chc.drawings.forEach(d=>vis.importJSON(d.json));
+					this.layerMap[chc.id] = vis;
 				}
-				this.layerMap[choice.id].name = choice.text;
-				this.layerMap[choice.id].data = choice;
+				this.layerMap[chc.id].name = chc.text;
+				this.layerMap[chc.id].data = chc;
 				
 			});	
 
@@ -197,24 +207,13 @@ class DrawingCanvas extends Component {
 		//TODO: handle deleted items
 		
 		// only make this choice 
-		console.log(choice);
 		if (choice){			
-			console.log('activate choice layer');
-			this.layerMap[item.id].visible = true;	
-			this.layerMap[choice.id].visible = true;
 			this.layerMap[choice.id].activate();
-			
 		}else if (item){
-			console.log('activate item layer');
-			this.layerMap[item.id].visible = true;	
 			this.layerMap[item.id].activate();
 		}else{
-			console.log('activate form layer',this.layerMap[form.id]);
-			this.layerMap[form.id].visible = true;	
 			this.layerMap[form.id].activate();
 		}
-		console.log('current active layer', paper.project.activeLayer);
-		console.log('layerMap', this.layerMap);
 	}
 	selectSuggestion(icon){
 		
@@ -336,7 +335,7 @@ class DrawingCanvas extends Component {
 				}
 		
 				{this.state.showLayer&&
-					<div className={css.optionPanel}>
+					<div className={css.optionPanel} style={{left:'140px'}}>
 						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayer}>Close</div>
 						<div className={css.layers}>
 							<div className={classNames(css.layer,{[css.invisible]:!this.visible(form.id), [css.selected]:this.active(form.id)})} 
@@ -381,7 +380,7 @@ class DrawingCanvas extends Component {
 					</div>
 				}
 				{this.state.showStyle&&
-					<div className={css.optionPanel}>
+					<div className={css.optionPanel} style={{left:'80px'}}>
 						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStyle}>Close</div>
 						<Style color={this.state.penOption.color}
 							stroke={this.state.penOption.stroke}
