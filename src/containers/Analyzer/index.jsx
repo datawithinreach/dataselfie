@@ -4,13 +4,13 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createResponse} from 'ducks/responses';
 import css from './index.css';
-import paper from 'paper';
+import paper, { Layer } from 'paper';
 class Analyzer extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
 		};
-		this.canvasList = React.createRef();
+		
 		// paper.setup(this.canvasRef.current);
 		// this.tool = new paper.Tool();
 		// this.tool.on({
@@ -23,6 +23,7 @@ class Analyzer extends Component {
 		// 	}
 			
 		// });
+		this.showChoice = this.showChoice.bind(this);
 	}
 	
 	componentWillUnmount(){
@@ -53,7 +54,8 @@ class Analyzer extends Component {
 		});
 
 		// draw the legend
-		this.props.legend.map(item=>item.choices.map(choice=>{
+
+		this.props.legend.items.map(item=>item.choices.map(choice=>{
 			let canvas = document.getElementById(choice.id);
 			paper.setup(canvas);
 			item.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
@@ -69,8 +71,25 @@ class Analyzer extends Component {
 					: rectangle.height / strokeBounds.height;
 			paper.view.scale(scale);
 		}));
-		console.log('paper', paper);
-		
+		let canvas = document.getElementById(this.props.legend.id);
+		paper.setup(canvas);
+		this.props.legend.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
+		paper.view.scale(0.5, new paper.Point(0,0));
+	}
+	showChoice(e){
+		let id = e.currentTarget.dataset.id;
+		if (this.layer){
+			this.layer.remove();
+			this.layer = null;
+		}
+		this.props.legend.items.map(item=>item.choices.map(choice=>{
+			if (choice.id==id){
+				this.layer = new Layer();
+				this.layer.activate();
+				item.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
+				choice.drawings.map(d=>paper.project.activeLayer.importJSON(d.json));
+			}
+		}));
 	}
 
 	render() {
@@ -80,14 +99,19 @@ class Analyzer extends Component {
 			<div>
 				<div className={css.header}> Legend </div>
 				<div className={css.legend} ref={this.legend}>
-					{legend.map(item=>
+					<canvas id={legend.id} className={css.canvas}/>
+					{legend.items.map((item,i)=>
 						<div key={item.id} className={css.item}>
-							<div className={css.question}>{item.question}</div>
+							<div className={css.question}>{`Q${i+1}. ${item.question}`}</div>
 							{item.choices.map((choice,i)=>
 								<div key={choice.id}>
 									<div className={css.choice}>
-										<canvas id={choice.id} className={css.canvas}/>
-										<div className={css.text}>{i+1}. {choice.text}</div>
+										<canvas id={choice.id} className={css.thumbCanvas}/>
+										<div className={css.text}
+											onPointerUp={this.showChoice}
+											data-id={choice.id}>
+											{`${i+1}. ${choice.text}`}
+										</div>
 									</div>									
 								</div>
 							)}
@@ -96,7 +120,7 @@ class Analyzer extends Component {
 					)}
 				</div>
 				<div className={css.header}> Responses </div>
-				<div className={css.responses} ref={this.canvasList}>
+				<div className={css.responses}>
 					{responses.map((response,i)=>
 						<div key={response.id} className={css.response}>
 							<canvas id={response.id} data-index={i} className={css.canvas}/>
@@ -110,32 +134,45 @@ class Analyzer extends Component {
 
 Analyzer.propTypes = {
 	formId:PropTypes.string,
-	legend:PropTypes.array,
+	legend:PropTypes.object,
 	responses:PropTypes.array,
 };
 
 const mapStateToProps = (state, ownProps) => {
-	let formId = ownProps.formId;
-	let form = state.forms[formId];
+	let form = state.forms[ownProps.formId];
 	
-	// collect all visual mappings
-	let legend = form.items.map(id=>{
+	// move this to selectors
+	let getChoice = (id)=>{
+		if (!id){
+			return null;
+		}
+		let choice = state.choices[id];
+		let drawings = choice.drawings.map(id=>state.drawings[id]);
+		return {
+			...choice,
+			drawings
+		};
+	};
+	let getItem = (id)=>{
+		if (!id){
+			return null;
+		}
 		let item = state.items[id];
+		let drawings = item.drawings.map(id=>state.drawings[id]);
+		let choices = item.choices.map(getChoice);
 
-		let choices = item.choices.map(cid=>{
-			let choice = state.choices[cid];
-			let drawings = choice.drawings.map(did=>state.drawings[did]);
-			return {
-				...choice,
-				drawings
-			};
-		});
 		return {
 			...item,
-			drawings:item.drawings.map(did=>state.drawings[did]),
-			choices
+			choices,
+			drawings
 		};
-	});
+	};
+	
+	let legend = {
+		...form,
+		items:form.items.map(getItem), 
+		drawings:form.drawings.map(id=>state.drawings[id])
+	};
 	//collect all form responses and visual encodings
 	let responses = form.responses.map(rid=>{// Object.values(state.responses).filter(res=>res.formId==form.id).map(response=>{
 		let response = state.responses[rid];
