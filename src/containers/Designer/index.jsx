@@ -234,8 +234,10 @@ Designer.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+	
 	let formId = ownProps.formId;
 	let form = state.forms[formId];
+	console.log(formId, form);
 	let items = form.items.map(iid=>{
 		let item = state.items[iid];
 		return {
