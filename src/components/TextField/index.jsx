@@ -17,7 +17,7 @@ class TextField extends Component {
 
 		return (
 			<div className={css.textField} style={this.props.style}>
-				<input type="text"
+				<input type={this.props.type}
 					placeholder={this.props.placeholder}
 					onChange={this.handleChange}
 					style={{fontSize:this.props.size+'px',
@@ -37,12 +37,14 @@ TextField.propTypes = {
 	size: PropTypes.number,
 	style: PropTypes.object,
 	value: PropTypes.string,
-	disabled:PropTypes.bool
+	disabled:PropTypes.bool, 
+	type:PropTypes.string,
 };
 
 TextField.defaultProps = {
 	placeholder: 'Enter Text',
 	size: 18,
-	disabled:false
+	disabled:false,
+	type:'text'
 };
 export default TextField;

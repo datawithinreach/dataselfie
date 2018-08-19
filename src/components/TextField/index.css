@@ -1,7 +1,8 @@
 .textField{
   margin:10px 0px;
 }
-.textField input[type="text"]{
+.textField input[type="text"],
+.textField input[type="password"]{
   font-size: 16px;
   border: none;
   border-bottom: solid 1px #BDBDBD;
@@ -12,11 +13,12 @@
 
 }
 .textField input[type="text"]:focus,
-.textField input[type="text"].focus {
+.textField input[type="password"]:focus{
   border-bottom: solid 2px #212121;
   outline: none;
   color:#212121;
 }
-.textField input[type="text"]::placeholder {
+.textField input[type="text"]::placeholder,
+.textField input[type="password"]::placeholder {
   color:#BDBDBD ;
 }
