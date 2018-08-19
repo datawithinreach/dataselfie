@@ -5,11 +5,13 @@ import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 import reduxFreeze from 'redux-freeze';
 import rootReducer from './ducks';
+import rootSaga from './sagas';
 import App from './containers/App';
 import localforage from 'localforage';
 import throttle from 'utils/throttle';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
+import createSagaMiddleware from 'redux-saga';
 
 // TODO: remove in the production mode
 let env = 'development';//hack
@@ -32,14 +34,15 @@ const history = createHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const router = routerMiddleware(history);
-
+const sagas = createSagaMiddleware();
+sagas.run(rootSaga);
 
 var middleware;
 
 if (env=='production'){
-	middleware = [router];
+	middleware = [router, sagas];
 }else{
-	middleware = [reduxFreeze, logger, router];
+	middleware = [reduxFreeze, logger, router, sagas];
 }
 
 
