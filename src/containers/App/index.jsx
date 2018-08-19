@@ -7,6 +7,8 @@ import { Switch, Route } from 'react-router';
 import Form from '../Form';
 import css from './index.css';
 import FormList from 'containers/FormList';
+import LandingPage from 'containers/LandingPage';
+import NavBar from 'containers/NavBar';
 // import {actions as uiActions} from '../ducks/ui';
 
 /* * Show either PageList or Page depending on the current mode
@@ -16,12 +18,15 @@ export class App extends React.Component {
 		super(props);
 	}
 	render() {
-		return (<div className={css.app}>
-			<Switch>
-				<Route exact path='/' component={FormList}/>
-				<Route path='/form/:formId' component={Form}/>
-			</Switch>
-		</div>);
+		return (
+			<div className={css.app}>
+				<NavBar/>
+				<Switch>
+					<Route exact path='/' component={LandingPage}/>
+					<Route exact path='/forms' component={FormList}/>
+					<Route path='/forms/:formId' component={Form}/>
+				</Switch>
+			</div>);
 	}
 }
 
