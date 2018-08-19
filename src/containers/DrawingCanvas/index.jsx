@@ -99,6 +99,7 @@ class DrawingCanvas extends Component {
 						});
 						removed.map(item=>{
 							console.log('delete', item.data);
+							if (!item.data.parentId) return;
 							this.props.deleteDrawing(item.data.parentId, item.data.id);
 						});
 						removed.forEach(item=>item.remove());
@@ -176,7 +177,7 @@ class DrawingCanvas extends Component {
 			this.layerMap[form.id] = bgr;
 		}
 		// update text
-		this.layerMap[form.id].name = form.title;
+		// this.layerMap[form.id].name = form.title;
 		this.layerMap[form.id].data = form;
 		
 		// add drawings that belong to all items in the form...
@@ -187,7 +188,7 @@ class DrawingCanvas extends Component {
 				itm.drawings.forEach(d=>itemBgr.importJSON(d.json));
 				this.layerMap[itm.id] = itemBgr;
 			}
-			this.layerMap[itm.id].name = itm.question;
+			// this.layerMap[itm.id].name = itm.question;
 			this.layerMap[itm.id].data = itm;
 			
 			// drawings of choices
@@ -197,7 +198,7 @@ class DrawingCanvas extends Component {
 					chc.drawings.forEach(d=>vis.importJSON(d.json));
 					this.layerMap[chc.id] = vis;
 				}
-				this.layerMap[chc.id].name = chc.text;
+				// this.layerMap[chc.id].name = chc.text;
 				this.layerMap[chc.id].data = chc;
 				
 			});	

@@ -11,7 +11,7 @@
     height:450px;
     /* border-radius: 50%; */
     margin-left: 5px;
-    
+    touch-action: none;
 }
 
 .drawing{
