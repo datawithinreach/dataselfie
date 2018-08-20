@@ -10,7 +10,7 @@
     color:white; */
 }
 .logo{
-    background: #18FFFF;
+    background: #1DE9B6;
     color:white;
     padding: 8px 16px;
     box-sizing: border-box;
@@ -71,7 +71,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin:30px 0px 30px 0px;
+	margin:30px 0px 30px 0px;
+}
+.message{
+	margin:10px 0px;
+	color:#FF1744;
 }
 .form{
     margin: 20px 0px;

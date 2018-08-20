@@ -20,7 +20,7 @@ a{
   text-decoration: none;
   color:#0091EA;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.8;
   transition: all 0.2s;
   position: relative;
 }

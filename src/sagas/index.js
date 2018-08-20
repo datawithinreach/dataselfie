@@ -21,7 +21,7 @@ import {
 	REQUEST_SIGNUP,
 	notifyAuthSuccess,
 	notifyAuthFailure
-} from 'ducks/user';
+} from 'ducks/auth';
 
 
 function* handleLogin(action){
@@ -64,7 +64,8 @@ function* handleSignup(action){
 		if (!response.status){
 			throw Error (response.message);
 		}
-		yield put(notifyAuthSuccess(username, response.message));
+		// the user needs to confirm the email
+		yield put(notifyAuthSuccess(null, response.message));
 	}catch (error){
 		yield put(notifyAuthFailure(error.message));
 	}

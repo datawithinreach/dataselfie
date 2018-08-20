@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import ui from './ui';
-import user from './user';
+import auth from './auth';
 import forms from './forms';
 import items from './items';
 import choices from './choices';
@@ -10,7 +10,7 @@ import responses from './responses';
 import { routerReducer as router } from 'react-router-redux';
 export default combineReducers({
 	ui,
-	user,
+	auth,
 	forms,
 	items,
 	choices,

@@ -6,7 +6,7 @@ import css from './index.css';
 import Button from 'components/Button';
 import TextField from 'components/TextField';
 import Checkbox from 'components/Checkbox';
-import {requestLogin, requestSignup, clearAuthStatus, notifyAuthFailure} from 'ducks/user';
+import {requestLogin, requestSignup, clearAuthStatus, notifyAuthFailure} from 'ducks/auth';
 
 export class NavBar extends React.Component {
 	constructor(props){
@@ -32,7 +32,8 @@ export class NavBar extends React.Component {
 		this.props.clearAuthStatus();
 	}
 	handleLogin(){
-
+		let form = this.state.form;
+		console.log(form);
 	}
 	handleSignup(){
 		let form = this.state.form;
@@ -46,6 +47,10 @@ export class NavBar extends React.Component {
 		}
 		if (form['password']!=form['confirmPassword']){
 			this.props.notifyAuthFailure('Password does not match the confirm password.');
+			return;
+		}
+		if (form['password'].length<8){
+			this.props.notifyAuthFailure('Password must be at least 8 characters in length.');
 			return;
 		}
 		function validateEmail(email) {
@@ -103,15 +108,16 @@ export class NavBar extends React.Component {
 								<Button label="X" onPointerUp={this.closePopup}/>
 							</div>
 							<div className={css.form}>
-								<TextField placeholder="Username"/>
-								<TextField placeholder="Password"/>
+								<TextField placeholder="Username" name="username" onChange={this.handleFormChange}/>
+								<TextField placeholder="Password" name="password" onChange={this.handleFormChange}/>
 							</div>
 
 							<div className={css.loginOption}>
 								<a>Forgot password?</a>
-								<Checkbox label="Remember me?" checked/>
+								<Checkbox label="Remember me?" name="remember" defaultChecked={true} onChange={this.handleFormChange}/>
 							</div>
-							<Button label="Log In" stretch/>
+							<div className={css.message}>{this.props.authStatus}</div>
+							<Button label="Log In" stretch  onPointerUp={this.handleLogin}/>
 						</div>
 					</div>
 				}
@@ -128,7 +134,7 @@ export class NavBar extends React.Component {
 								<TextField type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.handleFormChange}/>
 								<TextField placeholder="E-mail Address" name="email" onChange={this.handleFormChange}/>
 							</div>
-							{this.props.authStatus}
+							<div className={css.message}>{this.props.authStatus}</div>
 							<Button label="Sign Up" stretch onPointerUp={this.handleSignup}/>
 						</div>
 					</div>
@@ -150,10 +156,10 @@ NavBar.propTypes = {
 
 
 const mapStateToProps = (state) => {
-	console.log('auth', state.user);
+	let username = state.auth.username? state.auth.username : sessionStorage.getItem('username');
 	return {
-		username: state.user.username,
-		authStatus: state.user.status
+		username,
+		authStatus: state.auth.status
 	};
 };
 
