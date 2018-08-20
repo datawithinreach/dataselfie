@@ -20,7 +20,9 @@ module.exports = {
 		contentBase: tgtDir,
 		port: 8888,
 		host: '0.0.0.0',
-		historyApiFallback: true
+		historyApiFallback: true,
+		hot:false,
+		inline:false
 		// ,
 		// public: 'www.namwkim.org:8888'
 	},

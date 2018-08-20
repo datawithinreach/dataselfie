@@ -1,10 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import {bindActionCreators} from 'redux';
 import css from './index.css';
 import Button from 'components/Button';
 import TextField from 'components/TextField';
 import Checkbox from 'components/Checkbox';
+import {requestLogin, requestSignup, clearAuthStatus, notifyAuthFailure} from 'ducks/user';
+
 export class NavBar extends React.Component {
 	constructor(props){
 		super(props);
@@ -13,22 +16,57 @@ export class NavBar extends React.Component {
 		this.showSignup = this.showSignup.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleSignup = this.handleSignup.bind(this);
+		this.handleFormChange = this.handleFormChange.bind(this);
 		this.state = {
 			showLogin:false,
 			showSignup:false,
+			form:{}
 		};
 	}
 	showLogin(){
-		this.setState({showLogin:true});
+		this.setState({showLogin:true, form:{}});
+		this.props.clearAuthStatus();
 	}
 	showSignup(){
-		this.setState({showSignup:true});
+		this.setState({showSignup:true, form:{}});
+		this.props.clearAuthStatus();
 	}
 	handleLogin(){
 
 	}
-	handleSignup(event){
-		console.log(event);
+	handleSignup(){
+		let form = this.state.form;
+		let names = ['username', 'password', 'confirmPassword', 'email'];
+		for (let i=0; i<names.length; i++){
+			let value = form[names[i]];
+			if (!value || value==''){
+				this.props.notifyAuthFailure(`${names[i]} is required`);
+				return;
+			}
+		}
+		if (form['password']!=form['confirmPassword']){
+			this.props.notifyAuthFailure('Password does not match the confirm password.');
+			return;
+		}
+		function validateEmail(email) {
+			var re = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
+			return re.test(email);
+		}
+		if (!validateEmail(form['email'])){
+			this.props.notifyAuthFailure(' The email address is in an invalid format.');
+			return;
+		}
+		let {username, password, email } = form;
+		this.props.requestSignup(username, password, email);
+		
+	}
+	handleFormChange (event) {
+		let form = {
+			...this.state.form,
+			[event.target.name]: event.target.value
+		};
+		console.log(form);
+		this.setState({form});
 	}
 	closePopup(e){
 		if (e.currentTarget!=e.target){
@@ -80,19 +118,18 @@ export class NavBar extends React.Component {
 				{this.state.showSignup && 
 					<div className={css.background} onPointerUp={this.closePopup}>
 						<div className={css.auth}>
-							
 							<div className={css.header}>
 								<span>Sign Up</span>
 								<Button label="X" onPointerUp={this.closePopup}/>
 							</div>
 							<div className={css.form}>
-								<TextField placeholder="Username"/>
-								<TextField type="password" placeholder="Password"/>
-								<TextField type="password" placeholder="Confirm Password"/>
-								<TextField placeholder="E-mail Address"/>
+								<TextField placeholder="Username" name="username" onChange={this.handleFormChange}/>
+								<TextField type="password" placeholder="Password" name="password" onChange={this.handleFormChange}/>
+								<TextField type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.handleFormChange}/>
+								<TextField placeholder="E-mail Address" name="email" onChange={this.handleFormChange}/>
 							</div>
-
-							<Button label="Sign Up" stretch/>
+							{this.props.authStatus}
+							<Button label="Sign Up" stretch onPointerUp={this.handleSignup}/>
 						</div>
 					</div>
 				}
@@ -102,15 +139,30 @@ export class NavBar extends React.Component {
 	}
 }
 
-NavBar.propTypes = {};
+NavBar.propTypes = {
+	username:PropTypes.string,
+	authStatus:PropTypes.string,
+	requestLogin:PropTypes.func,
+	requestSignup:PropTypes.func,
+	notifyAuthFailure:PropTypes.func,
+	clearAuthStatus:PropTypes.func,
+};
 
 
 const mapStateToProps = (state) => {
-	return state;
+	console.log('auth', state.user);
+	return {
+		username: state.user.username,
+		authStatus: state.user.status
+	};
 };
 
-// const mapDispatchToProps = (dispatch) => {
-// 	return {bindActionCreators(uiActions, dispatch)};
-// };
-
-export default connect(mapStateToProps)(NavBar);
+const mapDispatchToProps = (dispatch) => { 	
+	return bindActionCreators({
+		requestLogin,
+		requestSignup,
+		notifyAuthFailure,
+		clearAuthStatus
+	}, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

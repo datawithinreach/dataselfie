@@ -14,10 +14,13 @@ class TextField extends Component {
 		}
 	}
 	render() {
-
+		let otherProps = {...this.props};
+		Object.keys(TextField.propTypes).forEach(k=>delete otherProps[k]);
+        
 		return (
 			<div className={css.textField} style={this.props.style}>
 				<input type={this.props.type}
+					{...otherProps}
 					placeholder={this.props.placeholder}
 					onChange={this.handleChange}
 					style={{fontSize:this.props.size+'px',

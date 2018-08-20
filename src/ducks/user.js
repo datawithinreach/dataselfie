@@ -3,14 +3,13 @@
 */
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const NOTIFY_LOGIN_SUCCESS = 'NOTIFY_LOGIN_SUCCESS';
-export const NOTIFY_LOGIN_FAILURE = 'NOTIFY_LOGIN_FAILURE';
 
 export const REQUEST_SIGNUP = 'REQUEST_SIGNUP';
-export const NOTIFY_SIGNUP_SUCCESS = 'NOTIFY_SIGNUP_SUCCESS';
-export const NOTIFY_SIGNUP_FAILURE = 'NOTIFY_SIGNUP_FAILURE';
+export const NOTIFY_AUTH_SUCCESS = 'NOTIFY_AUTH_SUCCESS';
 
+export const NOTIFY_AUTH_FAILURE = 'NOTIFY_AUTH_FAILURE';
 export const REQUEST_LOGOUT = 'REQUEST_LOGOUT';
+export const CLEAR_AUTH_STATUS = 'CLEAR_AUTH_STATUS';
 
 export const requestLogin = (username, password) =>{
 	return {
@@ -20,7 +19,7 @@ export const requestLogin = (username, password) =>{
 	};
 };
 
-export const requestSignUp = (username, password, email) =>{
+export const requestSignup = (username, password, email) =>{
 	return {
 		type: REQUEST_SIGNUP,
 		username,
@@ -28,7 +27,24 @@ export const requestSignUp = (username, password, email) =>{
 		email
 	};
 };
+export const notifyAuthSuccess = (message)=>{
+	return {
+		type:NOTIFY_AUTH_SUCCESS,
+		message
+	};
+};
 
+export const notifyAuthFailure = (message)=>{
+	return {
+		type:NOTIFY_AUTH_FAILURE,
+		message
+	};
+};
+export const clearAuthStatus = () =>{
+	return {
+		type: CLEAR_AUTH_STATUS
+	};
+};
 
 
 //TODO: load it from a session storage or indexDB if applicable
@@ -39,44 +55,38 @@ let initState = {
 
 export default (state=initState, action)=>{
 	switch (action.type) {
-		case REQUEST_LOGIN:
-			return {
-				...state,
-				status:REQUEST_LOGIN
-			};//TODO: progress bar?
-		case NOTIFY_LOGIN_SUCCESS:
-			return {
-				...state,
-				username: action.username,
-				status:NOTIFY_LOGIN_SUCCESS
-			};
-		case NOTIFY_LOGIN_FAILURE:
+		// case REQUEST_LOGIN:
+		// 	return {
+		// 		...state,
+		// 		status: null
+		// 	};//TODO: progress bar?
+		case NOTIFY_AUTH_SUCCESS:
 			return {
 				...state,
 				username: action.username,
-				status:NOTIFY_LOGIN_FAILURE
+				status: action.message
 			};
-		case REQUEST_SIGNUP:
+		case NOTIFY_AUTH_FAILURE:
 			return {
 				...state,
-				status:REQUEST_SIGNUP
-			};//TODO: progress bar?
-		case NOTIFY_SIGNUP_SUCCESS:
-			return {
-				...state,
-				username: action.username,
-				status:NOTIFY_SIGNUP_SUCCESS
+				username: null,
+				status: action.message
 			};
-		case NOTIFY_SIGNUP_FAILURE:
-			return {
-				...state,
-				username: action.username,
-				status:NOTIFY_SIGNUP_FAILURE
-			};
+		// case REQUEST_SIGNUP:
+		// 	return {
+		// 		...state,
+		// 		status:REQUEST_SIGNUP
+		// 	};//TODO: progress bar?
+
 		case REQUEST_LOGOUT:
 			return {
 				...state,
 				username:null,
+				status:null
+			};
+		case CLEAR_AUTH_STATUS:
+			return {
+				...state,
 				status:null
 			};
 		default:

@@ -35,7 +35,7 @@ const history = createHistory();
 // Build the middleware for intercepting and dispatching navigation actions
 const router = routerMiddleware(history);
 const sagas = createSagaMiddleware();
-sagas.run(rootSaga);
+
 
 var middleware;
 
@@ -44,8 +44,6 @@ if (env=='production'){
 }else{
 	middleware = [reduxFreeze, logger, router, sagas];
 }
-
-
 
 // configure redux store
 let loadPageStyle = {
@@ -74,7 +72,7 @@ loadData.then(data=>{
 	let store = createStore(rootReducer,
 		data?data:undefined,
 		applyMiddleware(...middleware));
-	
+	sagas.run(rootSaga);//run sagas after mounting
 	store.subscribe(throttle(()=>{
 		let state = {...store.getState()};
 		delete state['ui']; //don't save ui state

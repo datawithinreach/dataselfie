@@ -2,35 +2,84 @@
 
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-import {hashSync} from 'bcryptjs';
+let url = 'http://localhost:8889';
+// let api = {
+// 	signup: function(username, password, email){
+// 		return fetch(`${url}/signup`, 
+// 			{ 
+// 				method:'POST', 
+// 				headers: {
+// 					'Content-Type': 'application/json'
+// 				},
+// 				body: JSON.stringify({username, password, email})
+// 			}).then(resp=>resp.json())
 
-
+// 	}
+// };
 import {
 	REQUEST_LOGIN, 
-	NOTIFY_LOGIN_SUCCESS, 
-	NOTIFY_LOGIN_FAILURE
+	REQUEST_SIGNUP,
+	notifyAuthSuccess,
+	notifyAuthFailure
 } from 'ducks/user';
 
 
-export function* handleLogin(action){
+function* handleLogin(action){
 	// send a login request to server
 	let {username, password} = action;
 
-	// hash password
-	let hashed = hashSync(password, 10);
 	try{
-		yield call(fetch, '/login', 'POST', {username, hashed});
-		yield put({type:NOTIFY_LOGIN_SUCCESS, username });
+		let response = yield call(fetch, `${url}/login`, 
+			{ 
+				method:'POST', 
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({username, password})
+			});
+		response = yield response.json();
+		console.log('received response', response);
+		if (!response.status){
+			throw Error (response.message);
+		}
+		yield put(notifyAuthSuccess(username, response.message));
 	}catch (error){
-		yield put({type:NOTIFY_LOGIN_FAILURE, username });
+		yield put(notifyAuthFailure(error.message));
 	}
 }
-export function* loginSaga(){
-	yield takeLatest(REQUEST_LOGIN, handleLogin);
 
+function* handleSignup(action){
+	let {username, password, email} = action;
+
+	try{
+		let response = yield call(fetch, `${url}/signup`, 
+			{ 
+				method:'POST', 
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({username, password, email})
+			});
+		response = yield response.json();
+		if (!response.status){
+			throw Error (response.message);
+		}
+		yield put(notifyAuthSuccess(username, response.message));
+	}catch (error){
+		yield put(notifyAuthFailure(error.message));
+	}
+}
+function* loginSaga(){
+	yield takeLatest(REQUEST_LOGIN, handleLogin);
+}
+
+
+function* signupSaga(){
+	yield takeLatest(REQUEST_SIGNUP, handleSignup);
 }
 export default function* rootSaga(){
 	yield all([
-		loginSaga
+		loginSaga(),
+		signupSaga()
 	]);
 }
