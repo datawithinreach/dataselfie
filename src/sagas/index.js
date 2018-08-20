@@ -42,7 +42,7 @@ function* handleLogin(action){
 		if (!response.status){
 			throw Error (response.message);
 		}
-		yield put(notifyAuthSuccess(username, response.message));
+		yield put(notifyAuthSuccess(response.message));
 	}catch (error){
 		yield put(notifyAuthFailure(error.message));
 	}
@@ -65,7 +65,7 @@ function* handleSignup(action){
 			throw Error (response.message);
 		}
 		// the user needs to confirm the email
-		yield put(notifyAuthSuccess(null, response.message));
+		yield put(notifyAuthSuccess(response.message));
 	}catch (error){
 		yield put(notifyAuthFailure(error.message));
 	}
