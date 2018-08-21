@@ -6,7 +6,8 @@ import css from './index.css';
 import Button from 'components/Button';
 import TextField from 'components/TextField';
 import Checkbox from 'components/Checkbox';
-import {requestLogin, requestSignup, clearAuthStatus, notifyAuthFailure} from 'ducks/auth';
+import { push } from 'react-router-redux';
+import {requestLogin, requestSignup, requestLogout, clearAuthStatus, notifyAuthFailure, resendConfirmEmail} from 'ducks/auth';
 
 export class NavBar extends React.Component {
 	constructor(props){
@@ -17,6 +18,7 @@ export class NavBar extends React.Component {
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleSignup = this.handleSignup.bind(this);
 		this.handleFormChange = this.handleFormChange.bind(this);
+		this.resendConfirmEmail = this.resendConfirmEmail.bind(this);
 		this.state = {
 			showLogin:false,
 			showSignup:false,
@@ -24,16 +26,34 @@ export class NavBar extends React.Component {
 		};
 	}
 	showLogin(){
-		this.setState({showLogin:true, form:{}});
+		this.setState({showLogin:true, showSignup:false, form:{ remember:true}});
 		this.props.clearAuthStatus();
 	}
 	showSignup(){
-		this.setState({showSignup:true, form:{}});
+		this.setState({showSignup:true, showLogin:false, form:{}});
 		this.props.clearAuthStatus();
 	}
 	handleLogin(){
 		let form = this.state.form;
 		console.log(form);
+		let names = ['username', 'password'];
+		for (let i=0; i<names.length; i++){
+			let value = form[names[i]];
+			if (!value || value==''){
+				this.props.notifyAuthFailure(`Please fill in ${names[i]}`);
+				return;
+			}
+		}
+		let {username, password, remember} = form;
+		this.props.requestLogin(username, password, remember);
+	}
+	resendConfirmEmail(){
+		let {username=null} = this.state.form;
+		if (!username){
+			this.props.notifyAuthFailure('Please fill in username');
+			return;
+		}
+		this.props.resendConfirmEmail(username);
 	}
 	handleSignup(){
 		let form = this.state.form;
@@ -61,14 +81,14 @@ export class NavBar extends React.Component {
 			this.props.notifyAuthFailure(' The email address is in an invalid format.');
 			return;
 		}
-		let {username, password, email } = form;
+		let {username, password, email} = form;
 		this.props.requestSignup(username, password, email);
 		
 	}
 	handleFormChange (event) {
 		let form = {
 			...this.state.form,
-			[event.target.name]: event.target.value
+			[event.target.name]: event.target.type == 'checkbox'? event.target.checked: event.target.value
 		};
 		console.log(form);
 		this.setState({form});
@@ -84,22 +104,34 @@ export class NavBar extends React.Component {
 	}
 
 	render() {
+		let {authStatus=null, username= null} = this.props;
+		let notConfirmed = authStatus?authStatus.includes('not activated your account'):null;
 		return (
 			<React.Fragment>
 				<div className={css.navbar}>
 					<div className={css.logo}>
 					DataPortraits
 					</div>
-					<div className={css.rightMenu}>
-						<div className={css.menuItem}>
-							<Button label="Log In" onPointerUp={this.showLogin}/>
+					{!username? 
+						<div className={css.rightMenu}>
+							<div className={css.menuItem}>
+								<Button label="Log In" onPointerUp={this.showLogin}/>
+							</div>
+							<div className={css.menuItem}>
+								<Button label="Sign Up" onPointerUp={this.showSignup}/>
+							</div>                    
+						</div>:<div className={css.rightMenu}>
+							<div className={css.menuItem}>
+								<Button label={username} onPointerUp={this.props.viewForms}/>
+							</div>
+							<div className={css.menuItem}>
+								<Button label="Log Out" onPointerUp={this.props.requestLogout}/>
+							</div>
 						</div>
-						<div className={css.menuItem}>
-							<Button label="Sign Up" onPointerUp={this.showSignup}/>
-						</div>                    
-					</div>
+					}
 				</div>
-				{this.state.showLogin && 
+				
+				{this.state.showLogin && !username &&
 					<div className={css.background} onPointerUp={this.closePopup}>
 						<div className={css.auth}>
 							
@@ -109,19 +141,24 @@ export class NavBar extends React.Component {
 							</div>
 							<div className={css.form}>
 								<TextField placeholder="Username" name="username" onChange={this.handleFormChange}/>
-								<TextField placeholder="Password" name="password" onChange={this.handleFormChange}/>
+								<TextField type="password" placeholder="Password" name="password" onChange={this.handleFormChange}/>
 							</div>
 
 							<div className={css.loginOption}>
 								<a>Forgot password?</a>
-								<Checkbox label="Remember me?" name="remember" defaultChecked={true} onChange={this.handleFormChange}/>
+								<Checkbox label="Remember me?" name="remember" defaultChecked={this.state.form.remember} onChange={this.handleFormChange}/>
 							</div>
 							<div className={css.message}>{this.props.authStatus}</div>
+							{notConfirmed&&
+								<div className={css.resend}>Did not get the email?
+									<a onPointerUp={this.resendConfirmEmail}>Resend</a>
+								</div>
+							}
 							<Button label="Log In" stretch  onPointerUp={this.handleLogin}/>
 						</div>
 					</div>
 				}
-				{this.state.showSignup && 
+				{this.state.showSignup && !username &&
 					<div className={css.background} onPointerUp={this.closePopup}>
 						<div className={css.auth}>
 							<div className={css.header}>
@@ -133,6 +170,9 @@ export class NavBar extends React.Component {
 								<TextField type="password" placeholder="Password" name="password" onChange={this.handleFormChange}/>
 								<TextField type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.handleFormChange}/>
 								<TextField placeholder="E-mail Address" name="email" onChange={this.handleFormChange}/>
+							</div>
+							<div className={css.loginOption}>
+								<div>Already registered? <a onPointerUp={this.showLogin}>Login</a></div>
 							</div>
 							<div className={css.message}>{this.props.authStatus}</div>
 							<Button label="Sign Up" stretch onPointerUp={this.handleSignup}/>
@@ -152,6 +192,9 @@ NavBar.propTypes = {
 	requestSignup:PropTypes.func,
 	notifyAuthFailure:PropTypes.func,
 	clearAuthStatus:PropTypes.func,
+	resendConfirmEmail:PropTypes.func,
+	requestLogout:PropTypes.func,
+	viewForms:PropTypes.func,
 };
 
 
@@ -164,11 +207,23 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => { 	
-	return bindActionCreators({
-		requestLogin,
-		requestSignup,
-		notifyAuthFailure,
-		clearAuthStatus
-	}, dispatch);
+	return {
+		...bindActionCreators({
+			requestLogin,
+			requestSignup,
+			notifyAuthFailure,
+			clearAuthStatus,
+			resendConfirmEmail		
+		}, dispatch),
+		requestLogout:()=>{
+			sessionStorage.removeItem('username');
+			dispatch(requestLogout());
+			dispatch(push('/'));
+		},
+		viewForms:()=>{
+			dispatch(push('/forms'));
+		}
+
+	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

@@ -6,16 +6,17 @@ export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 
 export const REQUEST_SIGNUP = 'REQUEST_SIGNUP';
 export const NOTIFY_AUTH_SUCCESS = 'NOTIFY_AUTH_SUCCESS';
-
+export const RESEND_CONFIRM_EMAIL = 'RESEND_CONFIRM_EMAIL';
 export const NOTIFY_AUTH_FAILURE = 'NOTIFY_AUTH_FAILURE';
 export const REQUEST_LOGOUT = 'REQUEST_LOGOUT';
 export const CLEAR_AUTH_STATUS = 'CLEAR_AUTH_STATUS';
 
-export const requestLogin = (username, password) =>{
+export const requestLogin = (username, password, remember) =>{
 	return {
 		type: REQUEST_LOGIN,
 		username,
-		password
+		password,
+		remember
 	};
 };
 
@@ -27,10 +28,23 @@ export const requestSignup = (username, password, email) =>{
 		email
 	};
 };
-export const notifyAuthSuccess = (message)=>{
+export const resendConfirmEmail = (username) =>{
+	return {
+		type: RESEND_CONFIRM_EMAIL,
+		username,
+	};
+};
+export const requestLogout = () =>{
+	return {
+		type: REQUEST_LOGOUT
+	};
+};
+
+export const notifyAuthSuccess = (message, username)=>{
 	return {
 		type:NOTIFY_AUTH_SUCCESS,
-		message
+		message,
+		username
 	};
 };
 
@@ -55,11 +69,6 @@ let initState = {
 
 export default (state=initState, action)=>{
 	switch (action.type) {
-		// case REQUEST_LOGIN:
-		// 	return {
-		// 		...state,
-		// 		status: null
-		// 	};//TODO: progress bar?
 		case NOTIFY_AUTH_SUCCESS:
 			return {
 				...state,
@@ -72,12 +81,6 @@ export default (state=initState, action)=>{
 				username: null,
 				status: action.message
 			};
-		// case REQUEST_SIGNUP:
-		// 	return {
-		// 		...state,
-		// 		status:REQUEST_SIGNUP
-		// 	};//TODO: progress bar?
-
 		case REQUEST_LOGOUT:
 			return {
 				...state,

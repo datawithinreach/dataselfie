@@ -1,7 +1,7 @@
 //ref: https://github.com/sotojuan/saga-login-flow/blob/master/app/sagas/index.js
 
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-
+// import { push } from 'react-router-redux';
 let url = 'http://localhost:8889';
 // let api = {
 // 	signup: function(username, password, email){
@@ -19,6 +19,7 @@ let url = 'http://localhost:8889';
 import {
 	REQUEST_LOGIN, 
 	REQUEST_SIGNUP,
+	RESEND_CONFIRM_EMAIL,
 	notifyAuthSuccess,
 	notifyAuthFailure
 } from 'ducks/auth';
@@ -26,7 +27,7 @@ import {
 
 function* handleLogin(action){
 	// send a login request to server
-	let {username, password} = action;
+	let {username, password, remember} = action;
 
 	try{
 		let response = yield call(fetch, `${url}/login`, 
@@ -42,7 +43,13 @@ function* handleLogin(action){
 		if (!response.status){
 			throw Error (response.message);
 		}
-		yield put(notifyAuthSuccess(response.message));
+		if (!remember){
+			console.log('save user name in the session');
+			sessionStorage.setItem('username', username);
+		}	
+		
+		// the user needs to confirm the email
+		yield put(notifyAuthSuccess(response.message, remember?username:null));
 	}catch (error){
 		yield put(notifyAuthFailure(error.message));
 	}
@@ -64,6 +71,28 @@ function* handleSignup(action){
 		if (!response.status){
 			throw Error (response.message);
 		}
+
+		// the user needs to confirm the email
+		yield put(notifyAuthSuccess(response.message));
+	}catch (error){
+		yield put(notifyAuthFailure(error.message));
+	}
+}
+function* handleResendConfirmEmail(action){
+	let {username} = action;
+	try{
+		let response = yield call(fetch, `${url}/resend`, 
+			{ 
+				method:'POST', 
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({username})
+			});
+		response = yield response.json();
+		if (!response.status){
+			throw Error (response.message);
+		}
 		// the user needs to confirm the email
 		yield put(notifyAuthSuccess(response.message));
 	}catch (error){
@@ -78,9 +107,15 @@ function* loginSaga(){
 function* signupSaga(){
 	yield takeLatest(REQUEST_SIGNUP, handleSignup);
 }
+
+function* resendConfirmEmail(){
+	yield takeLatest(RESEND_CONFIRM_EMAIL, handleResendConfirmEmail);
+}
+
 export default function* rootSaga(){
 	yield all([
 		loginSaga(),
-		signupSaga()
+		signupSaga(),
+		resendConfirmEmail()
 	]);
 }

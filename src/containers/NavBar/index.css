@@ -74,9 +74,12 @@
 	margin:30px 0px 30px 0px;
 }
 .message{
-	margin:10px 0px;
-	color:#FF1744;
+	margin:15px 0px;
+	color:#F44336;
 }
 .form{
     margin: 20px 0px;
+}
+.resend{
+    margin:10px 0px;
 }
