@@ -1,16 +1,16 @@
-import React from 'react';
-import {render} from 'react-dom';
-import { Provider } from 'react-redux';
+import React from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
+import {render} from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-dom';
+import { Provider } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux';
 import { applyMiddleware, createStore } from 'redux';
-import logger from 'redux-logger';
+import logger from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/redux-logger';
 import reduxFreeze from 'redux-freeze';
 import rootReducer from './ducks';
 import rootSaga from './sagas';
 import App from './containers/App';
 import localforage from 'localforage';
 import throttle from 'utils/throttle';
-import createHistory from 'history/createBrowserHistory';
-import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
+import createHistory from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/history/createBrowserHistory';
+import { ConnectedRouter, routerMiddleware } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
 // TODO: remove in the production mode
@@ -75,8 +75,15 @@ loadData.then(data=>{
 	sagas.run(rootSaga);//run sagas after mounting
 	store.subscribe(throttle(()=>{
 		let state = {...store.getState()};
-		delete state['ui']; //don't save ui state
-		delete state['router']; // and router
+		let keys = ['user'];
+		state = Object.keys(state).reduce(function(acc, key){
+			if (keys.includes(key)==false){
+				delete acc[key];
+			}
+			return acc;
+		},{});
+		// delete state['ui']; //don't save ui state
+		// delete state['router']; // and router
 		localforage.setItem('state', state);
 	}, 1000));
 
