@@ -13,8 +13,8 @@ export class LandingPage extends React.Component {
 						<div className={css.header}>Empowering People to Create a Personalized Visuals to Represent Data</div>
 						<div className={css.description}>Create a questionnaire to ask questions about qualitative and nuanced aspects of ourselves and to design a personalized visual vocabulary to represent the collected data.</div>
 						<br></br>
-						<Button label="Sign Up" style={{marginLeft:0}}/>
-						<Button label="See Examples" style={{marginLeft:0}}/>
+						<Button outlined style={{marginLeft:0}}>Sign Up</Button>
+						<Button outlined style={{marginLeft:0}}>See Examples</Button>
 					</div>
 					<div className={css.subsection}>
 						<video autoPlay muted loop>

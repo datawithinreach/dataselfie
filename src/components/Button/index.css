@@ -1,7 +1,7 @@
 .button{
     padding: 8px 16px;
     box-sizing: border-box;
-    border: 2px solid #212121;
+    border: 0px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -18,4 +18,7 @@
 .button:hover{
   color:white;
   background-color: #212121;
+}
+.filled:hover{
+  opacity: 0.8;
 }

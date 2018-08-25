@@ -109,23 +109,21 @@ export class NavBar extends React.Component {
 		return (
 			<React.Fragment>
 				<div className={css.navbar}>
-					<div className={css.logo}>
-					DataPortraits
-					</div>
+					<Button link href='/' filled>DataPortraits</Button>
 					{!username? 
 						<div className={css.rightMenu}>
 							<div className={css.menuItem}>
-								<Button label="Log In" onPointerUp={this.showLogin}/>
+								<Button onPointerUp={this.showLogin} outlined>Log In</Button>
 							</div>
 							<div className={css.menuItem}>
-								<Button label="Sign Up" onPointerUp={this.showSignup}/>
+								<Button onPointerUp={this.showSignup} outlined>Sign Up</Button>
 							</div>                    
 						</div>:<div className={css.rightMenu}>
 							<div className={css.menuItem}>
-								<Button label={username} onPointerUp={this.props.viewForms}/>
+								<Button onPointerUp={this.props.viewForms} outlined>{username}</Button>
 							</div>
 							<div className={css.menuItem}>
-								<Button label="Log Out" onPointerUp={this.props.requestLogout}/>
+								<Button onPointerUp={this.props.requestLogout} outlined>Log Out</Button>
 							</div>
 						</div>
 					}
@@ -137,7 +135,7 @@ export class NavBar extends React.Component {
 							
 							<div className={css.header}>
 								<span>Log In</span>
-								<Button label="X" onPointerUp={this.closePopup}/>
+								<Button onPointerUp={this.closePopup} outlined>X</Button>
 							</div>
 							<div className={css.form}>
 								<TextField placeholder="Username" name="username" onChange={this.handleFormChange}/>
@@ -154,7 +152,7 @@ export class NavBar extends React.Component {
 									<a onPointerUp={this.resendConfirmEmail}>Resend</a>
 								</div>
 							}
-							<Button label="Log In" stretch  onPointerUp={this.handleLogin}/>
+							<Button stretch  onPointerUp={this.handleLogin} outlined>Log In</Button>
 						</div>
 					</div>
 				}
@@ -163,7 +161,7 @@ export class NavBar extends React.Component {
 						<div className={css.auth}>
 							<div className={css.header}>
 								<span>Sign Up</span>
-								<Button label="X" onPointerUp={this.closePopup}/>
+								<Button onPointerUp={this.closePopup} outlined>X</Button>
 							</div>
 							<div className={css.form}>
 								<TextField placeholder="Username" name="username" onChange={this.handleFormChange}/>
@@ -175,7 +173,7 @@ export class NavBar extends React.Component {
 								<div>Already registered? <a onPointerUp={this.showLogin}>Login</a></div>
 							</div>
 							<div className={css.message}>{this.props.authStatus}</div>
-							<Button label="Sign Up" stretch onPointerUp={this.handleSignup}/>
+							<Button stretch onPointerUp={this.handleSignup} outlined>Sign Up</Button>
 						</div>
 					</div>
 				}
