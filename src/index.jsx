@@ -1,16 +1,16 @@
-import React from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
-import {render} from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-dom';
-import { Provider } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux';
+import React from 'react';
+import {render} from 'react-dom';
+import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
-import logger from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/redux-logger';
+import logger from 'redux-logger';
 import reduxFreeze from 'redux-freeze';
-import rootReducer from './ducks';
-import rootSaga from './sagas';
-import App from './containers/App';
+import rootReducer from 'ducks';
+import rootSaga from 'sagas';
+import App from 'containers/App';
 import localforage from 'localforage';
 import throttle from 'utils/throttle';
-import createHistory from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/history/createBrowserHistory';
-import { ConnectedRouter, routerMiddleware } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-router-redux';
+import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
 // TODO: remove in the production mode
