@@ -1,16 +1,16 @@
-import React from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
-import {render} from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-dom';
-import { Provider } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux';
+import React from 'react';
+import {render} from 'react-dom';
+import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
-import logger from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/redux-logger';
+import logger from 'redux-logger';
 import reduxFreeze from 'redux-freeze';
 import rootReducer from './ducks';
 import rootSaga from './sagas';
 import App from './containers/App';
-import localforage from 'localforage';
-import throttle from 'utils/throttle';
-import createHistory from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/history/createBrowserHistory';
-import { ConnectedRouter, routerMiddleware } from '../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-router-redux';
+// import localforage from 'localforage';
+// import throttle from 'utils/throttle';
+import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
 // TODO: remove in the production mode
@@ -46,62 +46,75 @@ if (env=='production'){
 }
 
 // configure redux store
-let loadPageStyle = {
-	position: 'absolute',
-	width: '100vw', 
-	height: '100vh',
-	lineHeight: '100vh',
-	textAlign:'center',
-	fontFamily: 'Roboto, san-serif',
-	fontWeight:100,
-	fontSize:'42px',
-	color:'#757575'
-};
+// let loadPageStyle = {
+// 	position: 'absolute',
+// 	width: '100vw', 
+// 	height: '100vh',
+// 	lineHeight: '100vh',
+// 	textAlign:'center',
+// 	fontFamily: 'Roboto, san-serif',
+// 	fontWeight:100,
+// 	fontSize:'42px',
+// 	color:'#757575'
+// };
 
-let loadData = new Promise((resolve, reject)=>{
-	localforage.getItem('state').then(data=>{
-		resolve(data);
-	}).catch(err=>{
-		reject(err);
-	});
-});
-
-
-// create redux store
-loadData.then(data=>{
-	let store = createStore(rootReducer,
-		data?data:undefined,
-		applyMiddleware(...middleware));
-	sagas.run(rootSaga);//run sagas after mounting
-	store.subscribe(throttle(()=>{
-		let state = {...store.getState()};
-		let keys = ['user'];
-		state = Object.keys(state).reduce(function(acc, key){
-			if (keys.includes(key)==false){
-				delete acc[key];
-			}
-			return acc;
-		},{});
-		// delete state['ui']; //don't save ui state
-		// delete state['router']; // and router
-		localforage.setItem('state', state);
-	}, 1000));
-
-	render(
-		<Provider store={store}>
-			{ /* ConnectedRouter will use the store from Provider automatically */ }
-			<ConnectedRouter history={history}>
-				<App/>
-			</ConnectedRouter>
-		</Provider>,
-		document.getElementById('container'));
-	
-}).catch((err)=>{
-	console.log(err);
-	render(<div style={loadPageStyle}>Failed to initialize data!</div>,
-		document.getElementById('container'));
-});
-
-
-render(<div style={loadPageStyle}>Loading data...</div>,
+// let loadData = new Promise((resolve, reject)=>{
+// 	localforage.getItem('state').then(data=>{
+// 		resolve(data);
+// 	}).catch(err=>{
+// 		reject(err);
+// 	});
+// });
+let username = localStorage.getItem('username');
+if (!username){
+	username = sessionStorage.getItem('username');
+}
+let initData = undefined;
+if (username){
+	initData = {auth:{
+		username
+	}};
+}
+let store = createStore(rootReducer,
+	initData,
+	applyMiddleware(...middleware));
+sagas.run(rootSaga);//run sagas after mounting
+render(
+	<Provider store={store}>
+		{ /* ConnectedRouter will use the store from Provider automatically */ }
+		<ConnectedRouter history={history}>
+			<App/>
+		</ConnectedRouter>
+	</Provider>,
 	document.getElementById('container'));
+// create redux store
+// loadData.then(data=>{
+// 	let store = createStore(rootReducer,
+// 		data?data:undefined,
+// 		applyMiddleware(...middleware));
+// 	sagas.run(rootSaga);//run sagas after mounting
+// 	// store.subscribe(throttle(()=>{
+// 	// 	let state = {...store.getState()};
+// 	// 	let keys = ['user'];
+// 	// 	state = Object.keys(state).reduce(function(acc, key){
+// 	// 		if (keys.includes(key)==false){
+// 	// 			delete acc[key];
+// 	// 		}
+// 	// 		return acc;
+// 	// 	},{});
+// 	// 	// delete state['ui']; //don't save ui state
+// 	// 	// delete state['router']; // and router
+// 	// 	localforage.setItem('state', state);
+// 	// }, 1000));
+
+	
+	
+// }).catch((err)=>{
+// 	console.log(err);
+// 	render(<div style={loadPageStyle}>Failed to initialize data!</div>,
+// 		document.getElementById('container'));
+// });
+
+
+// render(<div style={loadPageStyle}>Loading data...</div>,
+// 	document.getElementById('container'));
