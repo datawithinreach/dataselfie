@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 // import bindActionCreators from 'redux';
 import { withRouter } from 'react-router';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, Redirect  } from 'react-router';
 import Form from '../Form';
 import css from './index.css';
 import FormList from 'containers/FormList';
@@ -29,8 +29,14 @@ export class App extends React.Component {
 				
 				<Switch>
 					<Route exact path='/' component={LandingPage}/>
-					<Route exact path='/forms' component={FormList}/>
-					<Route path='/forms/:formId' component={Form}/>
+					{this.props.username?
+						<React.Fragment>
+							<Route exact path='/forms' component={FormList}/>
+							<Route path='/forms/:formId' component={Form}/>
+						</React.Fragment>
+						:
+						<Redirect to='/'/>
+					}
 				</Switch>
 			
 				
@@ -40,10 +46,13 @@ export class App extends React.Component {
 
 App.propTypes = {
 	isFetching:PropTypes.bool,
+	username:PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
+	
 	return {
+		username:state.auth.username,
 		isFetching:state.ui.isFetching,
 	};
 };

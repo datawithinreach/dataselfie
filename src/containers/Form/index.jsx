@@ -6,14 +6,9 @@ import Designer from 'containers/Designer';
 import Viewer from 'containers/Viewer';
 import Analyzer from 'containers/Analyzer';
 import classNames from 'utils/classNames';
-// import { withRouter } from 'react-router';
-// import { Link } from 'react-router-dom';
-// import bindActionCreators from 'redux'; import css from './index.css'; import
-/* // {actions as uiActions} from '../ducks/ui'; Show either PageList or Page
- * depending on the current mode
-* and provides an option to navigate between
- * them
- */
+import {requestFormContent} from 'ducks/forms';
+import {bindActionCreators} from 'redux';
+// import css from './index.css'; 
 export class Form extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,6 +16,10 @@ export class Form extends React.Component {
 			mode:'design'
 		};
 		this.changeMode = this.changeMode.bind(this);
+	}
+	componentDidMount(){
+		let {username, id, requestFormContent} = this.props;
+		requestFormContent(username, id);//retrieve form content from server
 	}
 	changeMode(e){
 		this.setState({mode:e.target.dataset.mode});
@@ -55,7 +54,9 @@ export class Form extends React.Component {
 
 Form.propTypes = {
 	// items:PropTypes.array,
-	id:PropTypes.string
+	id:PropTypes.string,
+	username:PropTypes.string,
+	requestFormContent:PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -64,11 +65,18 @@ const mapStateToProps = (state, ownProps) => {
 		ownProps.match.params.formId;
 	let form = state.forms[formId];
 	return {
-		...form
+		...form,
+		username:state.auth.username,
+		id: formId // in case form is emtpy...
 	};
 };
 
-// const mapDispatchToProps = (dispatch) => { 	return
-// {bindActionCreators(uiActions, dispatch)}; };
+const mapDispatchToProps = (dispatch) => {
+	return {
+		...bindActionCreators({
+			requestFormContent
+		}, dispatch)
+	};
+};
 
-export default connect(mapStateToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

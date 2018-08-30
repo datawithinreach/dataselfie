@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import ui from './ui';
 import auth from './auth';
 import forms from './forms';
-import items from './items';
-import choices from './choices';
+import questions from './questions';
+import options from './options';
 import drawings from './drawings';
 import responses from './responses';
 
@@ -12,8 +12,8 @@ export default combineReducers({
 	ui,
 	auth,
 	forms,
-	items,
-	choices,
+	questions,
+	options,
 	drawings,
 	responses,
 	router

@@ -7,7 +7,9 @@ import {
 	CREATE_FORM,
 	UPDATE_FORM,
 	DELETE_FORM,
-	receiveForms
+	REQUEST_FORM_CONTENT,
+	receiveForms,
+	receiveFormContent
 } from 'ducks/forms';
 
 import {
@@ -70,5 +72,6 @@ export default [
 	takeLatest(REQUEST_FORMS, makeHandler('request_forms', receiveForms)),
 	takeLatest(CREATE_FORM, makeHandler('upsert_form')),
 	takeLatest(UPDATE_FORM, makeHandler('upsert_form')),
-	takeLatest(DELETE_FORM, makeHandler('delete_form'))
+	takeLatest(DELETE_FORM, makeHandler('delete_form')),
+	takeLatest(REQUEST_FORM_CONTENT, makeHandler('request_form_content'), receiveFormContent)
 ];

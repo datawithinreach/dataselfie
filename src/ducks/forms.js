@@ -1,8 +1,8 @@
 import uniqueId from 'utils/uniqueId';
 import { createSelector } from 'reselect';
-import {CREATE_ITEM, DELETE_ITEM } from 'ducks/items';
-import {CREATE_RESPONSE, DELETE_RESPONSE } from 'ducks/responses';
-import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
+// import {CREATE_QUESTION, DELETE_QUESTION } from 'ducks/questions';
+// import {CREATE_RESPONSE, DELETE_RESPONSE } from 'ducks/responses';
+// import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
 // action types
 export const CREATE_FORM = 'CREATE_FORM';
 export const UPDATE_FORM = 'UPDATE_FORM';
@@ -11,12 +11,14 @@ export const DELETE_FORM = 'DELETE_FORM';
 export const REQUEST_FORMS = 'REQUEST_FORMS';
 export const RECEIVE_FORMS = 'RECEIVE_FORMS';
 
-
+export const REQUEST_FORM_CONTENT = 'REQUEST_FORM_CONTENT';
+export const RECEIVE_FORM_CONTENT = 'RECEIVE_FORM_CONTENT';
 // actions
 export const createForm = (username, attrs={}) => {
 	let formId = uniqueId();
 	attrs = {
-		...initAttrs,
+		title:'Untitled',
+		description: '',
 		...attrs,
 		username,
 		id:formId
@@ -40,6 +42,12 @@ export const requestForms = (username)=>{
 export const receiveForms = (forms)=>{
 	return {type:RECEIVE_FORMS, forms};
 };
+export const requestFormContent = (username, formId)=>{
+	return {type:REQUEST_FORM_CONTENT, username, formId};
+};
+export const receiveFormContent = (form)=>{
+	return {type:RECEIVE_FORM_CONTENT, form};
+};
 
 //selectors
 export const makeGetFormsByUser = () =>{
@@ -50,14 +58,7 @@ export const makeGetFormsByUser = () =>{
 };
 
 // reducers
-let initAttrs = {
-	title:'',
-	description: '',
-	thumbnail: undefined,
-	items:[],
-	responses:[],
-	drawings:[]
-};
+
 export default  (state = {}, action)=>{
 	switch (action.type) {
 
@@ -68,7 +69,15 @@ export default  (state = {}, action)=>{
 					[form.id] : form
 				};
 			},state);
-
+		
+		case RECEIVE_FORM_CONTENT:// necessary when directly accessing from url
+			return {
+				...state,
+				[action.form.id]: {
+					...state[action.form.id],
+					...action.form
+				}
+			};
 		case CREATE_FORM:
 		case UPDATE_FORM:
 			return {
@@ -85,59 +94,59 @@ export default  (state = {}, action)=>{
 			delete newState[action.formId];
 			return newState;
 		}
-		case CREATE_ITEM:
-			return {
-				...state,
-				[action.formId]:{
-					...state[action.formId],
-					items: state[action.formId].items.concat(action.itemId)
-				}
-			};
+		// case CREATE_QUESTION:
+		// 	return {
+		// 		...state,`
+		// 		[action.formId]:{
+		// 			...state[action.formId],
+		// 			items: state[action.formId].items.concat(action.questionId)
+		// 		}
+		// 	};
 
-		case DELETE_ITEM:
-			return {
-				...state,
-				[action.formId]:{
-					...state[action.formId],
-					items: state[action.formId].items.filter(iid=>iid!=action.itemId)
-				}
-			};
-		case CREATE_RESPONSE:
-			return {
-				...state,
-				[action.formId]:{
-					...state[action.formId],
-					responses: state[action.formId].responses.concat(action.responseId)
-				}
-			};
+		// case DELETE_QUESTION:
+		// 	return {
+		// 		...state,
+		// 		[action.formId]:{
+		// 			...state[action.formId],
+		// 			items: state[action.formId].items.filter(iid=>iid!=action.questionId)
+		// 		}
+		// 	};
+		// case CREATE_RESPONSE:
+		// 	return {
+		// 		...state,
+		// 		[action.formId]:{
+		// 			...state[action.formId],
+		// 			responses: state[action.formId].responses.concat(action.responseId)
+		// 		}
+		// 	};
 
-		case DELETE_RESPONSE:
-			return {
-				...state,
-				[action.formId]:{
-					...state[action.formId],
-					responses: state[action.formId].responses.filter(iid=>iid!=action.responseId)
-				}
-			};	
-		case CREATE_DRAWING:
-			return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
-				{
-					...state,
-					[action.parentId]:{
-						...state[action.parentId],
-						drawings: state[action.parentId].drawings.concat(action.drawingId)
-					}
-				};
+		// case DELETE_RESPONSE:
+		// 	return {
+		// 		...state,
+		// 		[action.formId]:{
+		// 			...state[action.formId],
+		// 			responses: state[action.formId].responses.filter(iid=>iid!=action.responseId)
+		// 		}
+		// 	};	
+		// case CREATE_DRAWING:
+		// 	return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
+		// 		{
+		// 			...state,
+		// 			[action.parentId]:{
+		// 				...state[action.parentId],
+		// 				drawings: state[action.parentId].drawings.concat(action.drawingId)
+		// 			}
+		// 		};
 
-		case DELETE_DRAWING:
-			return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
-				{
-					...state,
-					[action.parentId]:{
-						...state[action.parentId],
-						drawings: state[action.parentId].drawings.filter(aid=>aid!=action.drawingId)
-					}
-				};		
+		// case DELETE_DRAWING:
+		// 	return (action.parentId.startsWith('item')||action.parentId.startsWith('choice'))?state:
+		// 		{
+		// 			...state,
+		// 			[action.parentId]:{
+		// 				...state[action.parentId],
+		// 				drawings: state[action.parentId].drawings.filter(aid=>aid!=action.drawingId)
+		// 			}
+		// 		};		
 		default:
 			return state;
 

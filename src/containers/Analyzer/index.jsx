@@ -178,14 +178,14 @@ const mapStateToProps = (state, ownProps) => {
 		let response = state.responses[rid];
 		
 		let background = state.forms[response.formId].drawings.map(did=>state.drawings[did]);
-		let encodings = form.items.map(itemId=>{
-			let item = state.items[itemId];
-			let choiceId = response.response[itemId];
+		let encodings = form.items.map(questionId=>{
+			let item = state.items[questionId];
+			let choiceId = response.response[questionId];
 			let drawings = item.drawings.map(did=>state.drawings[did])
 				.concat(state.choices[choiceId].drawings.map(did=>state.drawings[did]));
 			
 			return {
-				itemId,
+				questionId,
 				choiceId,
 				drawings
 			};

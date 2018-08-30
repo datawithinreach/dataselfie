@@ -138,7 +138,7 @@ class DrawingCanvas extends Component {
 
 	componentDidUpdate(prevProps){
 		// when switched to a new question, clear canvas
-		// if (prevProps.itemId!=this.props.itemId ||
+		// if (prevProps.questionId!=this.props.questionId ||
 		// 	prevProps.choiceId!=this.props.choiceId){
 		// 	paper.project.clear();
 		// 	this.props.drawings.forEach(d=>{
@@ -410,7 +410,7 @@ class DrawingCanvas extends Component {
 
 DrawingCanvas.propTypes = {
 	// formId:PropTypes.string,
-	// itemId:PropTypes.string,
+	// questionId:PropTypes.string,
 	// choiceId:PropTypes.string,
 	// choiceText:PropTypes.string,
 
@@ -458,9 +458,9 @@ const mapStateToProps = (state, ownProps) =>{
 		drawings:form.drawings.map(id=>state.drawings[id])
 	};
 	console.log(form);
-	let item = getItem(ownProps.itemId),
+	let item = getItem(ownProps.questionId),
 		choice = getChoice(ownProps.choiceId); //current item & choice if any
-	// let item = state.choices[ownProps.itemId];
+	// let item = state.choices[ownProps.questionId];
 	// let choice = state.choices[ownProps.choiceId];
 	// let drawings = choice?choice.drawings.map(did=>state.drawings[did]):[];
 	// console.log(drawings);

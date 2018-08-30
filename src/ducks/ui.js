@@ -2,10 +2,16 @@
 	manages ui-specific states
 */
 
-import {CREATE_FORM, DELETE_FORM, REQUEST_FORMS, RECEIVE_FORMS} from './forms';
+import {CREATE_FORM, DELETE_FORM, 
+	REQUEST_FORM_CONTENT, RECEIVE_FORM_CONTENT,
+	REQUEST_FORMS, RECEIVE_FORMS} from './forms';
 
 export const SELECT_FORM = 'SELECT_FORM';
 export const OPEN_FORM = 'OPEN_FORM';
+
+export const SELECT_OPTION = 'SELECT_OPTION';
+export const SELECT_QUESTION = 'SELECT_QUESTION';
+
 export const ALERT_SERVER_ERROR = 'ALERT_SERVER_ERROR';
 export const RELEASE_SERVER_ERROR = 'RELEASE_SERVER_ERROR';
 
@@ -23,6 +29,19 @@ export const openForm = (formId) =>{
 		formId
 	};
 };
+export const selectOption = (optionId) =>{
+	return {
+		type: SELECT_OPTION,
+		optionId
+	};
+};
+export const selectQuestion = (questionId) =>{
+	return {
+		type: SELECT_QUESTION,
+		questionId
+	};
+};
+
 
 export const alertServerError = (message) =>{
 	return {
@@ -51,11 +70,23 @@ export default (state={}, action)=>{
 				...state,
 				selectedForm:action.formId==state.selectedForm? null:state.selectedForm
 			};
+		case SELECT_QUESTION:
+			return {
+				...state,
+				selectedQuestion:action.questionId
+			};
+		case SELECT_OPTION:
+			return {
+				...state,
+				selectedOption:action.optionId
+			};
+		case REQUEST_FORM_CONTENT:
 		case REQUEST_FORMS:
 			return {
 				...state,
 				isFetching:true
 			};
+		case RECEIVE_FORM_CONTENT:
 		case RECEIVE_FORMS:
 			return {
 				...state,

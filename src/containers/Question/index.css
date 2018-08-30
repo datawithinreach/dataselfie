@@ -1,0 +1,14 @@
+
+.question{
+	margin:30px 0px 10px 5px;
+}
+.options{
+	margin:20px 0px 10px 5px;
+}
+.option{
+	display:flex;
+}
+.selectedOption{
+	color:white;
+	background-color: #212121;
+}
