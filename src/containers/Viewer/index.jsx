@@ -102,14 +102,14 @@ class Viewer extends Component {
 		return (
 			<div>
 				<div className={css.progress}>
-					<div className={classNames(css.start,css.marker,{[css.current]:-1==curStep,  [css.incomplete]: -1<curStep && response.id==null})} data-step={-1} onMouseUp={this.changeStep}>
+					<div className={classNames(css.start,css.marker,{[css.current]:-1==curStep,  [css.incomplete]: -1<curStep && response.id==null})} data-step={-1} onPointerUp={this.changeStep}>
 					0
 					</div>
 					{items.map((item, i)=>
 						<Fragment key={i}>
 							<div className={css.bar}/>
 							<div className={classNames(css.marker,{[css.current]:i==curStep, [css.incomplete]: i<curStep && response[this.props.items[i].id]==null})} 
-								data-step={i} onMouseUp={this.changeStep}>
+								data-step={i} onPointerUp={this.changeStep}>
 								{i+1}
 							</div>
 						</Fragment>
@@ -123,10 +123,10 @@ class Viewer extends Component {
 					{curStep==-1&&(	
 						<Fragment>
 							{/* <div>
-								<div className={css.button} onMouseUp={this.prevItem}>
+								<div className={css.button} onPointerUp={this.prevItem}>
 									<i className="fas fa-arrow-left"></i>
 								</div>
-								<div className={css.button} onMouseUp={this.nextItem}>
+								<div className={css.button} onPointerUp={this.nextItem}>
 									<i className="fas fa-arrow-right"></i>
 								</div>
 							</div> */}
@@ -161,17 +161,17 @@ class Viewer extends Component {
 					)}
 				</div>
 				{curStep>=0&&
-					<div className={css.button} onMouseUp={this.prevItem}>
+					<div className={css.button} onPointerUp={this.prevItem}>
 						<i className="fas fa-arrow-left"></i> Prev
 					</div>
 				}
 				{curStep<(items.length-1) &&
-					<div className={css.button} onMouseUp={this.nextItem}>
+					<div className={css.button} onPointerUp={this.nextItem}>
 						<i className="fas fa-arrow-right"></i> Next
 					</div>
 				}
 				{curStep==(items.length-1) &&
-					<div className={css.button} onMouseUp={this.handleSubmit}>
+					<div className={css.button} onPointerUp={this.handleSubmit}>
 						Submit
 					</div>
 				}

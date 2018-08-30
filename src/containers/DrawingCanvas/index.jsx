@@ -297,23 +297,23 @@ class DrawingCanvas extends Component {
 				<div className={css.menu}>
 					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='pen'})} 
 						data-mode='pen' 
-						onMouseUp={this.handleChangeMode}>
+						onPointerUp={this.handleChangeMode}>
 						<i className="fas fa-pencil-alt"></i>
 					</div>
 					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='eraser'})} 
 						data-mode='eraser' 
-						onMouseUp={this.handleChangeMode}>
+						onPointerUp={this.handleChangeMode}>
 						<i className="fas fa-eraser"></i>
 					</div>
 					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='autodraw'})} 
 						data-mode='autodraw' 
-						onMouseUp={this.handleChangeMode}>
+						onPointerUp={this.handleChangeMode}>
 						<i className="fas fa-magic"></i>
 					</div>
-					<div className={css.button} onMouseUp={this.showStyle}>
+					<div className={css.button} onPointerUp={this.showStyle}>
 						<i className="fas fa-palette"></i>
 					</div>
-					<div className={css.button} onMouseUp={this.showLayer}>
+					<div className={css.button} onPointerUp={this.showLayer}>
 						<i className="flaticon-layers"></i>
 					</div>
 				</div>

@@ -54,7 +54,7 @@ export class FormThumbnail extends React.Component {
 					width: this.props.width + 'px',
 					height: this.props.height  + 'px'
 				}}
-				onMouseUp={this.handleSelect}>
+				onPointerUp={this.handleSelect}>
 				{this.props.thumbnail?
 					<img className={css.formThumbnailImg}
 						draggable="false"
@@ -64,20 +64,20 @@ export class FormThumbnail extends React.Component {
 				{this.props.selected &&
 					<div className={css.overlay} >
 						<div className={css.deleteBtn}
-							onMouseUp={this.handleDelete}>
+							onPointerUp={this.handleDelete}>
 							{/* <i className="fas fa-trash-alt"></i> */}
 							<img src="assets/icons/trash.svg"/>
 						</div>
 						{this.state.confirmDelete?
 							<div className={css.confirmPopup}>
 								<div className={css.confirmDelete}
-									onMouseUp={this.confirmDelete}>Delete</div>
+									onPointerUp={this.confirmDelete}>Delete</div>
 								<div className={css.cancelDelete}
-									onMouseUp={this.cancelDelete}>Cancel</div>
+									onPointerUp={this.cancelDelete}>Cancel</div>
 							</div>
 							:
 							<div className={css.openBtn}
-								onMouseUp={this.handleOpen}
+								onPointerUp={this.handleOpen}
 								onTouchEnd={this.handleOpen}
 							>Open</div>
 						}

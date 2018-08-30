@@ -45,10 +45,10 @@ class FormList extends Component {
 			<div className={css.container}>
 				<div className={css.menu}>
 					<div className={css.menuItem}>
-						<div className={css.button} onMouseUp={this.onCreateForm}></div>
+						<div className={css.button} onPointerUp={this.onCreateForm}></div>
 					</div>
 				</div>
-				<div className={css.formList} onMouseUp={this.handleDeselect}>
+				<div className={css.formList} onPointerUp={this.handleDeselect}>
 					{forms}
 				</div>
 			</div>

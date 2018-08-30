@@ -148,7 +148,7 @@ export class NavBar extends React.Component {
 							</div>
 							<div className={css.message}>{this.props.authStatus}</div>
 							{notConfirmed&&
-								<div className={css.resend}>Did not get the email?
+								<div className={css.resend}>Did not get the email?&nbsp;
 									<a onPointerUp={this.resendConfirmEmail}>Resend</a>
 								</div>
 							}

@@ -118,13 +118,13 @@ class Designer extends Component {
 		return (
 			<div>				
 				<div className={css.progress}>
-					<div className={classNames(css.start,css.marker,{[css.current]:-1==curStep})} data-step={-1} onMouseUp={this.changeStep}>
+					<div className={classNames(css.start,css.marker,{[css.current]:-1==curStep})} data-step={-1} onPointerUp={this.changeStep}>
 					0
 					</div>
 					{items.map((item, i)=>
 						<Fragment key={i}>
 							<div className={css.bar}/>
-							<div className={classNames(css.marker,{[css.current]:i==curStep})} data-step={i} onMouseUp={this.changeStep}>
+							<div className={classNames(css.marker,{[css.current]:i==curStep})} data-step={i} onPointerUp={this.changeStep}>
 								{i+1}
 							</div>
 						</Fragment>
@@ -132,7 +132,7 @@ class Designer extends Component {
 					}
 					<div className={css.bar}/>			
 						
-					<div className={classNames(css.end,css.marker)} onMouseUp={this.createItem}>
+					<div className={classNames(css.end,css.marker)} onPointerUp={this.createItem}>
 						+
 					</div>
 					
@@ -145,10 +145,10 @@ class Designer extends Component {
 						{curStep==-1&&(	
 							<div className={css.column}>
 								<div>
-									<div className={css.button} onMouseUp={this.prevItem}>
+									<div className={css.button} onPointerUp={this.prevItem}>
 										<i className="fas fa-arrow-left"></i>
 									</div>
-									<div className={css.button} onMouseUp={this.nextItem}>
+									<div className={css.button} onPointerUp={this.nextItem}>
 										<i className="fas fa-arrow-right"></i>
 									</div>
 								</div>
@@ -164,13 +164,13 @@ class Designer extends Component {
 						{curStep!=-1&&(			
 							<div className={css.column}>
 								<div>
-									<div className={css.button} onMouseUp={this.prevItem}>
+									<div className={css.button} onPointerUp={this.prevItem}>
 										<i className="fas fa-arrow-left"></i>
 									</div>
-									<div className={css.button} onMouseUp={this.nextItem}>
+									<div className={css.button} onPointerUp={this.nextItem}>
 										<i className="fas fa-arrow-right"></i>
 									</div>
-									<div className={css.button} onMouseUp={this.deleteItem}>
+									<div className={css.button} onPointerUp={this.deleteItem}>
 										Delete
 									</div>
 								</div>
@@ -189,18 +189,18 @@ class Designer extends Component {
 												value={choice.text} 
 												onChange={this.handleChoiceChange.bind(this,choice.id)}/>	
 											<div className={classNames(css.button,{[css.selectedChoice]: curChoiceId==choice.id})} 
-												onMouseUp={this.editEncoding.bind(this,choice.id)}>
+												onPointerUp={this.editEncoding.bind(this,choice.id)}>
 												<i className="fas fa-edit"></i>
 											</div>
 											<div className={css.button} 
-												onMouseUp={this.deleteChoice.bind(this,choice.id)}>
+												onPointerUp={this.deleteChoice.bind(this,choice.id)}>
 												<i className="fas fa-times"></i>
 											</div>
 										</div>
 									)}
 									
 								</div>
-								<div className={css.button} onMouseUp={this.createChoice}>Add Choice</div>
+								<div className={css.button} onPointerUp={this.createChoice}>Add Choice</div>
 							</div>
 						)}
 						<div className={css.column}>

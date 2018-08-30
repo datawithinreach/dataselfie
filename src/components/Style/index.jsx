@@ -123,7 +123,7 @@ export class Style extends React.PureComponent{
 									color==this.state.color?css.selectedOption:''].join(' ')
 								}
 								style={{backgroundColor:color}}
-								onMouseUp={this.handleSelectColor.bind(this,color)}/>
+								onPointerUp={this.handleSelectColor.bind(this,color)}/>
 						))}
 					</div>
 					<div className={css.strokes}>
@@ -133,7 +133,7 @@ export class Style extends React.PureComponent{
 									css.stroke,
 									stroke==this.state.stroke?css.selectedOption:''].join(' ')
 								}
-								onMouseUp={this.handleSelectStroke.bind(this,stroke)}
+								onPointerUp={this.handleSelectStroke.bind(this,stroke)}
 							>
 								<div className={css.strokeBar}
 									style={{height:`${stroke}px`, backgroundColor:this.state.color=='#FFFFFF'?'#000000':this.state.color}}></div>
@@ -146,12 +146,12 @@ export class Style extends React.PureComponent{
 
 						<div className={css.gradient}
 							style={{background: `linear-gradient(to right, ${this.state.color=='#FFFFFF'?'#000000':this.state.color}00 0%, ${this.state.color=='#FFFFFF'?'#000000':this.state.color}FF 100%)`}}
-							onMouseUp={this.handleOpacityTap}
+							onPointerUp={this.handleOpacityTap}
 						>
 						</div>
 						<div className={css.handle} 
 							style={{left:`${this.state.opacity*100}%`}}
-							onMouseDown={this.handleOpacityStart}
+							onPointerDown={this.handleOpacityStart}
 						/>
 					</div>
 				</div>

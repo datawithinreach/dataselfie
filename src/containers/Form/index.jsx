@@ -38,9 +38,9 @@ export class Form extends React.Component {
 		return (
 			<div className={css.container}>
 				<div className={css.menu}>
-					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='design'})} data-mode='design' onMouseUp={this.changeMode}>Design</div>
-					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='view'})} data-mode='view' onMouseUp={this.changeMode}>Preview</div>
-					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='analyze'})} data-mode='analyze' onMouseUp={this.changeMode}>Results</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='design'})} data-mode='design' onPointerUp={this.changeMode}>Design</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='view'})} data-mode='view' onPointerUp={this.changeMode}>Preview</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='analyze'})} data-mode='analyze' onPointerUp={this.changeMode}>Results</div>
 				</div>
 				<div className={css.content}>
 					{this.renderMode()}
