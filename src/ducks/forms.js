@@ -1,4 +1,5 @@
 import uniqueId from 'utils/uniqueId';
+import { createSelector } from 'reselect';
 import {CREATE_ITEM, DELETE_ITEM } from 'ducks/items';
 import {CREATE_RESPONSE, DELETE_RESPONSE } from 'ducks/responses';
 import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
@@ -12,8 +13,15 @@ export const RECEIVE_FORMS = 'RECEIVE_FORMS';
 
 
 // actions
-export const createForm = (attrs=initAttrs) => {
-	return {type: CREATE_FORM, formId: uniqueId(), attrs};
+export const createForm = (username, attrs={}) => {
+	let formId = uniqueId();
+	attrs = {
+		...initAttrs,
+		...attrs,
+		username,
+		id:formId
+	};
+	return {type: CREATE_FORM, formId, username, attrs};
 };
 
 export const updateForm = (formId, attrs) => {
@@ -30,11 +38,16 @@ export const requestForms = (username)=>{
 	return {type:REQUEST_FORMS, username};
 };
 export const receiveForms = (forms)=>{
-	return {type:REQUEST_FORMS, forms};
+	return {type:RECEIVE_FORMS, forms};
 };
 
 //selectors
-
+export const makeGetFormsByUser = () =>{
+	return createSelector(
+		(state) => state.auth.username,
+		(state) => state.forms,
+		(username, forms)=>username? Object.values(forms).filter(form=>form.username==username) : []); // return annotations for the panel
+};
 
 // reducers
 let initAttrs = {
