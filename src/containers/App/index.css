@@ -42,3 +42,17 @@ a:hover:before {
   transform: scaleX(1);
 }
 a:visited{ color: #0091EA }
+
+.loadPageStyle {
+	position: absolute;
+	left:0;
+	width: 100vw;
+	height: 100vh;
+	line-height: 100vh;
+	text-align:center;
+	font-family: 'Roboto', sans-serif;
+	font-weight:100;
+	font-size:42px;
+	z-index: 1;
+	background-color:white;
+}

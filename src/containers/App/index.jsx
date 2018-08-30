@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 // import bindActionCreators from 'redux';
 import { withRouter } from 'react-router';
@@ -18,22 +18,34 @@ export class App extends React.Component {
 		super(props);
 	}
 	render() {
-		return (
+		
+		return (			
 			<div className={css.app}>
 				<NavBar/>
+				{this.props.isFetching &&
+					<div className={css.loadPageStyle}>Loading...</div>	
+				}
+				
+				
 				<Switch>
 					<Route exact path='/' component={LandingPage}/>
 					<Route exact path='/forms' component={FormList}/>
 					<Route path='/forms/:formId' component={Form}/>
 				</Switch>
+			
+				
 			</div>);
 	}
 }
 
-App.propTypes = {};
+App.propTypes = {
+	isFetching:PropTypes.bool,
+};
 
 const mapStateToProps = (state) => {
-	return state;
+	return {
+		isFetching:state.ui.isFetching,
+	};
 };
 
 // const mapDispatchToProps = (dispatch) => {
