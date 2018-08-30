@@ -29,10 +29,10 @@
     
   }
   
-  .empty{
+  .title{
     position: absolute;
     color: #BDBDBD;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 300;
     top: 50%;
     left: 50%;
@@ -131,7 +131,8 @@
     text-decoration: none;
     opacity: 0.8;
     transition: 0.2s all;
-    
+	/* color:white;
+	font-size: 36px; */
   }
   .deleteBtn img{
     width: 36px;
