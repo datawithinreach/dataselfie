@@ -7,11 +7,13 @@ export const CREATE_FORM = 'CREATE_FORM';
 export const UPDATE_FORM = 'UPDATE_FORM';
 export const DELETE_FORM = 'DELETE_FORM';
 
+export const REQUEST_FORMS = 'REQUEST_FORMS';
+export const RECEIVE_FORMS = 'RECEIVE_FORMS';
+
 
 // actions
-
-export const createForm = () => {
-	return {type: CREATE_FORM, formId: uniqueId()};
+export const createForm = (attrs=initAttrs) => {
+	return {type: CREATE_FORM, formId: uniqueId(), attrs};
 };
 
 export const updateForm = (formId, attrs) => {
@@ -24,29 +26,45 @@ export const deleteForm = (formId) =>{
 		formId
 	};
 };
-
+export const requestForms = (username)=>{
+	return {type:REQUEST_FORMS, username};
+};
+export const receiveForms = (forms)=>{
+	return {type:REQUEST_FORMS, forms};
+};
 
 //selectors
 
 
 // reducers
+let initAttrs = {
+	title:'',
+	description: '',
+	thumbnail: undefined,
+	items:[],
+	responses:[],
+	drawings:[]
+};
 export default  (state = {}, action)=>{
 	switch (action.type) {
-		case CREATE_FORM:{
-			let newPage = {
-				id: action.formId,
-				title:'',
-				description: '',
-				thumbnail: undefined,
-				items:[],
-				responses:[],
-				drawings:[]
-			};
+
+		case RECEIVE_FORMS: // populate the forms from the server
+			return action.forms.reduce((acc,form)=>{
+				return {
+					...acc,
+					[form.id] : form
+				};
+			},state);
+
+		case CREATE_FORM:
+		case UPDATE_FORM:
 			return {
 				...state,
-				[action.formId]:newPage
+				[action.formId]:{
+					...(state[action.formId]||{}),
+					...action.attrs
+				}
 			};
-		}
 		case DELETE_FORM:{
 			let newState = {
 				...state
@@ -54,15 +72,6 @@ export default  (state = {}, action)=>{
 			delete newState[action.formId];
 			return newState;
 		}
-			
-		case UPDATE_FORM:
-			return {
-				...state,
-				[action.formId]:{
-					...state[action.formId],
-					...action.attrs
-				}
-			};
 		case CREATE_ITEM:
 			return {
 				...state,

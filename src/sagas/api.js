@@ -6,6 +6,14 @@ let requestInfo = {
 		'Content-Type': 'application/json'
 	}
 };
+
+export function send(path, paramObj){
+	return fetch(`${url}/${path}`, 
+		{ 
+			...requestInfo,
+			body: JSON.stringify(paramObj)
+		}).then(resp=>resp.json());
+}
 export default {
 	signup: function(username, password, email){
 		return fetch(`${url}/signup`, 
@@ -30,6 +38,6 @@ export default {
 				body: JSON.stringify({username})
 			}).then(resp=>resp.json());
 
-	},
+	}
 
 };
