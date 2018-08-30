@@ -109,7 +109,7 @@ export class NavBar extends React.Component {
 		return (
 			<React.Fragment>
 				<div className={css.navbar}>
-					<Button link href='/' filled>DataPortraits</Button>
+					<Button link href='/' filled>DataSelfie</Button>
 					{!username? 
 						<div className={css.rightMenu}>
 							<div className={css.menuItem}>
@@ -120,10 +120,10 @@ export class NavBar extends React.Component {
 							</div>                    
 						</div>:<div className={css.rightMenu}>
 							<div className={css.menuItem}>
-								<Button onPointerUp={this.props.viewForms} outlined>{username}</Button>
+								<Button onPointerUp={this.props.viewForms} outlined>My Forms</Button>
 							</div>
 							<div className={css.menuItem}>
-								<Button onPointerUp={this.props.requestLogout} outlined>Log Out</Button>
+								<Button onPointerUp={this.props.requestLogout} outlined>Log Out of {username}</Button>
 							</div>
 						</div>
 					}
@@ -197,7 +197,7 @@ NavBar.propTypes = {
 
 
 const mapStateToProps = (state) => {
-	let username = state.auth.username? state.auth.username : sessionStorage.getItem('username');
+	let username = state.auth.username;//? state.auth.username : sessionStorage.getItem('username');
 	return {
 		username,
 		authStatus: state.auth.status
@@ -215,6 +215,7 @@ const mapDispatchToProps = (dispatch) => {
 		}, dispatch),
 		requestLogout:()=>{
 			sessionStorage.removeItem('username');
+			localStorage.removeItem('username');
 			dispatch(requestLogout());
 			dispatch(push('/'));
 		},
