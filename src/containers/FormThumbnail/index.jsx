@@ -55,12 +55,7 @@ export class FormThumbnail extends React.Component {
 					height: this.props.height  + 'px'
 				}}
 				onPointerUp={this.handleSelect}>
-				{this.props.thumbnail?
-					<img className={css.formThumbnailImg}
-						draggable="false"
-						src={this.props.thumbnail}/>:
-					<div className={css.empty}>Empty</div>
-				}
+				<div className={css.title}>{this.props.title}</div>
 				{this.props.selected &&
 					<div className={css.overlay} >
 						<div className={css.deleteBtn}
@@ -91,6 +86,7 @@ FormThumbnail.propTypes = {
 	id:PropTypes.string,
 	x: PropTypes.number,
 	y: PropTypes.number,
+	title:PropTypes.string,
 	width: PropTypes.number,
 	height: PropTypes.number,
 	selected: PropTypes.bool,
@@ -107,7 +103,6 @@ FormThumbnail.defaultProps = {
 	
 	
 const mapStateToProps = (state, ownProps) => {
-	console.log('mapstate');
 	return {
 		...state.forms[ownProps.id],
 		selected: state.ui.selectedForm==ownProps.id
@@ -122,7 +117,7 @@ const mapDispatchToProps = (dispatch) => {
 		}, dispatch),
 		openForm:(id)=>{
 			dispatch(openForm(id));
-			dispatch(push(`/form/${id}`));
+			dispatch(push(`/forms/${id}`));
 		}
 	};
 };
