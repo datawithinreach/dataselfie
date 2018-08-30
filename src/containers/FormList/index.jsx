@@ -4,9 +4,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createForm} from 'ducks/forms';
 import { push } from 'react-router-redux';
-import FormThumbnail from '../FormThumbnail';
-import css from './index.css';
 import {selectForm} from 'ducks/ui';
+import {requestForms, makeGetFormsByUser} from 'ducks/forms';
+import FormThumbnail from '../FormThumbnail';
+// import Button from 'components/Button';
+import css from './index.css';
 const width = 300;
 const height = 320;
 // const threshold = 10;
@@ -21,18 +23,19 @@ class FormList extends Component {
 		this.handleDeselect = this.handleDeselect.bind(this);
 	}
 	componentDidMount(){
-		window.addEventListener('mouseup', this.handleDeselect);
+		window.addEventListener('pointerup', this.handleDeselect);
+		this.props.requestForms(this.props.username);
 	}
 	componentWillUnmount(){
 		// console.log('unmounted!!');
-		window.removeEventListener('mouseup', this.handleDeselect);
+		window.removeEventListener('pointerup', this.handleDeselect);
 	}
 	handleDeselect(){
 		this.props.selectForm(null);
 	}
 	onCreateForm(e){
 		e.stopPropagation();
-		this.props.createForm();
+		this.props.createForm(this.props.username);
 	}
 	render() {
 		const forms = this.props.forms.map((form) =>
@@ -43,12 +46,15 @@ class FormList extends Component {
 		);
 		return (
 			<div className={css.container}>
-				<div className={css.menu}>
+				{/* <div className={css.menu}>
 					<div className={css.menuItem}>
-						<div className={css.button} onPointerUp={this.onCreateForm}></div>
+						<Button onPointerUp={this.onCreateForm} outlined>New Form</Button>
 					</div>
-				</div>
+				</div> */}
 				<div className={css.formList} onPointerUp={this.handleDeselect}>
+					<div className={css.addButton} onPointerUp={this.onCreateForm}>
+						+
+					</div>
 					{forms}
 				</div>
 			</div>
@@ -57,25 +63,32 @@ class FormList extends Component {
 }
 
 FormList.propTypes = {
+	username:PropTypes.string,
 	forms: PropTypes.array,
 	createForm:PropTypes.func,
-	selectForm:PropTypes.func
+	selectForm:PropTypes.func,
+	requestForms:PropTypes.func,
 };
 
+const getForms = makeGetFormsByUser();
 
 const mapStateToProps = (state) => {
-	console.log(Object.values(state.forms));
+	// let username = state.auth.username;//? state.auth.username : sessionStorage.getItem('username');
+	let forms = getForms(state);
+	console.log('form list', forms);
 	return {
-		forms: Object.values(state.forms)
+		username:state.auth.username,
+		forms
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
 		...bindActionCreators({
 			selectForm,
+			requestForms
 		}, dispatch),
-		createForm: ()=>{
-			let action = createForm();
+		createForm: (username)=>{
+			let action = createForm(username);
 			dispatch(action);
 			dispatch(push(`/form/${action.formId}`));
 		}
