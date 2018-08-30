@@ -37,7 +37,7 @@ export const releaseServerError = () =>{
 };
 
 
-export default (state=null, action)=>{
+export default (state={}, action)=>{
 	switch (action.type) {
 		case SELECT_FORM:
 		case OPEN_FORM:
