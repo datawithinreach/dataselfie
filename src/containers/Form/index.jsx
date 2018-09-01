@@ -25,7 +25,10 @@ export class Form extends React.Component {
 		this.setState({mode:e.target.dataset.mode});
 	}
 	renderMode(){
-		if (this.state.mode=='design'){
+
+		if (this.props.isLoading){
+			return '';
+		}else if (this.state.mode=='design'){
 			return <Designer formId={this.props.id}/>;
 		}else if (this.state.mode=='view'){
 			return <Viewer formId={this.props.id}/>;
@@ -56,6 +59,7 @@ Form.propTypes = {
 	// items:PropTypes.array,
 	id:PropTypes.string,
 	username:PropTypes.string,
+	isLoading:PropTypes.bool,
 	requestFormContent:PropTypes.func,
 };
 
@@ -67,6 +71,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		...form,
 		username:state.auth.username,
+		isLoading:!form,
 		id: formId // in case form is emtpy...
 	};
 };
