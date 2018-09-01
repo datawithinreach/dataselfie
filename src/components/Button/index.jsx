@@ -34,7 +34,7 @@ export default class Button extends React.Component {
 			style.color = 'white';
 		}
 		return (
-			<button className={[css.button, filled?css.filled:''].join(' ')} {...otherProps}
+			<button className={[this.props.className, css.button, filled?css.filled:''].join(' ')} {...otherProps}
 				onPointerDown = {this.handlePointerDown}
 				style={style}>
 				{children}
@@ -44,6 +44,7 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
+	className:PropTypes.string,
 	label:PropTypes.string,
 	stretch:PropTypes.bool,
 	children:PropTypes.node.isRequired,
