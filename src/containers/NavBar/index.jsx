@@ -35,7 +35,7 @@ export class NavBar extends React.Component {
 	}
 	handleLogin(){
 		let form = this.state.form;
-		console.log(form);
+		// console.log(form);
 		let names = ['username', 'password'];
 		for (let i=0; i<names.length; i++){
 			let value = form[names[i]];
@@ -45,7 +45,13 @@ export class NavBar extends React.Component {
 			}
 		}
 		let {username, password, remember} = form;
+		
 		this.props.requestLogin(username, password, remember);
+
+		this.setState({
+			showLogin:false,
+			showSignup:false
+		});
 	}
 	resendConfirmEmail(){
 		let {username=null} = this.state.form;
@@ -90,7 +96,7 @@ export class NavBar extends React.Component {
 			...this.state.form,
 			[event.target.name]: event.target.type == 'checkbox'? event.target.checked: event.target.value
 		};
-		console.log(form);
+		// console.log(form);
 		this.setState({form});
 	}
 	closePopup(e){
@@ -217,7 +223,7 @@ const mapDispatchToProps = (dispatch) => {
 			sessionStorage.removeItem('username');
 			localStorage.removeItem('username');
 			dispatch(requestLogout());
-			dispatch(push('/'));
+			// dispatch(push('/'));
 		},
 		viewForms:()=>{
 			dispatch(push('/forms'));

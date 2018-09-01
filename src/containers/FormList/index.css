@@ -63,7 +63,8 @@
     border: 2px dashed  #212121;
     user-select:none;
 	overflow: visible;
-	transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 .addButton:hover{
 	background-color: #212121;
