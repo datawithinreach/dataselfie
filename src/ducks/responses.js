@@ -9,8 +9,15 @@ export const DELETE_RESPONSE = 'DELETE_RESPONSE';
 
 // actions
 
+
 export const createResponse = (formId, attrs = {}) => {
-	return {type: CREATE_RESPONSE, formId, responseId: uniqueId('response_'), attrs};
+	let responseId = uniqueId('response_');
+	attrs = {
+		...attrs,
+		formId,
+		id:responseId
+	};
+	return {type: CREATE_RESPONSE, responseId, attrs};
 };
 
 
@@ -19,26 +26,18 @@ export const updateResponse = (responseId, attrs) => {
 };
 
 
-export const deleteResponse = (formId, responseId) => {
-	return {type: DELETE_RESPONSE, formId, responseId};
+export const deleteResponse = (responseId) => {
+	return {type: DELETE_RESPONSE, responseId};
 };
 
 export default (state = {}, action)=>{
 	switch (action.type) {
 		case CREATE_RESPONSE:
-			return {
-				...state,
-				[action.responseId]:{
-					id:action.responseId,
-					formId:action.formId,
-					...action.attrs
-				}
-			};
 		case UPDATE_RESPONSE:
 			return {
 				...state,
 				[action.responseId]:{
-					...state[action.responseId],
+					...(state[action.responseId]||{}),
 					...action.attrs
 				}
 			};

@@ -45,8 +45,8 @@ export const receiveForms = (forms)=>{
 export const requestFormContent = (username, formId)=>{
 	return {type:REQUEST_FORM_CONTENT, username, formId};
 };
-export const receiveFormContent = (form)=>{
-	return {type:RECEIVE_FORM_CONTENT, form};
+export const receiveFormContent = (data)=>{
+	return {type:RECEIVE_FORM_CONTENT, ...data};
 };
 
 //selectors

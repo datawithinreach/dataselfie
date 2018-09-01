@@ -55,8 +55,12 @@ export const releaseServerError = () =>{
 	};
 };
 
-
-export default (state={}, action)=>{
+let initState = {
+	selectedForm:null,
+	selectedQuestion:null,
+	selectedOption:null
+};
+export default (state=initState, action)=>{
 	switch (action.type) {
 		case SELECT_FORM:
 		case OPEN_FORM:
@@ -73,7 +77,8 @@ export default (state={}, action)=>{
 		case SELECT_QUESTION:
 			return {
 				...state,
-				selectedQuestion:action.questionId
+				selectedQuestion:action.questionId,
+				selectedOption:!action.questionId?null:state.selectedOption
 			};
 		case SELECT_OPTION:
 			return {

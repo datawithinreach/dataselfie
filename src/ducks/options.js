@@ -1,23 +1,32 @@
 import uniqueId from 'utils/uniqueId';
 import { createSelector } from 'reselect';
 // import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
-
+import {RECEIVE_FORM_CONTENT} from 'ducks/forms';
 // action types
 export const CREATE_OPTION = 'CREATE_OPTION';
 export const UPDATE_OPTION = 'UPDATE_OPTION';
 export const DELETE_OPTION = 'DELETE_OPTION';
 
 // actions
-export const createOption = (questionId, text) => {
-	return {type: CREATE_OPTION, questionId, text,  optionId: uniqueId('option_')};
+
+
+export const createOption = (questionId, attrs={}) => {
+	let optionId = uniqueId('option_');
+	attrs = {
+		...attrs,
+		text:'',
+		questionId,
+		id:optionId
+	};
+	return {type: CREATE_OPTION, optionId, attrs};
 };
 
-export const updateOption = (optionId, text) => {
-	return {type: UPDATE_OPTION, optionId, text};
+export const updateOption = (optionId, attrs) => {
+	return {type: UPDATE_OPTION, optionId, attrs};
 };
 
-export const deleteOption = (questionId, optionId) => {
-	return {type: DELETE_OPTION, questionId, optionId};
+export const deleteOption = (optionId) => {
+	return {type: DELETE_OPTION, optionId};
 };
 
 
@@ -34,18 +43,22 @@ export const makeGetOptions = () =>{
 // reducers
 export default  (state = {}, action)=>{
 	switch (action.type) {
-		case CREATE_OPTION:{
-			let newItem = {
-				id: action.optionId,
-				questionId: action.questionId,
-				text:'',
-				drawings:[]
-			};
+		case RECEIVE_FORM_CONTENT:
+			return action.options.reduce((acc,option)=>{
+				return {
+					...acc,
+					[option.id] : option
+				};
+			},state);
+		case CREATE_OPTION:
+		case UPDATE_OPTION:
 			return {
 				...state,
-				[action.optionId]:newItem
+				[action.optionId]:{
+					...(state[action.optionId]||{}),
+					...action.attrs
+				}
 			};
-		}
 		case DELETE_OPTION:{
 			let newState = {
 				...state
@@ -54,14 +67,7 @@ export default  (state = {}, action)=>{
 			return newState;
 		}
 			
-		case UPDATE_OPTION:
-			return {
-				...state,
-				[action.optionId]:{
-					...state[action.optionId],
-					text:action.text
-				}
-			};
+
 		// case CREATE_DRAWING:
 		// 	return action.parentId.startsWith('choice')?{
 		// 		...state,

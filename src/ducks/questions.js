@@ -2,6 +2,7 @@ import uniqueId from 'utils/uniqueId';
 import { createSelector } from 'reselect';
 // import {CREATE_OPTION, DELETE_OPTION} from 'ducks/options';
 // import { CREATE_DRAWING, DELETE_DRAWING } from './drawings';
+import {RECEIVE_FORM_CONTENT} from 'ducks/forms';
 // action types
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
@@ -10,18 +11,24 @@ export const UPDATE_QUESTION = 'UPDATE_QUESTION';
 
 // actions
 
-export const createQuestion = (formId, text='') => {
-	return {type: CREATE_QUESTION, formId, text, questionId: uniqueId('question_')};
+export const createQuestion = (formId, attrs={}) => {
+	let questionId = uniqueId('question_');
+	attrs = {
+		...attrs,
+		text:'',
+		formId,
+		id:questionId
+	};
+	return {type: CREATE_QUESTION, questionId, attrs};
 };
 
-export const updateQuestion = (questionId, text) => {
-	return {type: UPDATE_QUESTION, questionId, text};
+export const updateQuestion = (questionId, attrs) => {
+	return {type: UPDATE_QUESTION, questionId, attrs};
 };
 
-export const deleteQuestion = (formId, questionId) =>{
+export const deleteQuestion = (questionId) =>{
 	return {
 		type: DELETE_QUESTION,
-		formId,
 		questionId
 	};
 };
@@ -38,19 +45,23 @@ export const makeGetQuestions = () =>{
 // reducers
 export default  (state = {}, action)=>{
 	switch (action.type) {
-		case CREATE_QUESTION:{
-			let newItem = {
-				id: action.questionId,
-				formId: action.formId,
-				question:'',
-				// choices:[],
-				// drawings:[]
-			};
+		case RECEIVE_FORM_CONTENT:
+			return action.questions.reduce((acc,question)=>{
+				return {
+					...acc,
+					[question.id] : question
+				};
+			},state);
+
+		case CREATE_QUESTION:
+		case UPDATE_QUESTION:
 			return {
 				...state,
-				[action.questionId]:newItem
+				[action.questionId]:{
+					...(state[action.questionId]||{}),
+					...action.attrs
+				}
 			};
-		}
 		case DELETE_QUESTION:{
 			let newState = {
 				...state
@@ -59,14 +70,7 @@ export default  (state = {}, action)=>{
 			return newState;
 		}
 			
-		case UPDATE_QUESTION:
-			return {
-				...state,
-				[action.questionId]:{
-					...state[action.questionId],
-					question:action.question
-				}
-			};
+
 		// case CREATE_OPTION:
 		// 	return {
 		// 		...state,
