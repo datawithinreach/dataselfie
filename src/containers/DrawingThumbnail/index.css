@@ -1,0 +1,13 @@
+.thumbnail{
+    border: 2px solid #eeeeee;
+    background-color: white;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    margin: 5px;
+}
+.thumbnail:hover{
+    border: 2px solid #212121;
+}
+.thumbnail.selected{
+    border: 2px solid #212121;
+}
