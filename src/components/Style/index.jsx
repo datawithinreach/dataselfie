@@ -32,14 +32,14 @@ export class Style extends React.PureComponent{
 		};
 	}
 	
-	static getDerivedStateFromProps (nextProps){
-		console.log('nextProps', nextProps);
-		return {
-			color: nextProps.color,
-			stroke: nextProps.stroke,
-			opacity : nextProps.opacity
-		};
-	}
+	// static getDerivedStateFromProps (nextProps){
+	// 	console.log('nextProps', nextProps);
+	// 	return {
+	// 		color: nextProps.color,
+	// 		stroke: nextProps.stroke,
+	// 		opacity : nextProps.opacity
+	// 	};
+	// }
 	
 	handleOpacityStart(e){
 		this.opacity = this.state.opacity;
