@@ -22,12 +22,11 @@ class DrawingCanvas extends Component {
 			showStylePanel:false,
 			showLayerPanel:false,
 			recognized:[],
-		};
-		this.initStyle = {
-			strokeColor:'#000000',
-			strokeWidth:1,
-			opacity:1.0,
-			strokeCap:'round'
+			style:{
+				color:'#000000',
+				width:1,
+				opacity:1.0
+			}
 		};
 		this.paper = new PaperScope();  // always use this to create anything
 
@@ -57,8 +56,14 @@ class DrawingCanvas extends Component {
 		// setup 
 		console.log('DrawingCanvas PaperScope', this.paper);
 		this.paper.setup(this.canvasRef.current);
-		
-		this.paper.project.currentStyle = this.initStyle;
+
+		let {color, stroke,opacity} = this.state.style;
+		this.paper.project.currentStyle = {
+			strokeColor:color,
+			strokeWidth:stroke,
+			opacity,
+			strokeCap:'round'
+		};
 
 		this.setupTools();
 		
@@ -67,6 +72,7 @@ class DrawingCanvas extends Component {
 	}
 
 	componentDidUpdate(prevProps){
+		console.log('componentDidUpdate', this.props);
 		// when switched to a new question, clear canvas
 		// if (prevProps.questionId!=this.props.questionId ||
 		// 	prevProps.choiceId!=this.props.choiceId){
@@ -78,7 +84,7 @@ class DrawingCanvas extends Component {
 		// item changed, reset visible states
 		// this is probably called every time & every stroke...TODO: improve!
 		if (prevProps.selected!=this.props.selected){
-			console.log('this.selected', this.props.selected);
+			console.log('if (prevProps.selected!=this.props.selected){', this.props.selected);
 			this.paper.project.activeLayer.visible=false;
 			this.paper.project.layers[this.props.selected].activate();
 			this.paper.project.activeLayer.visible=true;
@@ -86,13 +92,22 @@ class DrawingCanvas extends Component {
 		if (prevProps.drawings!=this.props.drawings){
 			// add new layers if there are new options added
 			this.setupLayers(this.paper, this.props.drawings, this.props.selected);
+			console.log('before:',this.paper.project.layers);
 			// remove layers if the options were removed
 			let getOptions = (questions)=>questions.reduce((acc,q)=>acc.concat(q.options),[]);
 			let options = getOptions(this.props.drawings.questions);
 			let prevOptions = getOptions(prevProps.drawings.questions);
-			prevOptions.filter(po=>!options.find(o=>o.id==po.id))
-				.forEach(po=>this.paper.project.layers[po.id].remove());
-			console.log('component update', options, prevOptions, this.paper.project.activeLayer, this.paper.project.layers);
+
+			for (let i=0; i<prevOptions.length;i++){
+				if (!options.find(d=>d.id==prevOptions[i].id)){
+					console.log('remove!', prevOptions[i].id);
+					this.paper.project.layers[prevOptions[i].id].remove();
+				}
+			}
+
+			// prevOptions.filter(po=>!options.find(o=>o.id==po.id))
+			// 	.forEach(po=>this.paper.project.layers[po.id].remove());
+			console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
 		}
 		// if question changed, reset layer visibility??
 	}
@@ -125,13 +140,17 @@ class DrawingCanvas extends Component {
 	setupLayers(paper, drawings, selected){
 		// console.log('setupLayers', paper, form, selected);
 		let createLayer = (item)=>{
+			console.log('create?', item.id);
 			if (paper.project.layers[item.id]) return;// return if exists
-
+			
 			let layer = new paper.Layer({
 				name:item.id,
 				visible:selected==item.id
 			});
 			item.drawings.forEach(d=>layer.importJSON(d.json));
+			paper.project.addLayer(layer);
+			console.log('create!', item.id, paper.project.layers);
+			
 			layer.data.id = item.id;
 		};
 		//background layer
@@ -170,14 +189,15 @@ class DrawingCanvas extends Component {
 		// this.forceUpdate();// necessary?
 	}
 	handleStyleUpdate(style){
-		console.log('update', style);
 		let {color, stroke,opacity} = style;
+		
 		this.paper.project.currentStyle = {
 			...this.paper.project.currentStyle,
 			strokeColor:color,
 			strokeWidth:stroke,
 			opacity
 		};
+		this.setState({style});
 	}
 	clearAutoDrawState(){
 		this.paths = [];
@@ -209,7 +229,8 @@ class DrawingCanvas extends Component {
 
 
 	render() {
-		
+		// let style = this.paper.project? this.paper.project.currentStyle:this.initStyle;
+		// console.log('style', style)
 		return (
 			<div className={css.canvasContainer}>
 				<div className={css.menu}>
@@ -263,9 +284,9 @@ class DrawingCanvas extends Component {
 				{this.state.showStylePanel&&
 					<div className={css.optionPanel} style={{left:'80px'}}>
 						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div>
-						<Style color={this.initStyle.strokeColor}
-							stroke={this.initStyle.strokeWidth}
-							opacity={this.initStyle.opacity}
+						<Style color={this.state.style.color}
+							stroke={this.state.style.width}
+							opacity={this.state.style.opacity}
 							onStyleUpdate={this.handleStyleUpdate}/>
 					</div>
 				}
@@ -288,6 +309,7 @@ const getDrawings = makeGetAllDrawings();
 
 const mapStateToProps = (state, ownProps) =>{
 	let drawings = getDrawings(state, ownProps);
+	console.log('drawings', drawings);
 	return {
 		drawings,
 		selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId//option or background
