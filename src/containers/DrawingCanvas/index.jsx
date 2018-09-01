@@ -1,138 +1,68 @@
-import React,{Component,Fragment} from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {createDrawing, deleteDrawing} from 'ducks/drawings';
+import {createDrawing, deleteDrawing, makeGetAllDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
+import LayerView from 'components/LayerView';
 import classNames from 'utils/classNames';
 import css from './index.css';
 import autodraw from 'utils/autodraw';
-import paper, { Layer } from 'paper';
+import penTool from './tools/pen';
+import eraserTool from './tools/eraser';
+import autodrawTool from './tools/autodraw';
+import {PaperScope} from 'paper';
+
 class DrawingCanvas extends Component {
 	constructor(props){
 		super(props);
 		
 		this.state = {
-			penOption:{
-				color:'#000000',
-				stroke:1,
-				opacity:1.0
-			},
-			showStyle:false,
-			showLayer:false,
-			mode:'pen',
+			tool:'pen',
+			showStylePanel:false,
+			showLayerPanel:false,
 			recognized:[],
-			layers:[]
 		};
+		this.initStyle = {
+			strokeColor:'#000000',
+			strokeWidth:1,
+			opacity:1.0,
+			strokeCap:'round'
+		};
+		this.paper = new PaperScope();  // always use this to create anything
+
+		//for auto draw
 		this.paths = [];
-	
+		this.autodrawn = null;
+		
+
+		this.showStylePanel = this.showStylePanel.bind(this);
+		this.hideStylePanel = this.hideStylePanel.bind(this);
+		this.showLayerPanel = this.showLayerPanel.bind(this);
+		this.hideLayerPanel = this.hideLayerPanel.bind(this);
+
+		this.handleChangeTool = this.handleChangeTool.bind(this);
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
-		this.showStyle = this.showStyle.bind(this);
-		this.hideStyle = this.hideStyle.bind(this);
-		this.showLayer = this.showLayer.bind(this);
-		this.hideLayer = this.hideLayer.bind(this);
-		this.handleChangeMode = this.handleChangeMode.bind(this);
-		this.toggleLayer = this.toggleLayer.bind(this);
+
+		this.handleLayerVisible = this.handleLayerVisible.bind(this);
 		this.canvasRef = React.createRef();
 		// this.selectSuggestion = this.selectSuggestion.bind(this);
-		this.layerMap = {};
-
+		// this.layerMap = {};
 	}
 	componentWillUnmount(){
-		paper.clear();
-		console.log('DrawingCanvas clear paper', paper);
+		this.paper.clear();
 	}
 	componentDidMount(){
 
-		// initialize canvas
-		console.log('DrawingCanvas initialize paper', paper);
-		paper.setup(this.canvasRef.current);
-		this.initialize();
+		// setup 
+		console.log('DrawingCanvas PaperScope', this.paper);
+		this.paper.setup(this.canvasRef.current);
 		
-		// TODO: separate into an independent file?
-		let penTool = new paper.Tool();
-		let path=null;
+		this.paper.project.currentStyle = this.initStyle;
 
-		penTool.on({
-			activate: function(){
-				console.log('activate', this.name);
-			},
-			deactivate:function(){
-				console.log('activate', this.name);
-			},
-			mousedrag:(e)=>{
-				// TODO: delegate this style variable to currentStyle
-				let {color,stroke,opacity} = this.state.penOption;
-				let {mode} = this.state;
-				if (!path){
-					path = new paper.Path({
-						segments: [e.point],
-						strokeWidth: mode=='eraser'? 2:stroke,
-						strokeColor: mode=='eraser'? '#9e9e9e':color,
-						strokeCap:'round',
-						opacity: mode=='eraser'? 1: opacity,
-						dashArray:mode=='eraser'?[5,5]:[]
-					});
-				}else{
-					path.add(e.point);
-				}
-			},
-			mouseup:()=>{
-				if (path){
-					path.simplify();
-
-					//add to redux state					
-					if (this.state.mode=='eraser'){
-						let removed = [];
-						// remove items only in the active layer
-						paper.project.activeLayer.children.forEach(child=>{
-							if (path==child){
-								return;
-							}							
-							if (child.intersects(path)){
-								removed.push(child);
-							}
-							if (child instanceof paper.Group &&
-								child.getItems().some(d=>d.intersects(path))){
-								removed.push(child);
-							}
-						});
-						removed.map(item=>{
-							console.log('delete', item.data);
-							if (!item.data.parentId) return;
-							this.props.deleteDrawing(item.data.parentId, item.data.id);
-						});
-						removed.forEach(item=>item.remove());
-						path.remove();
-					}else{
-
-						if (this.state.mode=='autodraw'){
-							this.paths.push(path);
-							let query = this.paths.map(path=>path.segments.map(seg=>({x:seg.point.x,y:seg.point.y})));
-							console.log('query',query);
-							autodraw(query).then(results=>{
-								console.log('recognized',results);
-								this.autodrawn = null;
-								this.setState({
-									recognized:results
-								});
-							});
-						}else{// add directly only if not auto-draw
-							console.log('adding drawing to ', paper.project.activeLayer);
-							this.props.createDrawing(paper.project.activeLayer.data.id, path);
-							// if (this.props.choiceId){
-							// 	
-							// }
-						}
-					}
-					path = null;
-				}
-			}
-		});
-
-		// penTool.activate();
-		// // Draw the view now:
-		// paper.view.draw();
+		this.setupTools();
+		
+		this.setupLayers(this.paper, this.props.drawings, this.props.selected);
 
 	}
 
@@ -146,178 +76,166 @@ class DrawingCanvas extends Component {
 		// 	});
 		// }
 		// item changed, reset visible states
-	
-		
-		this.initialize();
-
-		if (prevProps.item!=this.props.item){
-			for (let layer of Object.values(this.layerMap)){
-				layer.visible=false;
-			}
-			let {form, item, choice} = this.props;
-			if (choice){			
-				this.layerMap[choice.id].visible=true;
-				this.layerMap[item.id].visible=true;
-			}else if (item){
-				this.layerMap[item.id].visible=true;
-			}else{
-				this.layerMap[form.id].visible=true;
-			}
+		// this is probably called every time & every stroke...TODO: improve!
+		if (prevProps.selected!=this.props.selected){
+			console.log('this.selected', this.props.selected);
+			this.paper.project.activeLayer.visible=false;
+			this.paper.project.layers[this.props.selected].activate();
+			this.paper.project.activeLayer.visible=true;
 		}
-	
+		if (prevProps.drawings!=this.props.drawings){
+			// add new layers if there are new options added
+			this.setupLayers(this.paper, this.props.drawings, this.props.selected);
+			// remove layers if the options were removed
+			let getOptions = (questions)=>questions.reduce((acc,q)=>acc.concat(q.options),[]);
+			let options = getOptions(this.props.drawings.questions);
+			let prevOptions = getOptions(prevProps.drawings.questions);
+			prevOptions.filter(po=>!options.find(o=>o.id==po.id))
+				.forEach(po=>this.paper.project.layers[po.id].remove());
+			console.log('component update', options, prevOptions, this.paper.project.activeLayer, this.paper.project.layers);
+		}
+		// if question changed, reset layer visibility??
 	}
-	initialize(){
-		let {form, item, choice} = this.props;
-		// update canvas based on 
-
-		// add drawings that belong to this form
-		if (!this.layerMap[form.id]){
-			let bgr = new Layer({visible:item==null});
-			form.drawings.forEach(d=>bgr.importJSON(d.json));
-			this.layerMap[form.id] = bgr;
-		}
-		// update text
-		// this.layerMap[form.id].name = form.title;
-		this.layerMap[form.id].data = form;
-		
-		// add drawings that belong to all items in the form...
-		form.items.forEach(itm=>{
-			if (!this.layerMap[itm.id]){
-				// drawings in an item
-				let itemBgr = new Layer({visible:item&&item.id==itm.id});
-				itm.drawings.forEach(d=>itemBgr.importJSON(d.json));
-				this.layerMap[itm.id] = itemBgr;
-			}
-			// this.layerMap[itm.id].name = itm.question;
-			this.layerMap[itm.id].data = itm;
-			
-			// drawings of choices
-			itm.choices.forEach(chc=>{
-				if (!this.layerMap[chc.id]){
-					let vis = new Layer({visible:choice&&choice.id==chc.id});
-					chc.drawings.forEach(d=>vis.importJSON(d.json));
-					this.layerMap[chc.id] = vis;
-				}
-				// this.layerMap[chc.id].name = chc.text;
-				this.layerMap[chc.id].data = chc;
-				
-			});	
-
-			//TODO: handle deleted choices
+	setupTools(){
+		penTool.create(this.paper, (path)=>{
+			this.props.createDrawing(this.paper.project.activeLayer.data.id, path);
 		});
-		//TODO: handle deleted items
+		eraserTool.create(this.paper, (removed)=>{
+			removed.map(item=>{
+				console.log('delete', item.data);
+				if (!item.data.parentId) return;
+				this.props.deleteDrawing(item.data.id);
+			});
+		});
+		autodrawTool.create(this.paper, (path)=>{
+			this.paths.push(path);
+			let query = this.paths.map(path=>path.segments.map(seg=>({x:seg.point.x,y:seg.point.y})));
+			console.log('query',query);
+			autodraw(query).then(results=>{
+				console.log('recognized',results);
+				this.autodrawn = null;
+				this.setState({
+					recognized:results
+				});				
+			});
+		});
+		console.log('tools', this.paper.tools, this.paper.tool);
 		
-		// only make this choice 
-		if (choice){			
-			this.layerMap[choice.id].activate();
-		}else if (item){
-			this.layerMap[item.id].activate();
-		}else{
-			this.layerMap[form.id].activate();
-		}
+	}
+	setupLayers(paper, drawings, selected){
+		// console.log('setupLayers', paper, form, selected);
+		let createLayer = (item)=>{
+			if (paper.project.layers[item.id]) return;// return if exists
+
+			let layer = new paper.Layer({
+				name:item.id,
+				visible:selected==item.id
+			});
+			item.drawings.forEach(d=>layer.importJSON(d.json));
+			layer.data.id = item.id;
+		};
+		//background layer
+		createLayer(drawings);
+		// add drawings that belong to all items in the form...
+		drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
+		
+		paper.project.layers[selected].activate();
 	}
 	selectSuggestion(icon){
 		
-		paper.project.activeLayer.importSVG(icon, (item)=>{
-			console.log('added', item);
-			// item.position  = new paper.Point(225, 225);
-			// item.scaling = 0.2;
-	
-			item.strokeWidth = this.state.penOption.stroke;
-			item.strokeColor = this.state.penOption.color;
-			item.opacity = this.state.penOption.opacity;
-			
+		this.paper.project.activeLayer.importSVG(icon, (item)=>{
+			item.style = this.paper.project.currentStyle;
 			// bounds
 			if (this.paths.length>0){
-				let group = new paper.Group({children:this.paths, visible:false});
+				let group = new this.paper.Group({children:this.paths, visible:false});
 				item.fitBounds(group.bounds);
 				group.remove();
 			}else if (this.autodrawn){				
 				item.fitBounds(this.autodrawn.bounds);
 				// remove previously drawn path
 				this.autodrawn.remove();
-				// if (this.props.choiceId){
-				// 	this.props.createDrawing(this.props.choiceId, this.autodrawn);
-				this.props.deleteDrawing(this.autodrawn.data.parentId, this.autodrawn.data.id);
-				// }
-				
+				this.props.deleteDrawing(this.autodrawn.data.id);
 			}
-			this.props.createDrawing(paper.project.activeLayer.data.id, item);
+			this.props.createDrawing(this.paper.project.activeLayer.data.id, item);
 
 			this.paths = [];
 			this.autodrawn = item;
+			console.log('auto drawn', item);
 		});
 		
 	}
-	toggleLayer(event){
-		let layerId = event.currentTarget.dataset.id;
-		this.layerMap[layerId].visible = !this.layerMap[layerId].visible;
-		paper.view.update();//force
-		this.forceUpdate();
+	handleLayerVisible(id, visible){
+		this.paper.project.layers[id].visible = visible;
+		this.paper.view.update();//force
+		// this.forceUpdate();// necessary?
 	}
 	handleStyleUpdate(style){
-		console.log('style', style);
-		this.setState({penOption:{...style}});
+		console.log('update', style);
+		let {color, stroke,opacity} = style;
+		this.paper.project.currentStyle = {
+			...this.paper.project.currentStyle,
+			strokeColor:color,
+			strokeWidth:stroke,
+			opacity
+		};
 	}
 	clearAutoDrawState(){
 		this.paths = [];
 		this.autodrawn = null;
-	}
-	handleChangeMode(event){
 		this.setState({
-			mode:event.currentTarget.dataset.mode,
 			recognized:[]
 		});	
+	}
+	handleChangeTool(event){
+		let toolName = event.currentTarget.dataset.tool;
+		this.setState({
+			tool:toolName
+		});
+		this.paper.tools.find(tool=>tool.name==toolName).activate();
 		this.clearAutoDrawState();
 	}
-	showStyle(){
-		this.setState({showStyle:true, showLayer:false});
+	showStylePanel(){
+		this.setState({showStylePanel:true, showLayerPanel:false});
 	}
-	showLayer(){
-		this.setState({showLayer:true, showStyle:false});
+	showLayerPanel(){
+		this.setState({showLayerPanel:true, showStylePanel:false});
 	}
-	hideStyle(){
-		this.setState({showStyle:false});
+	hideStylePanel(){
+		this.setState({showStylePanel:false});
 	}
-	hideLayer(){
-		this.setState({showLayer:false});
-	}
-	visible(id){
-		return this.layerMap[id]&&this.layerMap[id].visible;
-	}
-	active(id){
-		return paper.project.activeLayer&& paper.project.activeLayer.data.id==id;
+	hideLayerPanel(){
+		this.setState({showLayerPanel:false});
 	}
 
+
 	render() {
-		let {form} = this.props;
 		
 		return (
 			<div className={css.canvasContainer}>
 				<div className={css.menu}>
-					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='pen'})} 
-						data-mode='pen' 
-						onPointerUp={this.handleChangeMode}>
+					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='pen'})} 
+						data-tool='pen' 
+						onPointerUp={this.handleChangeTool}>
 						<i className="fas fa-pencil-alt"></i>
 					</div>
-					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='eraser'})} 
-						data-mode='eraser' 
-						onPointerUp={this.handleChangeMode}>
+					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='eraser'})} 
+						data-tool='eraser' 
+						onPointerUp={this.handleChangeTool}>
 						<i className="fas fa-eraser"></i>
 					</div>
-					<div className={classNames(css.button,{[css.selectedMode]: this.state.mode=='autodraw'})} 
-						data-mode='autodraw' 
-						onPointerUp={this.handleChangeMode}>
+					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='autodraw'})} 
+						data-tool='autodraw' 
+						onPointerUp={this.handleChangeTool}>
 						<i className="fas fa-magic"></i>
 					</div>
-					<div className={css.button} onPointerUp={this.showStyle}>
+					<div className={css.button} onPointerUp={this.showStylePanel}>
 						<i className="fas fa-palette"></i>
 					</div>
-					<div className={css.button} onPointerUp={this.showLayer}>
+					<div className={css.button} onPointerUp={this.showLayerPanel}>
 						<i className="flaticon-layers"></i>
 					</div>
 				</div>
-				{this.state.mode=='autodraw' && 
+				{this.state.tool=='autodraw' && 
 					<div className={css.suggestions}>
 						{this.state.recognized.length>0 &&
 							<p>Do you mean: </p>
@@ -335,139 +253,44 @@ class DrawingCanvas extends Component {
 					</div>						
 				}
 		
-				{this.state.showLayer&&
+				{this.state.showLayerPanel&&
 					<div className={css.optionPanel} style={{left:'140px'}}>
-						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayer}>Close</div>
-						<div className={css.layers}>
-							<div className={classNames(css.layer,{[css.invisible]:!this.visible(form.id), [css.selected]:this.active(form.id)})} 
-								onPointerUp={this.toggleLayer} data-id={this.props.form.id}>
-								<i 	
-									className={classNames('fas', {
-										'fa-eye':this.visible(form.id),
-										'fa-eye-slash':!this.visible(form.id),
-									})} 
-								></i>
-								<label>{this.props.form.title}</label>
-							</div>							
-							{this.props.form.items.map((item,i)=>
-								<Fragment key={item.id}>
-									<div className={classNames(css.layer,{[css.invisible]:!this.visible(item.id), [css.selected]:this.active(item.id)})} 
-										onPointerUp={this.toggleLayer} data-id={item.id}>
-										<i 
-											className={classNames('fas', {
-												'fa-eye':this.visible(item.id),
-												'fa-eye-slash':!this.visible(item.id),
-											})}
-										></i>
-										<label>{`Q${i+1}. ${item.question}`}</label>
-									</div>
-									{item.choices.map((choice,i)=>
-										<div key={choice.id} 
-											className={classNames(css.layer, css.indent,{[css.invisible]:!this.visible(choice.id), [css.selected]:this.active(choice.id)})}
-											onPointerUp={this.toggleLayer} data-id={choice.id}>
-											<i 
-												className={classNames('fas', {
-													'fa-eye':this.visible(choice.id),
-													'fa-eye-slash':!this.visible(choice.id)
-												})}
-											></i>
-											<label>{`${i+1}. ${choice.text}`}</label>
-										</div>
-									)}
-								</Fragment>
-							)}
-						</div>
-						
+						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div>
+						<LayerView drawings={this.props.drawings} onLayerVisible={this.handleLayerVisible}/>
 					</div>
 				}
-				{this.state.showStyle&&
+
+				{this.state.showStylePanel&&
 					<div className={css.optionPanel} style={{left:'80px'}}>
-						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStyle}>Close</div>
-						<Style color={this.state.penOption.color}
-							stroke={this.state.penOption.stroke}
-							opacity={this.state.penOption.opacity}
+						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div>
+						<Style color={this.initStyle.strokeColor}
+							stroke={this.initStyle.strokeWidth}
+							opacity={this.initStyle.opacity}
 							onStyleUpdate={this.handleStyleUpdate}/>
 					</div>
 				}
 				
 				<canvas ref={this.canvasRef} className={css.canvas}/>
-				{/* <svg className={css.canvas} 
-					ref={node=>this.container=node}
-				>
-					{this.props.drawings.map((drawing,i)=>(
-						<path key={i} className={css.drawing} 
-							d={this.line(drawing.path)} 
-							stroke={drawing.color}
-							strokeWidth={drawing.stroke}
-							strokeOpacity={drawing.opacity}
-						/>)
-					)}
-				</svg> */}
+				
 			</div>
 		);
 	}
 }
 
 DrawingCanvas.propTypes = {
-	// formId:PropTypes.string,
-	// questionId:PropTypes.string,
-	// choiceId:PropTypes.string,
-	// choiceText:PropTypes.string,
-
-	form:PropTypes.object,
-	item:PropTypes.object,
-	choice:PropTypes.object,
+	drawings:PropTypes.object,// contains drawings in a nested structure
+	selected:PropTypes.string,
 	createDrawing:PropTypes.func,
 	deleteDrawing:PropTypes.func
 };
 
-const mapStateToProps = (state, ownProps) =>{
-	let form = state.forms[ownProps.formId];
-	console.log(ownProps.formId);
-	
-	// move this to selectors
-	let getChoice = (id)=>{
-		if (!id){
-			return null;
-		}
-		let choice = state.choices[id];
-		let drawings = choice.drawings.map(id=>state.drawings[id]);
-		return {
-			...choice,
-			drawings
-		};
-	};
-	let getItem = (id)=>{
-		if (!id){
-			return null;
-		}
-		let item = state.items[id];
-		let drawings = item.drawings.map(id=>state.drawings[id]);
-		let choices = item.choices.map(getChoice);
+const getDrawings = makeGetAllDrawings();
 
-		return {
-			...item,
-			choices,
-			drawings
-		};
-	};
-	
-	form = {
-		...form,
-		items:form.items.map(getItem), 
-		drawings:form.drawings.map(id=>state.drawings[id])
-	};
-	console.log(form);
-	let item = getItem(ownProps.questionId),
-		choice = getChoice(ownProps.choiceId); //current item & choice if any
-	// let item = state.choices[ownProps.questionId];
-	// let choice = state.choices[ownProps.choiceId];
-	// let drawings = choice?choice.drawings.map(did=>state.drawings[did]):[];
-	// console.log(drawings);
+const mapStateToProps = (state, ownProps) =>{
+	let drawings = getDrawings(state, ownProps);
 	return {
-		form,
-		item,
-		choice
+		drawings,
+		selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId//option or background
 	};
 };
 
