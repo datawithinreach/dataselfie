@@ -145,10 +145,10 @@ class DrawingCanvas extends Component {
 			
 			let layer = new paper.Layer({
 				name:item.id,
-				visible:selected==item.id
+				visible:selected==item.id,
+				project:paper.project
 			});
 			item.drawings.forEach(d=>layer.importJSON(d.json));
-			paper.project.addLayer(layer);
 			console.log('create!', item.id, paper.project.layers);
 			
 			layer.data.id = item.id;
