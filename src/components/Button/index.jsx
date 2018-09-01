@@ -36,7 +36,7 @@ export default class Button extends React.Component {
 		return (
 			<button className={[this.props.className, css.button, filled?css.filled:''].join(' ')} {...otherProps}
 				onPointerDown = {this.handlePointerDown}
-				style={style}>
+				style={{...style, ...this.props.style}}>
 				{children}
 			</button>
 		);
@@ -45,6 +45,7 @@ export default class Button extends React.Component {
 
 Button.propTypes = {
 	className:PropTypes.string,
+	style:PropTypes.string,
 	label:PropTypes.string,
 	stretch:PropTypes.bool,
 	children:PropTypes.node.isRequired,
