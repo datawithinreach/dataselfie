@@ -56,3 +56,13 @@ a:visited{ color: #0091EA }
 	z-index: 1;
 	background-color:white;
 }
+
+.snackbar{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #F44336;
+  padding-left:10px;
+  margin:5px;
+
+}
