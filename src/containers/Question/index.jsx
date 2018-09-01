@@ -4,10 +4,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createOption, updateOption, deleteOption, makeGetOptions} from 'ducks/options';
 import {updateQuestion} from 'ducks/questions';
-import {makeGetOptionDrawings} from 'ducks/drawings';
+// import {makeGetOptionDrawings} from 'ducks/drawings';
 import {selectOption} from 'ducks/ui';
 import TextField from 'components/TextField';
 import Button from 'components/Button';
+import DrawingThumbnail from 'containers/DrawingThumbnail';
 import css from './index.css';
 class Question extends Component {
 	constructor(props){
@@ -18,14 +19,20 @@ class Question extends Component {
 		this.handleQuestionChange = this.handleQuestionChange.bind(this);
 	}
 	componentDidMount(){
-		if(!this.props.selectedOption && this.props.options.length>0){
-			this.props.selectOption(this.props.options[0].id);
-		}
+		this.selectOptionSanityCheck();
 	}
 	componentDidUpdate(){
-		if(!this.props.selectedOption && this.props.options.length>0){
-			this.props.selectOption(this.props.options[0].id);
+		this.selectOptionSanityCheck();
+	}
+	selectOptionSanityCheck(){
+		if(this.props.options.length>0){
+			if (!this.props.options.find(o=>o.id==this.props.selectedOption)){
+				this.props.selectOption(this.props.options[0].id);
+			}
+		} else{
+			this.props.selectOption(null);
 		}
+
 	}
 	handleCreateOption(){
 		this.props.createOption(this.props.questionId, '');
@@ -75,13 +82,20 @@ class Question extends Component {
 								style={{width:'100%'}} 
 								value={option.text} 
 								onChange={this.handleOptionChange.bind(this,option.id)}/>	
-							<Button className={this.props.selectedOption==option.id?css.selectedOption:undefined} 
-								onPointerUp={this.editDrawing.bind(this,option.id)} outlined>
-								<i className="fas fa-edit"></i>
-							</Button>
-							<Button onPointerUp={this.handleDeleteOption.bind(this,option.id)} outlined>
+							
+							<Button onPointerUp={this.handleDeleteOption.bind(this,option.id)}>
 								<i className="fas fa-times"></i>
 							</Button>
+							{/* <Button className={this.props.selectedOption==option.id?css.selectedOption:undefined} style={{padding:0}}
+								onPointerUp={this.editDrawing.bind(this,option.id)}>
+								<DrawingThumbnail 
+									selected={this.props.selectedOption==option.id} 
+									parentId={option.id}/>
+							</Button> */}
+							<DrawingThumbnail 
+								onPointerUp={this.editDrawing.bind(this,option.id)}
+								selected={this.props.selectedOption==option.id} 
+								parentId={option.id}/>
 						</div>
 					)}
 									
@@ -106,17 +120,17 @@ Question.propTypes = {
 };
 
 const getOptions = makeGetOptions();
-const getDrawings = makeGetOptionDrawings(getOptions);
+// const getDrawings = makeGetOptionDrawings(getOptions);
 const mapStateToProps = (state, ownProps) => {
 	let question = state.questions[ownProps.questionId];
 	let options = getOptions(state, ownProps);
 
-	let drawings = getDrawings(state, ownProps);
-	console.log('question', drawings);
+	// let drawings = getDrawings(state, ownProps);
+	// console.log('question', drawings);
 	return {
 		...question,
 		options,
-		drawings,
+		// drawings,
 		selectedOption:state.ui.selectedOption
 	};
 };
