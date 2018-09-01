@@ -13,6 +13,7 @@ export const UPDATE_DRAWING = 'UPDATE_DRAWING';
 // actions
 export const createDrawing = (parentId, path, attrs = {}) => {
 	let drawingId = uniqueId('drawing_');
+	path.name = drawingId;
 	path.data.id = drawingId;
 	path.data.parentId = parentId; 
 	attrs.json = path.exportJSON();
@@ -33,6 +34,13 @@ export const deleteDrawing = (drawingId) => {
 	return {type: DELETE_DRAWING, drawingId};
 };
 // selectors
+export const makeGetDrawings=()=>{
+	return createSelector(
+		(state, props)=>props.parentId,
+		(state)=>state.drawings,
+		(parentId, drawings)=>Object.values(drawings).filter(d=>d.parentId==parentId)
+	);
+};
 export const makeGetOptionDrawings = (optionSelector)=>{
 	return createSelector(
 		(state, props)=>props.questionId,
@@ -64,7 +72,7 @@ export const makeGetAllDrawings = () =>{
 			drawings = Object.values(drawings);
 			questions = Object.values(questions);
 			options = Object.values(options);
-
+			console.log('OPTIONS', options);
 			return {
 				...form,
 				drawings: drawings.filter(d=>d.parentId==formId),
