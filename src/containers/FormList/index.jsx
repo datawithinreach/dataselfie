@@ -9,8 +9,8 @@ import {requestForms, makeGetFormsByUser} from 'ducks/forms';
 import FormThumbnail from '../FormThumbnail';
 // import Button from 'components/Button';
 import css from './index.css';
-const width = 300;
-const height = 320;
+const width = 225;
+const height = 225;
 // const threshold = 10;
 
 
@@ -52,7 +52,7 @@ class FormList extends Component {
 					</div>
 				</div> */}
 				<div className={css.formList} onPointerUp={this.handleDeselect}>
-					<div className={css.addButton} onPointerUp={this.onCreateForm}>
+					<div className={css.addButton} style={{width:`${width}px`, height:`${height}px`}} onPointerUp={this.onCreateForm}>
 						+
 					</div>
 					{forms}

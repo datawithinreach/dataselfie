@@ -2,7 +2,7 @@
 .progress{
 	display:flex;
 	flex-wrap: wrap;
-	padding: 40px 0px 0px 0px ;
+	padding: 20px 0px 0px 5px ;
 }
 
 
@@ -32,7 +32,8 @@
 	transition-duration: 0.2s;
 	vertical-align: middle;
 	cursor: pointer;
-	margin-bottom: 40px;
+	border-radius: 15px;
+	
 }
 .marker:hover{
 
@@ -60,6 +61,7 @@
     text-align: center;
 	color: #212121;
 	border:2px solid #212121;
+	border-radius: 25px;
 }
 .end.marker:hover{
 	color:white;
@@ -91,7 +93,7 @@
 
 
 .content{
-	margin-top:20px;
+	margin-top:5px;
 }
 
 .columns{
