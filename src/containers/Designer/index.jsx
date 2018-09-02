@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {updateForm} from 'ducks/forms';
 import {createQuestion,deleteQuestion,updateQuestion,makeGetQuestions} from 'ducks/questions';
-import {selectQuestion} from 'ducks/ui';
+import {selectQuestion, selectOption} from 'ducks/ui';
 
 import css from './index.css';
 import TextField from 'components/TextField';
@@ -35,7 +35,10 @@ class Designer extends Component {
 		// this.setState({curStep:parseInt(e.target.dataset.step), curOptionId:null});
 		let qid = e.target.dataset.id;
 		this.props.selectQuestion(qid);
-
+		// if (qid){
+		// 	let question = this.props.questions.find(q=>q.id==qid);
+		// 	this.props.selectOption(question.options.length>0?question.options[0].id:null);
+		// }
 	}
 	createQuestion(){
 		// set current step
@@ -48,7 +51,12 @@ class Designer extends Component {
 		index-=1;
 		if (index>=0){
 			this.props.selectQuestion(this.props.questions[index].id);
-
+			// index-=1;
+			// if (index>=0){
+			// 	let question = this.props.questions[index];
+			// 	this.props.selectQuestion(question.id);
+			// 	// this.props.selectOption(question.options.length>0?question.options[0].id:null);
+			// }
 		}else{
 			this.props.selectQuestion(null);
 		}		
@@ -57,7 +65,11 @@ class Designer extends Component {
 		let index = this.props.questions.findIndex(q=>q.id==this.props.selectedQuestion);
 		index+=1;
 		if (index<this.props.questions.length){
+			// index+=1;
 			this.props.selectQuestion(this.props.questions[index].id);
+			// let question = this.props.questions[index];
+			// this.props.selectQuestion(question.id);
+			// this.props.selectOption(question.options.length>0?question.options[0].id:null);
 		}	
 	}
 	deleteQuestion(){
@@ -78,7 +90,7 @@ class Designer extends Component {
 	
 
 	render() {
-		let {questions, selectedQuestion, formId} = this.props;
+		let {questions, selectedQuestion, formId, selectOption} = this.props;
 		return (
 			<div>				
 				<div className={css.progress}>
@@ -133,7 +145,7 @@ class Designer extends Component {
 						</div>
 						<div className={css.column}>
 							{/* pass memoized questions for performance */}
-							<DrawingCanvas formId={formId} />
+							<DrawingCanvas formId={formId} selected={selectOption?selectOption:formId}/>
 						</div>
 					</div>
 					
@@ -156,7 +168,8 @@ Designer.propTypes = {
 	createQuestion:PropTypes.func,
 	deleteQuestion:PropTypes.func,
 	updateQuestion:PropTypes.func,
-	selectQuestion:PropTypes.func
+	selectQuestion:PropTypes.func,
+	selectOption:PropTypes.func,
 
 };
 
@@ -185,7 +198,8 @@ const mapDispatchToProps = (dispatch) => {
 		createQuestion,
 		deleteQuestion,
 		updateQuestion,
-		selectQuestion
+		selectQuestion,
+		selectOption
 	}, dispatch);
 };
 
