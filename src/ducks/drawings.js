@@ -41,60 +41,69 @@ export const makeGetDrawings=()=>{
 		(parentId, drawings)=>Object.values(drawings).filter(d=>d.parentId==parentId)
 	);
 };
-export const makeGetOptionDrawings = (optionSelector)=>{
+export const makeGetSelectedDrawings=()=>{
 	return createSelector(
-		(state, props)=>props.questionId,
-		optionSelector,
+		(state)=>state.ui.selectedOption,
+		(state)=>state.ui.selectedForm,
 		(state)=>state.drawings,
-		(questionId, options, drawings)=>{
-			drawings = Object.values(drawings);
-			return [ // drawings for each option
-				...options.filter(o=>o.questionId==questionId).map(o=>{
-					return {
-						...o,
-						drawings: drawings.filter(d=>d.parentId==o.id)
-					};
-				})
-			];
-		}
+		(selectedOption, selectedForm, drawings)=>Object.values(drawings).filter(d=>d.parentId==(selectedOption?selectedOption:selectedForm))
 	);
 };
-export const makeGetAllDrawings = () =>{
-	return createSelector(
-		(state, props)=>props.formId,
-		// (state, props)=>props.questions,// already selected
-		(state)=>state.forms,
-		(state)=>state.questions,
-		(state)=>state.options,
-		(state)=>state.drawings,
-		(formId, forms, questions, options, drawings)=>{
-			let form = forms[formId];
-			drawings = Object.values(drawings);
-			questions = Object.values(questions);
-			options = Object.values(options);
-			console.log('OPTIONS', options);
-			return {
-				...form,
-				drawings: drawings.filter(d=>d.parentId==formId),
-				questions: [
-					...questions.filter(q=>q.formId==formId).map(q=>{
-						return {
-							...q,
-							options:[ // drawings for each option
-								...options.filter(o=>o.questionId==q.id).map(o=>{
-									return {
-										...o,
-										drawings: drawings.filter(d=>d.parentId==o.id)
-									};
-								})
-							]
-						};
-					})
-				]
-			};
-		}
-	);
-};
+
+// export const makeGetOptionDrawings = (optionSelector)=>{
+// 	return createSelector(
+// 		(state, props)=>props.questionId,
+// 		optionSelector,
+// 		(state)=>state.drawings,
+// 		(questionId, options, drawings)=>{
+// 			drawings = Object.values(drawings);
+// 			return [ // drawings for each option
+// 				...options.filter(o=>o.questionId==questionId).map(o=>{
+// 					return {
+// 						...o,
+// 						drawings: drawings.filter(d=>d.parentId==o.id)
+// 					};
+// 				})
+// 			];
+// 		}
+// 	);
+// };
+// export const makeGetAllDrawings = () =>{
+// 	return createSelector(
+// 		(state, props)=>props.formId,
+// 		// (state, props)=>props.questions,// already selected
+// 		(state)=>state.forms,
+// 		(state)=>state.questions,
+// 		(state)=>state.options,
+// 		(state)=>state.drawings,
+// 		(formId, forms, questions, options, drawings)=>{
+// 			let form = forms[formId];
+// 			drawings = Object.values(drawings);
+// 			questions = Object.values(questions);
+// 			options = Object.values(options);
+// 			console.log('OPTIONS', options);
+// 			return {
+// 				...form,
+// 				drawings: drawings.filter(d=>d.parentId==formId),
+// 				questions: [
+// 					...questions.filter(q=>q.formId==formId).map(q=>{
+// 						return {
+// 							...q,
+// 							options:[ // drawings for each option
+// 								...options.filter(o=>o.questionId==q.id).map(o=>{
+// 									return {
+// 										...o,
+// 										drawings: drawings.filter(d=>d.parentId==o.id)
+// 									};
+// 								})
+// 							]
+// 						};
+// 					})
+// 				]
+// 			};
+// 		}
+// 	);
+// };
 
 
 // reducers
