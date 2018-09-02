@@ -120,7 +120,7 @@ class DesignView extends Component {
 							{selectedQuestion==null?(	
 								<React.Fragment>
 									<TextField placeholder='Title' value={this.props.title} 
-										size={48} onChange={this.handleTitleChange}/>
+										size={36} onChange={this.handleTitleChange}/>
 									<br/>
 									<TextArea placeholder='Description' 
 										value={this.props.description} 
