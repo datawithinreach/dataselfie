@@ -54,8 +54,9 @@
     background-color: #FFF;
     pointer-events: all;
     padding:10px 10px;
-    transition: 0.5s all;
-    
+	transition: 0.5s all;
+	opacity: 0.9;
+    /* overflow-y: scroll; */
     
 }
 .button{
@@ -79,26 +80,7 @@
     color:white;
     background-color: #212121;
   }
-.layers{
-	width: 100%;
-	
-}
-.layer{
-	margin:10px;
-	cursor: pointer;
-}
-.invisible{
-	color:gray;
-}
-.selected{
-	color:#00BFA5;
-}
-.indent{
-	margin-left:30px;
-}
-.layer label{
-	margin-left:15px;
-}
+
 .selectedTool{
 	color:white;
 	background-color: #212121;

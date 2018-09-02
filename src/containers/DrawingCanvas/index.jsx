@@ -2,9 +2,9 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {createDrawing, deleteDrawing, makeGetDrawings} from 'ducks/drawings';
+import {createDrawing, deleteDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
-import LayerView from 'components/LayerView';
+import LayerView from 'containers/LayerView';
 import classNames from 'utils/classNames';
 import css from './index.css';
 import autodraw from 'utils/autodraw';
@@ -43,7 +43,7 @@ class DrawingCanvas extends Component {
 		this.handleChangeTool = this.handleChangeTool.bind(this);
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
 
-		this.handleLayerVisible = this.handleLayerVisible.bind(this);
+		this.handleToggleLayer = this.handleToggleLayer.bind(this);
 		this.canvasRef = React.createRef();
 		// this.selectSuggestion = this.selectSuggestion.bind(this);
 		// this.layerMap = {};
@@ -73,44 +73,71 @@ class DrawingCanvas extends Component {
 
 	componentDidUpdate(prevProps){
 		console.log('componentDidUpdate', this.props);
-		// when switched to a new question, clear canvas
-		// if (prevProps.questionId!=this.props.questionId ||
-		// 	prevProps.choiceId!=this.props.choiceId){
-		// 	paper.project.clear();
-		// 	this.props.drawings.forEach(d=>{
-		// 		paper.project.activeLayer.importJSON(d.json);				
-		// 	});
-		// }
-		// item changed, reset visible states
 		// this is probably called every time & every stroke...TODO: improve!
-		if (prevProps.selected!=this.props.selected){
-			console.log('if (prevProps.selected!=this.props.selected){', this.props.selected);
-			this.paper.project.activeLayer.visible=false;
-			this.paper.project.layers[this.props.selected].activate();
-			this.paper.project.activeLayer.visible=true;
-		}
-		if (prevProps.drawings!=this.props.drawings){
-			// add new layers if there are new options added
-			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
-			console.log('before:',this.paper.project.layers);
-			// remove layers if the options were removed
-			let getOptions = (questions)=>questions.reduce((acc,q)=>acc.concat(q.options),[]);
-			let options = getOptions(this.props.drawings.questions);
-			let prevOptions = getOptions(prevProps.drawings.questions);
-
-			for (let i=0; i<prevOptions.length;i++){
-				if (!options.find(d=>d.id==prevOptions[i].id)){
-					console.log('remove!', prevOptions[i].id);
-					this.paper.project.layers[prevOptions[i].id].remove();
-				}
+		if (prevProps.selectedQuestion!=this.props.selectedQuestion){// when question changed
+			//reset layer visibility
+			let layer = this.paper.project.layers;
+			for (let i=0; i<layer.length; i++){
+				layer[i].visible = false;
 			}
+			//except background
+			this.paper.project.layers[this.props.formId].visible = true;
+
+			// add new layers if there are new options added
+			// this.setupLayer(this.paper, this.props.drawings, this.props.selected);
+			// console.log('before:',this.paper.project.layers);
+			// // remove layers if the options were removed
+			// let getOptions = (questions)=>questions.reduce((acc,q)=>acc.concat(q.options),[]);
+			// let options = getOptions(this.props.drawings.questions);
+			// let prevOptions = getOptions(prevProps.drawings.questions);
+
+			// for (let i=0; i<prevOptions.length;i++){
+			// 	if (!options.find(d=>d.id==prevOptions[i].id)){
+			// 		console.log('remove!', prevOptions[i].id);
+			// 		this.paper.project.layers[prevOptions[i].id].remove();
+			// 	}
+			// }
 
 			// prevOptions.filter(po=>!options.find(o=>o.id==po.id))
 			// 	.forEach(po=>this.paper.project.layers[po.id].remove());
-			console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
+			// console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
 		}
+		if (prevProps.selected!=this.props.selected){
+			// setup  drawings again
+			if (this.props.formId!=this.paper.project.activeLayer.name){
+				this.paper.project.activeLayer.visible=false;
+			}
+			
+			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
+			this.paper.project.layers[this.props.selected].activate();
+			this.paper.project.activeLayer.visible=true;
+		}
+
 		// if question changed, reset layer visibility??
 	}
+
+	setupLayer(paper, drawings, layerId){
+		let createLayer = (id, drawings)=>{
+			if (paper.project.layers[id]) return paper.project.layers[id];// return if exists
+			
+			let layer = new paper.Layer({
+				name:id,
+				project:paper.project
+			});
+			drawings.forEach(d=>layer.importJSON(d.json));
+			
+			layer.data.id = id;
+			return layer;
+		};
+		//background layer
+		createLayer(layerId, drawings);
+		// add drawings that belong to all items in the form...
+		// drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
+		console.log('activeLayer remain the same?', paper.project.activeLayer.name, layerId);
+		paper.project.layers[this.props.selected].activate();//activeLayer should remain the same
+		console.log('AFTER: activeLayer remain the same?', paper.project.activeLayer.name, layerId);
+	}
+
 	setupTools(){
 		penTool.create(this.paper, (path)=>{
 			this.props.createDrawing(this.paper.project.activeLayer.data.id, path);
@@ -137,31 +164,7 @@ class DrawingCanvas extends Component {
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
-	setupLayer(paper, drawings, selected){
-		// console.log('setupLayers', paper, form, selected);
-		let createLayer = (id, drawings)=>{
-			// console.log('create?', item.id);
-			if (paper.project.layers[id]) return;// return if exists
-			
-			let layer = new paper.Layer({
-				name:id,
-				// visible:selected==id,
-				project:paper.project
-			});
-			drawings.forEach(d=>layer.importJSON(d.json));
-			// console.log('create!', item.id, paper.project.layers);
-			layer.data.id = id;
-			layer.activate();
-			return layer;
-		};
-		//background layer
-		createLayer(selected, drawings);
-		
-		// // add drawings that belong to all items in the form...
-		// drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
-		
-		// paper.project.layers[selected].activate();
-	}
+
 	selectSuggestion(icon){
 		
 		this.paper.project.activeLayer.importSVG(icon, (item)=>{
@@ -185,8 +188,16 @@ class DrawingCanvas extends Component {
 		});
 		
 	}
-	handleLayerVisible(id, visible){
-		this.paper.project.layers[id].visible = visible;
+	handleToggleLayer(id){
+		let layer = this.paper.project.layers[id];
+		if (!layer){
+			let drawings = this.props.allDrawings.filter(d=>d.parentId==id);
+			this.setupLayer(this.paper, drawings, id);
+		}else{
+			layer.visible = !layer.visible;
+		}
+		
+		//TODO: layer reordering
 		this.paper.view.update();//force
 		// this.forceUpdate();// necessary?
 	}
@@ -233,6 +244,7 @@ class DrawingCanvas extends Component {
 	render() {
 		// let style = this.paper.project? this.paper.project.currentStyle:this.initStyle;
 		// console.log('style', style)
+		let layers = this.paper.project?this.paper.project.layers:null;
 		return (
 			<div className={css.canvasContainer}>
 				<div className={css.menu}>
@@ -276,22 +288,18 @@ class DrawingCanvas extends Component {
 					</div>						
 				}
 		
-				{this.state.showLayerPanel&&
-					<div className={css.optionPanel} style={{left:'140px'}}>
-						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div>
-						<LayerView drawings={this.props.drawings} onLayerVisible={this.handleLayerVisible}/>
-					</div>
-				}
+				<div className={css.optionPanel} style={{left:'140px', display:this.state.showLayerPanel?'flex':'none'}}>
+					<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div>
+					<LayerView onToggleLayer={this.handleToggleLayer} layers={layers}/>
+				</div>
 
-				{this.state.showStylePanel&&
-					<div className={css.optionPanel} style={{left:'80px'}}>
-						<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div>
-						<Style color={this.state.style.color}
-							stroke={this.state.style.width}
-							opacity={this.state.style.opacity}
-							onStyleUpdate={this.handleStyleUpdate}/>
-					</div>
-				}
+				<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
+					<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div>
+					<Style color={this.state.style.color}
+						stroke={this.state.style.width}
+						opacity={this.state.style.opacity}
+						onStyleUpdate={this.handleStyleUpdate}/>
+				</div>
 				
 				<canvas ref={this.canvasRef} className={css.canvas}/>
 				
@@ -301,21 +309,25 @@ class DrawingCanvas extends Component {
 }
 
 DrawingCanvas.propTypes = {
+	formId:PropTypes.string,
 	drawings:PropTypes.array,// contains drawings in a nested structure
+	allDrawings:PropTypes.array,
 	selected:PropTypes.string,
+	selectedQuestion:PropTypes.string,
 	createDrawing:PropTypes.func,
 	deleteDrawing:PropTypes.func
 };
 
-const getDrawings = makeGetDrawings();
+const getDrawings = makeGetSelectedDrawings();
 
 const mapStateToProps = (state, ownProps) =>{
-	let selected = state.ui.selectedOption?state.ui.selectedOption:ownProps.formId;
-	let drawings = getDrawings(state, {...ownProps, parentId:selected});
+	let drawings = getDrawings(state, ownProps);
 	console.log('drawings', drawings);
 	return {
 		drawings,
-		selected
+		allDrawings:Object.values(state.drawings),
+		selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId,//option or background
+		selectedQuestion:state.ui.selectedQuestion // to reset the visibility
 	};
 };
 
