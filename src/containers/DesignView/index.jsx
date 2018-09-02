@@ -13,7 +13,7 @@ import Question from 'containers/Question';
 import classNames from 'utils/classNames';
 import DrawingCanvas from 'containers/DrawingCanvas';
 // import throttle from 'utils/throttle';
-class Designer extends Component {
+class DesignView extends Component {
 	constructor(props){
 		super(props);
 
@@ -83,7 +83,7 @@ class Designer extends Component {
 			<div>				
 				<div className={css.progress}>
 					<div className={classNames(css.start,css.marker,{[css.current]:selectedQuestion==null})} data-id={null} onPointerUp={this.changeQuestion}>
-					0
+						<i className="fas fa-arrow-right"></i>
 					</div>
 					{questions.map((question, i)=>
 						<Fragment key={question.id}>
@@ -145,7 +145,7 @@ class Designer extends Component {
 	}
 }
 
-Designer.propTypes = {
+DesignView.propTypes = {
 	formId:PropTypes.string,
 	title:PropTypes.string,
 	description:PropTypes.string,
@@ -189,4 +189,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(Designer);
+export default connect(mapStateToProps,mapDispatchToProps)(DesignView);

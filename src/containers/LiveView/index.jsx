@@ -10,7 +10,7 @@ import RadioGroup from 'components/RadioGroup';
 import css from './index.css';
 
 
-class Viewer extends Component {
+class LiveView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -180,7 +180,7 @@ class Viewer extends Component {
 	}
 }
 
-Viewer.propTypes = {
+LiveView.propTypes = {
 	formId:PropTypes.string,
 	title:PropTypes.string,
 	description:PropTypes.string,
@@ -211,4 +211,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(Viewer);
+export default connect(mapStateToProps,mapDispatchToProps)(LiveView);

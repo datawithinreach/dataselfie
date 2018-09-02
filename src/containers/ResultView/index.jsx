@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {createResponse} from 'ducks/responses';
 import css from './index.css';
 import paper, { Layer } from 'paper';
-class Analyzer extends Component {
+class ResultView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -132,7 +132,7 @@ class Analyzer extends Component {
 	}
 }
 
-Analyzer.propTypes = {
+ResultView.propTypes = {
 	formId:PropTypes.string,
 	legend:PropTypes.object,
 	responses:PropTypes.array,
@@ -213,4 +213,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(Analyzer);
+export default connect(mapStateToProps,mapDispatchToProps)(ResultView);
