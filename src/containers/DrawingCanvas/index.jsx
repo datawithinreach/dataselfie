@@ -102,13 +102,14 @@ class DrawingCanvas extends Component {
 			// 	.forEach(po=>this.paper.project.layers[po.id].remove());
 			// console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
 		}
-		if (prevProps.selected!=this.props.selected){
+		if (prevProps.selected!=this.props.selected || prevProps.drawings!=this.props.drawings){
 			// setup  drawings again
 			if (this.props.formId!=this.paper.project.activeLayer.name){
 				this.paper.project.activeLayer.visible=false;
 			}
 			
 			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
+			console.log('selected', this.props.selected);
 			this.paper.project.layers[this.props.selected].activate();
 			this.paper.project.activeLayer.visible=true;
 		}
@@ -117,20 +118,45 @@ class DrawingCanvas extends Component {
 	}
 
 	setupLayer(paper, drawings, layerId){
-		let createLayer = (id, drawings)=>{
-			if (paper.project.layers[id]) return paper.project.layers[id];// return if exists
+		console.log('setupLayer', drawings, layerId);
+		paper.activate();
+		// let createLayer = (id, drawings)=>{
+		// 	if (paper.project.layers[id]) return paper.project.layers[id];// return if exists
 			
-			let layer = new paper.Layer({
-				name:id,
-				project:paper.project
+		// 	let layer = new paper.Layer({
+		// 		name:id,
+		// 		project:paper.project
+		// 	});
+		// 	drawings.forEach(d=>layer.importJSON(d.json));
+			
+		// 	layer.data.id = id;
+		// 	return layer;
+		// };
+		// //background layer
+		// createLayer(layerId, drawings);
+
+
+		let layer = paper.project.layers[layerId];
+		if (!layer){
+			layer = new paper.Layer({
+				name:layerId,
+				project:paper.project,
+				data:{layerId}
 			});
-			drawings.forEach(d=>layer.importJSON(d.json));
-			
-			layer.data.id = id;
-			return layer;
-		};
-		//background layer
-		createLayer(layerId, drawings);
+		}
+		
+		drawings.forEach(d=>{
+			if (!layer.children[d.id]){
+				layer.importJSON(d.json);
+			}            
+		});
+		//remove deleted
+		for (let i=0; i<layer.children.length;i++){
+			if (!drawings.find(d=>d.id==layer.children[i].name)){
+				layer.children[i].remove();
+			}
+		}
+
 		// add drawings that belong to all items in the form...
 		// drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
 		console.log('activeLayer remain the same?', paper.project.activeLayer.name, layerId);
