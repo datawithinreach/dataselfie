@@ -7,6 +7,7 @@ import Viewer from 'containers/Viewer';
 import Analyzer from 'containers/Analyzer';
 import classNames from 'utils/classNames';
 import {requestFormContent} from 'ducks/forms';
+import {selectedForm} from 'ducks/ui';
 import {bindActionCreators} from 'redux';
 // import css from './index.css'; 
 export class Form extends React.Component {
@@ -18,8 +19,12 @@ export class Form extends React.Component {
 		this.changeMode = this.changeMode.bind(this);
 	}
 	componentDidMount(){
-		let {username, id, requestFormContent} = this.props;
+		let {username, id, requestFormContent, selectedForm} = this.props;
 		requestFormContent(username, id);//retrieve form content from server
+		if (this.props.isLoading){
+			selectedForm(id);// when acceced directly from the url
+		}
+		
 	}
 	changeMode(e){
 		this.setState({mode:e.target.dataset.mode});
@@ -60,6 +65,7 @@ Form.propTypes = {
 	id:PropTypes.string,
 	username:PropTypes.string,
 	isLoading:PropTypes.bool,
+	selectedForm:PropTypes.func,
 	requestFormContent:PropTypes.func,
 };
 
@@ -79,7 +85,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		...bindActionCreators({
-			requestFormContent
+			requestFormContent,
+			selectedForm
 		}, dispatch)
 	};
 };

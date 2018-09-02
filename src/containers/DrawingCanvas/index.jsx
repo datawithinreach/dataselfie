@@ -312,7 +312,7 @@ const mapStateToProps = (state, ownProps) =>{
 	console.log('drawings', drawings);
 	return {
 		drawings,
-		selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId//option or background
+		// selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId//option or background
 	};
 };
 

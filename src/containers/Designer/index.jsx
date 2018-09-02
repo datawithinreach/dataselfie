@@ -90,7 +90,7 @@ class Designer extends Component {
 	
 
 	render() {
-		let {questions, selectedQuestion} = this.props;
+		let {questions, selectedQuestion, formId, selectOption} = this.props;
 		return (
 			<div>				
 				<div className={css.progress}>
@@ -145,7 +145,7 @@ class Designer extends Component {
 						</div>
 						<div className={css.column}>
 							{/* pass memoized questions for performance */}
-							<DrawingCanvas formId={this.props.formId}/>
+							<DrawingCanvas formId={formId} selected={selectOption?selectOption:formId}/>
 						</div>
 					</div>
 					
