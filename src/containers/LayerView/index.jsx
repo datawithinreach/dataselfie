@@ -64,7 +64,6 @@ export class LayerView extends React.Component {
 	}
 	render() {
 
-		console.log('---------------');
 		let {form, questions, selected} = this.props;
 		return (
 			<div className={css.layers}>
