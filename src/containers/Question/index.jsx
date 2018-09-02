@@ -81,6 +81,7 @@ class Question extends Component {
 							<DrawingThumbnail 
 								onPointerUp={this.editDrawing.bind(this,option.id)}
 								selected={this.props.selectedOption==option.id} 
+								style={{marginRight:'15px'}}
 								parentId={option.id}/>											
 							<TextField placeholder='Option' 
 								style={{width:'100%'}} 

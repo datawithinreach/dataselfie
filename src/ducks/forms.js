@@ -56,7 +56,25 @@ export const makeGetFormsByUser = () =>{
 		(state) => state.forms,
 		(username, forms)=>username? Object.values(forms).filter(form=>form.username==username) : []); // return annotations for the panel
 };
-
+export const makeGetQuestionnaire = () =>{// except drawings
+	return createSelector(
+		(state)=>state.ui.selectedForm,
+		(state)=>state.questions,
+		(state)=>state.options,
+		(formId, questions, options)=>{
+			questions = Object.values(questions);
+			options = Object.values(options);
+			return [
+				...questions.filter(q=>q.formId==formId).map(q=>{
+					return {
+						...q,
+						options: options.filter(o=>o.questionId==q.id)
+					};
+				})
+			];
+		}
+	);
+};
 // reducers
 
 export default  (state = {}, action)=>{
