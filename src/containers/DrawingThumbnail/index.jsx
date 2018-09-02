@@ -5,6 +5,7 @@ import css from './index.css';
 import {makeGetDrawings} from 'ducks/drawings';
 import {PaperScope} from 'paper';
 const propTypes = {
+	className:PropTypes.string,
 	parentId:PropTypes.string,
 	selected:PropTypes.bool,
 	drawings:PropTypes.array,
@@ -53,14 +54,14 @@ export class DrawingThumbnail extends React.Component {
 		// console.log(paper.project.currentStyle, paper.project);
 	}
 	render() {
-		let {selected} = this.props;
+		let {selected,className} = this.props;
 		// console.log('selected', selected);
 		let otherProps = {...this.props};
 		Object.keys(DrawingThumbnail.propTypes).forEach(k=>delete otherProps[k]);
 
 		return (
 			<canvas ref={this.canvasRef} 
-				className={[css.thumbnail, selected?css.selected:''].join(' ')} 
+				className={[className, css.thumbnail, selected?css.selected:''].join(' ')} 
 				width={this.props.width} height={this.props.height}
 				{...otherProps}/>
 		);

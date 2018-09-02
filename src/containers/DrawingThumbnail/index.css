@@ -1,10 +1,9 @@
 .thumbnail{
-    border: 2px solid #eeeeee;
+    border: 2px solid #BDBDBD;
     background-color: white;
     transition: all 0.2s;
     box-sizing: border-box;
     margin: 5px;
-    margin-right:15px;
 }
 .thumbnail:hover{
     border: 2px solid #212121;
