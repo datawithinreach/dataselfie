@@ -1,0 +1,78 @@
+.layers{
+	width: 100%;
+	max-height: 350px;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+.layers::-webkit-scrollbar-track{
+	
+	background:transparent;
+}
+
+.layers::-webkit-scrollbar{
+	width: 4px;
+	
+}
+.layers::-webkit-scrollbar-thumb{
+	background:rgba(0,0,0,0);
+	border-radius:2px
+}
+.layers:hover::-webkit-scrollbar-thumb{
+    background: rgba(0, 0, 0, 0.15)
+}
+
+
+.layer{
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.question{
+	margin-top:15px;
+	margin-left:10px;
+	font-size: 14px;
+	box-sizing: border-box;
+	padding-bottom:5px;
+	border-bottom: 1px dashed #BDBDBD;
+}
+.leftGroup{
+	display: flex;
+	align-items: center;
+}
+.layer canvas{
+	border:2px solid #212121;
+}
+.invisible{
+	color:#BDBDBD;
+}
+.layer.invisible canvas{
+	border:2px solid #BDBDBD;
+}
+.selected{
+	color:#00BFA5;
+}
+.layer.selected canvas{
+	border:2px solid #00BFA5;
+}
+.layer.selected:hover{
+	color: #00BFA5;
+}
+.layer.selected:hover canvas{
+	border:2px solid #00BFA5;
+}
+
+.layer label{
+	margin:5px;
+	font-size: 14px;
+	cursor: pointer;
+}
+.layer i{
+	margin:5px;
+}
+.layer:hover{
+	color:#212121;
+}
+.layer:hover canvas{
+	border:2px solid #212121;
+}
