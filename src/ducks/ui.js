@@ -67,7 +67,9 @@ export default (state=initState, action)=>{
 		case CREATE_FORM:
 			return {
 				...state,
-				selectedForm: action.formId
+				selectedForm: action.formId,
+				selectedQuestion:null,
+				selectedOption:null,
 			};
 		case DELETE_FORM:
 			return {
