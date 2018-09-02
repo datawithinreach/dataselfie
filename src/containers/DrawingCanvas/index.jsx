@@ -118,7 +118,7 @@ class DrawingCanvas extends Component {
 	}
 
 	setupLayer(paper, drawings, layerId){
-		console.log('setupLayer', drawings, layerId);
+		// console.log('setupLayer', drawings, layerId);
 		paper.activate();
 		// let createLayer = (id, drawings)=>{
 		// 	if (paper.project.layers[id]) return paper.project.layers[id];// return if exists
