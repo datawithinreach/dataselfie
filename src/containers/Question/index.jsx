@@ -77,14 +77,18 @@ class Question extends Component {
 								
 				<div className={css.options}>
 					{this.props.options.map((option)=>
-						<div key={option.id} className={css.option}>											
+						<div key={option.id} className={css.option}>
+							<DrawingThumbnail 
+								onPointerUp={this.editDrawing.bind(this,option.id)}
+								selected={this.props.selectedOption==option.id} 
+								parentId={option.id}/>											
 							<TextField placeholder='Option' 
 								style={{width:'100%'}} 
 								value={option.text} 
 								onChange={this.handleOptionChange.bind(this,option.id)}/>	
-							
+
 							<Button onPointerUp={this.handleDeleteOption.bind(this,option.id)}>
-								<i className="fas fa-times"></i>
+								<i className="far fa-trash-alt"></i>
 							</Button>
 							{/* <Button className={this.props.selectedOption==option.id?css.selectedOption:undefined} style={{padding:0}}
 								onPointerUp={this.editDrawing.bind(this,option.id)}>
@@ -92,10 +96,7 @@ class Question extends Component {
 									selected={this.props.selectedOption==option.id} 
 									parentId={option.id}/>
 							</Button> */}
-							<DrawingThumbnail 
-								onPointerUp={this.editDrawing.bind(this,option.id)}
-								selected={this.props.selectedOption==option.id} 
-								parentId={option.id}/>
+
 						</div>
 					)}
 									
