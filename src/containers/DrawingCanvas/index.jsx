@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {createDrawing, deleteDrawing, makeGetAllDrawings} from 'ducks/drawings';
+import {createDrawing, deleteDrawing, makeGetDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
 import LayerView from 'components/LayerView';
 import classNames from 'utils/classNames';
@@ -67,7 +67,7 @@ class DrawingCanvas extends Component {
 
 		this.setupTools();
 		
-		this.setupLayers(this.paper, this.props.drawings, this.props.selected);
+		this.setupLayer(this.paper, this.props.drawings, this.props.selected);
 
 	}
 
@@ -91,7 +91,7 @@ class DrawingCanvas extends Component {
 		}
 		if (prevProps.drawings!=this.props.drawings){
 			// add new layers if there are new options added
-			this.setupLayers(this.paper, this.props.drawings, this.props.selected);
+			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
 			console.log('before:',this.paper.project.layers);
 			// remove layers if the options were removed
 			let getOptions = (questions)=>questions.reduce((acc,q)=>acc.concat(q.options),[]);
@@ -137,28 +137,30 @@ class DrawingCanvas extends Component {
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
-	setupLayers(paper, drawings, selected){
+	setupLayer(paper, drawings, selected){
 		// console.log('setupLayers', paper, form, selected);
-		let createLayer = (item)=>{
-			console.log('create?', item.id);
-			if (paper.project.layers[item.id]) return;// return if exists
+		let createLayer = (id, drawings)=>{
+			// console.log('create?', item.id);
+			if (paper.project.layers[id]) return;// return if exists
 			
 			let layer = new paper.Layer({
-				name:item.id,
-				visible:selected==item.id,
+				name:id,
+				// visible:selected==id,
 				project:paper.project
 			});
-			item.drawings.forEach(d=>layer.importJSON(d.json));
-			console.log('create!', item.id, paper.project.layers);
-			
-			layer.data.id = item.id;
+			drawings.forEach(d=>layer.importJSON(d.json));
+			// console.log('create!', item.id, paper.project.layers);
+			layer.data.id = id;
+			layer.activate();
+			return layer;
 		};
 		//background layer
-		createLayer(drawings);
-		// add drawings that belong to all items in the form...
-		drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
+		createLayer(selected, drawings);
 		
-		paper.project.layers[selected].activate();
+		// // add drawings that belong to all items in the form...
+		// drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
+		
+		// paper.project.layers[selected].activate();
 	}
 	selectSuggestion(icon){
 		
@@ -299,20 +301,21 @@ class DrawingCanvas extends Component {
 }
 
 DrawingCanvas.propTypes = {
-	drawings:PropTypes.object,// contains drawings in a nested structure
+	drawings:PropTypes.array,// contains drawings in a nested structure
 	selected:PropTypes.string,
 	createDrawing:PropTypes.func,
 	deleteDrawing:PropTypes.func
 };
 
-const getDrawings = makeGetAllDrawings();
+const getDrawings = makeGetDrawings();
 
 const mapStateToProps = (state, ownProps) =>{
-	let drawings = getDrawings(state, ownProps);
+	let selected = state.ui.selectedOption?state.ui.selectedOption:ownProps.formId;
+	let drawings = getDrawings(state, {...ownProps, parentId:selected});
 	console.log('drawings', drawings);
 	return {
 		drawings,
-		// selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId//option or background
+		selected
 	};
 };
 
