@@ -68,6 +68,11 @@ class DrawingCanvas extends Component {
 		this.setupTools();
 		
 		this.setupLayer(this.paper, this.props.drawings, this.props.selected);
+		
+		//when not starting from background (e.g., from preview back to design)
+		if (!this.paper.project.layers[this.props.formId]){
+			this.handleToggleLayer(this.props.formId);
+		}
 
 	}
 
@@ -80,7 +85,6 @@ class DrawingCanvas extends Component {
 			for (let i=0; i<layer.length; i++){
 				layer[i].visible = false;
 			}
-			//except background
 			this.paper.project.layers[this.props.formId].visible = true;
 
 			// add new layers if there are new options added

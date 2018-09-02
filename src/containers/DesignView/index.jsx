@@ -9,6 +9,7 @@ import {selectQuestion} from 'ducks/ui';
 import css from './index.css';
 import TextField from 'components/TextField';
 import TextArea from 'components/TextArea';
+import Button from 'components/Button';
 import Question from 'containers/Question';
 import classNames from 'utils/classNames';
 import DrawingCanvas from 'containers/DrawingCanvas';
@@ -106,16 +107,15 @@ class DesignView extends Component {
 					<div className={css.columns}>	
 						<div className={css.column}>
 							<div className={css.navMenu}>
-								<div className={css.button} onPointerUp={this.prevQuestion}>
-									<i className="fas fa-arrow-left"></i>
-								</div>
-								<div className={css.button} onPointerUp={this.nextQuestion}>
-									<i className="fas fa-arrow-right"></i>
-								</div>
-								{selectedQuestion&&
-								<div className={css.button} onPointerUp={this.deleteQuestion}>
+								<Button onPointerUp={this.prevQuestion} outlined>
+									<i className="fas fa-arrow-left"></i> Prev
+								</Button>
+								<Button onPointerUp={this.nextQuestion} outlined>
+									<i className="fas fa-arrow-right"></i> Next
+								</Button>
+								<Button onPointerUp={this.deleteQuestion} outlined>
 									Delete
-								</div>}
+								</Button>
 							</div>
 							{selectedQuestion==null?(	
 								<React.Fragment>

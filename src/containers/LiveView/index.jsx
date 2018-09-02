@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createResponse} from 'ducks/responses';
+import {makeGetQuestionnaire} from 'ducks/forms';
 import classNames from 'utils/classNames';
 import TextField from 'components/TextField';
 import RadioGroup from 'components/RadioGroup';
+import Button from 'components/Button';
 
 import css from './index.css';
 
@@ -14,102 +16,97 @@ class LiveView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			curStep: -1,
+			selectedQuestion: null,
 			response:{},
 			showError:false
 		};
-		this.changeStep = this.changeStep.bind(this);
-		this.nextItem = this.nextItem.bind(this);
-		this.prevItem = this.prevItem.bind(this);
+		this.changeQuestion = this.changeQuestion.bind(this);
+		this.nextQuestion = this.nextQuestion.bind(this);
+		this.prevQuestion = this.prevQuestion.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
-		this.handleIdChange = this.handleIdChange.bind(this);
+		this.handleResponseNameChange = this.handleResponseNameChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleReleaseError = this.handleReleaseError.bind(this);
 	}
 	
-	static getDerivedStateFromProps (prop, state){
-		// restart the form
-		// console.log('getDerivedStateFromProps');
-		if (state.curStep>=prop.items.length){
-			return {
-				curStep:  -1,
-				response:{},
-				showError:false
-			};
+
+	changeQuestion(e){
+		// console.log('changeQuestion',e.target);
+		let qid = e.target.dataset.id;
+		this.setState({selectedQuestion:qid});
+	}
+	prevQuestion(){
+		let index = this.props.questions.findIndex(q=>q.id==this.state.selectedQuestion);
+		index-=1;
+		if (index>=0){
+			this.setState({selectedQuestion:this.props.questions[index].id});
 		}else{
-			return null;
+			this.setState({selectedQuestion:null});
 		}
 	}
-
-	changeStep(e){
-		// console.log('changeStep',e.target);
-		this.setState({curStep:parseInt(e.target.dataset.step)});
-	}
-	prevItem(){
-		if (this.state.curStep-1>=-1){
-			this.setState({curStep:this.state.curStep-1});
-		}			
-	}
-	nextItem(){
-		if (this.state.curStep+1<this.props.items.length){
-			this.setState({curStep:this.state.curStep+1});
+	nextQuestion(){
+		let index = this.props.questions.findIndex(q=>q.id==this.state.selectedQuestion);
+		index+=1;
+		if (index<this.props.questions.length){
+			this.setState({selectedQuestion:this.props.questions[index].id});
 		}	
 	}
-	getCurItem(){
-		let {curStep} = this.state;
-		let {items} = this.props;
-		return curStep>=0 && curStep<items.length? items[curStep]:null;
+	getQuestion(){
+		return this.props.questions.find(q=>q.id==this.state.selectedQuestion);
 	}
 	handleSelect(event){
 		// console.log('selected',event.target.value);
-		let curItem = this.getCurItem();
+		let question = this.getQuestion();
 		this.setState({response:{
 			...this.state.response,
-			[curItem.id]:event.target.value
+			[question.id]:event.target.value
 		}});
 	}
-	handleIdChange(event){
-		// console.log('handleIdChange',event.target.value);
-		let response = {
+	handleResponseNameChange(event){
+		// console.log('handleResponseNameChange',event.target.value);
+		this.setState({response:{
 			...this.state.response,
-			id:event.target.value
-		};
-		// console.log('response', response);
-		this.setState({response});
+			name:event.target.value
+		}});
+
+	}
+	handleReleaseError(){
+		this.setState({showError:false});
 	}
 	handleSubmit(){
 		let {response} = this.state;
-		let {items} = this.props;
-		if (response.id && items.every(item=>response[item.id])){
-			console.log('submitting', this.state.response);			
-			this.props.createResponse(this.props.formId, {response});
+		let {questions} = this.props;
+		if (response.name && questions.every(item=>response[item.id])){
+			console.log('submitting', this.state.response);		
+			if (!this.props.preview){
+				this.props.createResponse(this.props.formId, {response});
+			}else{
+				this.setState({showError:true, error:'You can not actually submit your response in the preview mode.'});
+			}
+			
 		}else{
-			let missing =  items.length - items.filter(item=>response[item.id]).length;
-			missing += (response.id?0:1);
+			let missing =  questions.length - questions.filter(item=>response[item.id]).length;
+			missing += (response.name?0:1);
 			this.setState({showError:true, error:`There ${missing>1?'are':'is'} ${missing} missing fields in this form.`});
-
-			setTimeout(() => {
-				console.log('hide error');
-				this.setState({showError:false});
-			}, 2000);
 		}
 		
 	}
 	render() {
-		let {curStep, response} = this.state;
+		let {selectedQuestion, response, showError} = this.state;
 		// console.log('response',response.id);
-		let {items} = this.props;
-		let curItem = this.getCurItem();
+		let {questions} = this.props;
+		let curQuestion = this.getQuestion();
 		return (
 			<div>
 				<div className={css.progress}>
-					<div className={classNames(css.start,css.marker,{[css.current]:-1==curStep,  [css.incomplete]: -1<curStep && response.id==null})} data-step={-1} onPointerUp={this.changeStep}>
-					0
+					<div className={classNames(css.start,css.marker,{[css.current]:selectedQuestion==null,  [css.incomplete]: showError&&response.name==null})} data-id={null} onPointerUp={this.changeQuestion}>
+						<i className="fas fa-arrow-right"></i>
 					</div>
-					{items.map((item, i)=>
-						<Fragment key={i}>
+					{questions.map((question,i)=>
+						<Fragment key={question.id}>
 							<div className={css.bar}/>
-							<div className={classNames(css.marker,{[css.current]:i==curStep, [css.incomplete]: i<curStep && response[this.props.items[i].id]==null})} 
-								data-step={i} onPointerUp={this.changeStep}>
+							<div className={classNames(css.marker,{[css.current]:question.id==selectedQuestion, [css.incomplete]: showError&&response[this.props.questions[i].id]==null})} 
+								data-id={question.id} onPointerUp={this.changeQuestion}>
 								{i+1}
 							</div>
 						</Fragment>
@@ -119,17 +116,21 @@ class LiveView extends Component {
 				<div className={css.content}>
 					<div className={classNames(css.error,{[css.showError]:this.state.showError==true})}>
 						{this.state.error}
+						<a style={{marginLeft:'10px'}}onPointerUp={this.handleReleaseError}>Clear</a>
 					</div>
-					{curStep==-1&&(	
+					<div className={css.navMenu}>
+						<Button onPointerUp={this.prevQuestion} outlined>
+							<i className="fas fa-arrow-left"></i> Prev
+						</Button>
+						<Button onPointerUp={this.nextQuestion} outlined>
+							<i className="fas fa-arrow-right"></i> Next
+						</Button>
+						<Button onPointerUp={this.handleSubmit} outlined>
+							Submit
+						</Button>
+					</div>
+					{selectedQuestion==null?(
 						<Fragment>
-							{/* <div>
-								<div className={css.button} onPointerUp={this.prevItem}>
-									<i className="fas fa-arrow-left"></i>
-								</div>
-								<div className={css.button} onPointerUp={this.nextItem}>
-									<i className="fas fa-arrow-right"></i>
-								</div>
-							</div> */}
 							<div className={css.title}>{this.props.title}</div>
 							<br/>
 							<div>{this.props.description}</div>
@@ -137,44 +138,21 @@ class LiveView extends Component {
 							{/* <div>Please write down any identifier for your response such as a name or date.</div>									 */}
 							<TextField placeholder='ID, e.g., name or date'	
 								value={response.id? response.id: ''}
-								onChange={this.handleIdChange}/>
+								onChange={this.handleResponseNameChange}/>
 						</Fragment>
 						
-					)}
-					{curStep!=-1&&(
+					):(
 						<Fragment>
 							<div className={css.question}>
-								<div>{curItem.question}</div>
+								<div>{curQuestion.text}</div>
 							</div>
-							<RadioGroup items={curItem.choices}
-								checked={response[curItem.id]} 
+							<RadioGroup items={curQuestion.options}
+								checked={response[curQuestion.id]} 
 								onChange={this.handleSelect}/>
-							{/* <div className={css.choices}>
-								{curItem&&curItem.choices.map((choice)=>
-									<div key={choice.id} className={css.choice}>		
-										<div>{choice.text}</div>
-									</div>
-								)}
-								
-							</div> */}
 						</Fragment>
 					)}
 				</div>
-				{curStep>=0&&
-					<div className={css.button} onPointerUp={this.prevItem}>
-						<i className="fas fa-arrow-left"></i> Prev
-					</div>
-				}
-				{curStep<(items.length-1) &&
-					<div className={css.button} onPointerUp={this.nextItem}>
-						<i className="fas fa-arrow-right"></i> Next
-					</div>
-				}
-				{curStep==(items.length-1) &&
-					<div className={css.button} onPointerUp={this.handleSubmit}>
-						Submit
-					</div>
-				}
+
 			</div>
 		);
 	}
@@ -184,24 +162,20 @@ LiveView.propTypes = {
 	formId:PropTypes.string,
 	title:PropTypes.string,
 	description:PropTypes.string,
-	items:PropTypes.array,
+	questions:PropTypes.array,
+	preview:PropTypes.bool,
 	createResponse:PropTypes.func
 };
 
+const getQuestions = makeGetQuestionnaire();
 const mapStateToProps = (state, ownProps) => {
 	let formId = ownProps.formId;
 	let form = state.forms[formId];
-	let items = form.items.map(iid=>{
-		let item = state.items[iid];
-		return {
-			...item,
-			choices: item.choices.map(cid=>state.choices[cid])
-		};
-	});
-	console.log('items', items);
+	let questions = getQuestions(state, ownProps);
+
 	return {
 		...form,
-		items
+		questions
 	};
 };
 

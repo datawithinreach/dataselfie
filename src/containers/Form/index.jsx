@@ -36,7 +36,7 @@ export class Form extends React.Component {
 		}else if (this.state.mode=='design'){
 			return <DesignView formId={this.props.id}/>;
 		}else if (this.state.mode=='preview'){
-			return <LiveView formId={this.props.id}/>;
+			return <LiveView formId={this.props.id} preview/>;
 		}else if (this.state.mode=='analyze'){
 			return <ResultView formId={this.props.id}/>;
 		}
