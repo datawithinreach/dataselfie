@@ -17,7 +17,7 @@ export default class Button extends React.Component {
 		}
 	}
 	render() {
-		let {stretch, outlined, filled, children} = this.props;
+		let {stretch, outlined, filled, selected, children} = this.props;
 		let otherProps = {...this.props};
 		Object.keys(Button.propTypes).forEach(k=>delete otherProps[k]);
         
@@ -33,6 +33,10 @@ export default class Button extends React.Component {
 			style.backgroundColor = '#212121';
 			style.color = 'white';
 		}
+
+		if (selected){
+			style.backgroundColor = '#212121';
+		}
 		return (
 			<button className={[this.props.className, css.button, filled?css.filled:''].join(' ')} {...otherProps}
 				onPointerDown = {this.handlePointerDown}
@@ -45,12 +49,13 @@ export default class Button extends React.Component {
 
 Button.propTypes = {
 	className:PropTypes.string,
-	style:PropTypes.string,
+	style:PropTypes.object,
 	label:PropTypes.string,
 	stretch:PropTypes.bool,
 	children:PropTypes.node.isRequired,
 	outlined:PropTypes.bool,
 	filled:PropTypes.bool,
+	selected:PropTypes.bool,
 	link:PropTypes.bool,
 	onPointerDown:PropTypes.func,
 	href:PropTypes.string,
