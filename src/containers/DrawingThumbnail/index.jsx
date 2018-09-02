@@ -29,6 +29,9 @@ export class DrawingThumbnail extends React.Component {
 		this.paper.setup(this.canvasRef.current);
 		this.draw(this.paper, this.props.drawings);
 		this.paper.view.scale(this.props.width/450, new this.paper.Point(0,0));
+
+
+
 	}
 	componentDidUpdate(prevProps){
 		if (prevProps.drawings!=this.props.drawings){
@@ -37,10 +40,15 @@ export class DrawingThumbnail extends React.Component {
 	}
 	draw(paper, drawings){        
 		// paper.project.activeLayer.clear();
+		// paper.project.clear();
+		// new this.paper.Layer({
+		// 	project:this.paper.project
+		// });
+		paper.activate();
 		let layer = paper.project.activeLayer;
 		drawings.forEach(d=>{
 			if (!layer.children[d.id]){
-				// console.log('new drawing!');
+				console.log('new drawing!');
 				layer.importJSON(d.json);
 			}            
 		});
