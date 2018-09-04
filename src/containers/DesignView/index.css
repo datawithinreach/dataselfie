@@ -11,10 +11,12 @@
 	width:90px;
 	height: 2px;
 	background-color:#212121;
+	margin-top:5px;
 }
 .marker{
 	/* position: absolute; */
 	/* left:100px; */
+	margin-top:5px;
 	width: 30px;
 	height: 30px;
 	box-sizing: border-box;
