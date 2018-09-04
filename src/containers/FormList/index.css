@@ -50,7 +50,7 @@
 
 .addButton{
 	font-size:98px;
-	font-weight: 100;
+	/* font-weight: 100; */
 	position: relative;
 	margin: 0px 15px 15px 0px;; 
 	padding: 5px;
@@ -147,7 +147,7 @@
     font-family: inherit;
     font-size: 42px;
     color: #212121;
-    font-weight: 100;
+    /* font-weight: 100; */
     text-align: center;
     line-height: 60px;
     cursor: pointer;

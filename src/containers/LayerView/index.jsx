@@ -9,14 +9,18 @@ import DrawingThumbnail from 'containers/DrawingThumbnail';
 import {makeGetQuestionnaire} from 'ducks/forms';
 
 const propTypes = {
-	form:PropTypes.object,
+	formId:PropTypes.string,
+	title:PropTypes.string,
 	questions:PropTypes.array,
 	onToggleLayer:PropTypes.func,
 	layers:PropTypes.array,
 	selected: PropTypes.string,
+	horizontal:PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = {
+	horizontal:false
+};
 
 export class LayerView extends React.Component {
 	constructor(props) {
@@ -64,19 +68,19 @@ export class LayerView extends React.Component {
 	}
 	render() {
 
-		let {form, questions, selected} = this.props;
+		let {formId, title, questions, selected} = this.props;
 		return (
 			<div className={css.layers}>
-				<div className={classNames(css.layer, {[css.invisible]:!this.visible(form.id), [css.selected]:selected==form.id})} 
-					onPointerUp={this.toggleLayer} data-id={form.id}>
+				<div className={classNames(css.layer, {[css.invisible]:!this.visible(formId), [css.selected]:selected==formId})} 
+					onPointerUp={this.toggleLayer} data-id={formId}>
 					<div className={css.leftGroup}>
-						<DrawingThumbnail width={40} height={40} selected={selected==form.id} parentId={form.id} />
-						<label>{this.abbreviate(form.title)}</label>
+						<DrawingThumbnail width={40} height={40} selected={selected==formId} parentId={formId} />
+						<label>{this.abbreviate(title)}</label>
 					</div>
 					<i 
 						className={classNames('fas', {
-							'fa-eye':this.visible(form.id),
-							'fa-eye-slash':!this.visible(form.id),
+							'fa-eye':this.visible(formId),
+							'fa-eye-slash':!this.visible(formId),
 						})}
 					></i>
 				</div>							
@@ -117,15 +121,12 @@ LayerView.defaultProps = defaultProps;
 const getQuestions = makeGetQuestionnaire();
 
 const mapStateToProps = (state, ownProps) => {
-	let form = state.forms[state.ui.selectedForm];
+	let form = state.forms[ownProps.formId];
 	let questions = getQuestions(state,ownProps);
-	let selected = state.ui.selectedOption?state.ui.selectedOption:state.ui.selectedForm;//option or background
-
 	
 	return {
-		form,
-		questions,
-		selected
+		...form,
+		questions
 	};
 };
 

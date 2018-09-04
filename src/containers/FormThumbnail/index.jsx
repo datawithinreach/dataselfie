@@ -73,7 +73,6 @@ export class FormThumbnail extends React.Component {
 							:
 							<div className={css.openBtn}
 								onPointerUp={this.handleOpen}
-								onTouchEnd={this.handleOpen}
 							>Open</div>
 						}
 					</div>}
@@ -117,7 +116,7 @@ const mapDispatchToProps = (dispatch) => {
 		}, dispatch),
 		openForm:(id)=>{
 			dispatch(openForm(id));
-			dispatch(push(`/forms/${id}`));
+			dispatch(push(`/forms/edit/${id}`));
 		}
 	};
 };
