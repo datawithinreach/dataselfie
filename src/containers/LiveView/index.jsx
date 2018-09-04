@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createResponse} from 'ducks/responses';
+import {requestFormContent} from 'ducks/forms';
 import {makeGetQuestionnaire} from 'ducks/forms';
+import {selectForm} from 'ducks/ui';
 import classNames from 'utils/classNames';
 import TextField from 'components/TextField';
 import RadioGroup from 'components/RadioGroup';
@@ -17,7 +19,9 @@ class LiveView extends Component {
 		super(props);
 		this.state = {
 			selectedQuestion: null,
-			response:{},
+			response:{
+				answer:{}
+			},
 			showError:false
 		};
 		this.changeQuestion = this.changeQuestion.bind(this);
@@ -28,7 +32,15 @@ class LiveView extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleReleaseError = this.handleReleaseError.bind(this);
 	}
-	
+	componentDidMount(){
+		
+		if (!this.props.preview){
+			let {loggedInUsername='', formId, requestFormContent, selectForm} = this.props;
+			console.log('loggedInUsername', loggedInUsername, formId);
+			requestFormContent(loggedInUsername, formId, true);//retrieve form content from server		
+			selectForm(formId);// when acceced directly from the url
+		}
+	}
 
 	changeQuestion(e){
 		// console.log('changeQuestion',e.target);
@@ -59,7 +71,11 @@ class LiveView extends Component {
 		let question = this.getQuestion();
 		this.setState({response:{
 			...this.state.response,
-			[question.id]:event.target.value
+			answer:{
+				...this.state.response.answer,
+				[question.id]:event.target.value
+			}
+			
 		}});
 	}
 	handleResponseNameChange(event){
@@ -76,16 +92,22 @@ class LiveView extends Component {
 	handleSubmit(){
 		let {response} = this.state;
 		let {questions} = this.props;
-		if (response.name && questions.every(item=>response[item.id])){
-			console.log('submitting', this.state.response);		
+		if (response.name && questions.every(item=>response.answer[item.id])){
+			// add question order
+			// response = {
+			// 	...this.state.response,
+			// 	order:questions.map(q=>q.id)
+			// };
+			// this.setState({response});
+			console.log('submitting', response);		
 			if (!this.props.preview){
-				this.props.createResponse(this.props.formId, {response});
+				this.props.createResponse(this.props.formId, response);
 			}else{
 				this.setState({showError:true, error:'You can not actually submit your response in the preview mode.'});
 			}
 			
 		}else{
-			let missing =  questions.length - questions.filter(item=>response[item.id]).length;
+			let missing =  questions.length - questions.filter(item=>response.answer[item.id]).length;
 			missing += (response.name?0:1);
 			this.setState({showError:true, error:`There ${missing>1?'are':'is'} ${missing} missing fields in this form.`});
 		}
@@ -93,11 +115,24 @@ class LiveView extends Component {
 	}
 	render() {
 		let {selectedQuestion, response, showError} = this.state;
-		// console.log('response',response.id);
-		let {questions} = this.props;
+		
+		let {questions, loggedInUsername, username, preview} = this.props;
+		console.log(username, loggedInUsername);
 		let curQuestion = this.getQuestion();
 		return (
-			<div>
+			<div style={{margin:preview?'0px':'10px'}}>
+				{!preview&&
+				<div className={css.navBar}>
+					<Button link href='/' filled>DataSelfie</Button>
+					{username && username==loggedInUsername &&
+						<div className={css.rightMenu}>
+							<div className={css.menuItem}>
+								<Button  link href={window.location.href.replace('view', 'edit')} outlined>Edit</Button>
+							</div>
+						</div>
+					}
+				</div>
+				}
 				<div className={css.progress}>
 					<div className={classNames(css.start,css.marker,{[css.current]:selectedQuestion==null,  [css.incomplete]: showError&&response.name==null})} data-id={null} onPointerUp={this.changeQuestion}>
 						<i className="fas fa-arrow-right"></i>
@@ -105,7 +140,7 @@ class LiveView extends Component {
 					{questions.map((question,i)=>
 						<Fragment key={question.id}>
 							<div className={css.bar}/>
-							<div className={classNames(css.marker,{[css.current]:question.id==selectedQuestion, [css.incomplete]: showError&&response[this.props.questions[i].id]==null})} 
+							<div className={classNames(css.marker,{[css.current]:question.id==selectedQuestion, [css.incomplete]: showError&&response.answer[this.props.questions[i].id]==null})} 
 								data-id={question.id} onPointerUp={this.changeQuestion}>
 								{i+1}
 							</div>
@@ -137,7 +172,7 @@ class LiveView extends Component {
 							<br/>				
 							{/* <div>Please write down any identifier for your response such as a name or date.</div>									 */}
 							<TextField placeholder='ID, e.g., name or date'	
-								value={response.id? response.id: ''}
+								value={response.name? response.name: ''}
 								onChange={this.handleResponseNameChange}/>
 						</Fragment>
 						
@@ -147,7 +182,7 @@ class LiveView extends Component {
 								<div>{curQuestion.text}</div>
 							</div>
 							<RadioGroup items={curQuestion.options}
-								checked={response[curQuestion.id]} 
+								checked={response.answer[curQuestion.id]} 
 								onChange={this.handleSelect}/>
 						</Fragment>
 					)}
@@ -161,27 +196,46 @@ class LiveView extends Component {
 LiveView.propTypes = {
 	formId:PropTypes.string,
 	title:PropTypes.string,
+	loggedInUsername:PropTypes.string,
+	username:PropTypes.string,
 	description:PropTypes.string,
 	questions:PropTypes.array,
 	preview:PropTypes.bool,
-	createResponse:PropTypes.func
+	createResponse:PropTypes.func,
+	requestFormContent:PropTypes.func,
+	selectForm:PropTypes.func,
+};
+LiveView.defaultProps = {
+	preview:false
 };
 
 const getQuestions = makeGetQuestionnaire();
 const mapStateToProps = (state, ownProps) => {
-	let formId = ownProps.formId;
+	// let formId = state.ui.selectedForm?
+	// state.ui.selectedForm:
+	
+
+
+	let formId = ownProps.formId?ownProps.formId:ownProps.match.params.formId;
+	
+
 	let form = state.forms[formId];
-	let questions = getQuestions(state, ownProps);
+	console.log('form', form);
+	let questions = getQuestions(state, {...ownProps, formId});
 
 	return {
+		formId,
 		...form,
-		questions
+		questions,
+		loggedInUsername: state.auth.username
 	};
 };
 
 const mapDispatchToProps = (dispatch) => { 	
 	return bindActionCreators({
-		createResponse
+		createResponse,
+		requestFormContent,
+		selectForm
 	}, dispatch);
 };
 
