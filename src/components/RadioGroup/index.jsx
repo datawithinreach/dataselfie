@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import css from './index.css';
 class RadioGroup extends Component {
 	render() {
+		console.log(this.props.checked);
 		return (
-			<div className={css.group} style={this.props.style}>
+			<div className={css.group} style={{...this.props.style, display:this.props.horizontal?'flex':'block'}}>
 				{this.props.items.map((item,i)=>
-					<label key={i} className={css.item}>{item.text}
-						<input type="radio" name="radio"
-							value={item.id}
-							checked={this.props.checked==item.id}
+					<label key={i} className={css.item}>{this.props.getLabel(item)}
+						<input type="radio" name={this.props.name}
+							value={this.props.getValue(item)}
+							checked={this.props.checked==this.props.getValue(item)}
 							onChange={this.props.onChange}/>
 						<span className={css.checkmark}></span>
 					</label>
@@ -23,7 +24,17 @@ RadioGroup.propTypes = {
 	items:PropTypes.array,
 	style:PropTypes.object,
 	onChange:PropTypes.func,
-	checked:PropTypes.string
+	checked:PropTypes.string,
+	getLabel:PropTypes.func,
+	getValue:PropTypes.func,
+	horizontal:PropTypes.bool,
+	name:PropTypes.string,
+};
+RadioGroup.defaultProps = {
+	getLabel: d=>d.text,
+	getValue: d=>d.id,
+	horizontal:false,
+	name:'radio'
 };
 
 export default RadioGroup;
