@@ -122,30 +122,14 @@ class DrawingCanvas extends Component {
 	}
 
 	setupLayer(paper, drawings, layerId){
-		// console.log('setupLayer', drawings, layerId);
 		paper.activate();
-		// let createLayer = (id, drawings)=>{
-		// 	if (paper.project.layers[id]) return paper.project.layers[id];// return if exists
-			
-		// 	let layer = new paper.Layer({
-		// 		name:id,
-		// 		project:paper.project
-		// 	});
-		// 	drawings.forEach(d=>layer.importJSON(d.json));
-			
-		// 	layer.data.id = id;
-		// 	return layer;
-		// };
-		// //background layer
-		// createLayer(layerId, drawings);
-
 
 		let layer = paper.project.layers[layerId];
 		if (!layer){
 			layer = new paper.Layer({
 				name:layerId,
 				project:paper.project,
-				data:{layerId}
+				data:{id: layerId}
 			});
 		}
 		
@@ -320,7 +304,7 @@ class DrawingCanvas extends Component {
 		
 				<div className={css.optionPanel} style={{left:'140px', display:this.state.showLayerPanel?'flex':'none'}}>
 					<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div>
-					<LayerView onToggleLayer={this.handleToggleLayer} layers={layers}/>
+					<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
 				</div>
 
 				<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
@@ -340,7 +324,7 @@ class DrawingCanvas extends Component {
 
 DrawingCanvas.propTypes = {
 	formId:PropTypes.string,
-	drawings:PropTypes.array,// contains drawings in a nested structure
+	drawings:PropTypes.array,
 	allDrawings:PropTypes.array,
 	selected:PropTypes.string,
 	selectedQuestion:PropTypes.string,
