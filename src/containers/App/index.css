@@ -51,7 +51,7 @@ a:visited{ color: #0091EA }
 	line-height: 100vh;
 	text-align:center;
 	font-family: 'Roboto', sans-serif;
-	font-weight:100;
+	/* font-weight:100; */
 	font-size:42px;
 	z-index: 1;
 	background-color:white;
