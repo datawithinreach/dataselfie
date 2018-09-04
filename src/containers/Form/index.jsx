@@ -5,6 +5,8 @@ import css from './index.css';
 import DesignView from 'containers/DesignView';
 import LiveView from 'containers/LiveView';
 import ResultView from 'containers/ResultView';
+import ShareView from 'containers/ShareView';
+
 import classNames from 'utils/classNames';
 import {requestFormContent} from 'ducks/forms';
 import {selectForm} from 'ducks/ui';
@@ -37,7 +39,9 @@ export class Form extends React.Component {
 			return <DesignView formId={this.props.id}/>;
 		}else if (this.state.mode=='preview'){
 			return <LiveView formId={this.props.id} preview/>;
-		}else if (this.state.mode=='analyze'){
+		}else if (this.state.mode=='share'){
+			return <ShareView formId={this.props.id}/>;
+		}else if (this.state.mode=='result'){
 			return <ResultView formId={this.props.id}/>;
 		}
 	}
@@ -47,8 +51,9 @@ export class Form extends React.Component {
 				<div className={css.menu}>
 					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='design'})} data-mode='design' onPointerUp={this.changeMode}>Design</div>
 					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='preview'})} data-mode='preview' onPointerUp={this.changeMode}>Preview</div>
-					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='analyze'})} data-mode='analyze' onPointerUp={this.changeMode}>Results</div>
-					<div className={css.menuItem} onPointerUp={this.handleShare}>Share</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='share'})} data-mode='share' onPointerUp={this.changeMode}>Share</div>
+					<div className={classNames(css.menuItem, {[css.selected]:this.state.mode=='result'})} data-mode='result' onPointerUp={this.changeMode}>Results</div>
+					
 				</div>
 				<div className={css.content}>
 					{this.renderMode()}
