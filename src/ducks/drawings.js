@@ -34,11 +34,21 @@ export const deleteDrawing = (drawingId) => {
 	return {type: DELETE_DRAWING, drawingId};
 };
 // selectors
-export const makeGetDrawings=()=>{
+export const makeGetDrawings=()=>{ //accept multiple drawings
 	return createSelector(
 		(state, props)=>props.parentId,
+		(state, props)=>props.parentIds,
 		(state)=>state.drawings,
-		(parentId, drawings)=>Object.values(drawings).filter(d=>d.parentId==parentId)
+		(parentId, parentIds, drawings)=>{
+			drawings = Object.values(drawings);
+			console.log('parentIds', parentIds, parentId);
+			if (parentIds){
+				
+				return parentIds.reduce((acc,parentId)=>acc.concat(drawings.filter(d=>d.parentId==parentId)),[]);
+			}
+			return drawings.filter(d=>d.parentId==parentId);
+				
+		}
 	);
 };
 export const makeGetSelectedDrawings=()=>{
@@ -47,6 +57,49 @@ export const makeGetSelectedDrawings=()=>{
 		(state)=>state.ui.selectedForm,
 		(state)=>state.drawings,
 		(selectedOption, selectedForm, drawings)=>Object.values(drawings).filter(d=>d.parentId==(selectedOption?selectedOption:selectedForm))
+	);
+};
+	// let responses = form.responses.map(rid=>{// Object.values(state.responses).filter(res=>res.formId==form.id).map(response=>{
+	// 	let response = state.responses[rid];
+		
+	// 	let background = state.forms[response.formId].drawings.map(did=>state.drawings[did]);
+	// 	let encodings = form.items.map(questionId=>{
+	// 		let item = state.items[questionId];
+	// 		let choiceId = response.response[questionId];
+	// 		let drawings = item.drawings.map(did=>state.drawings[did])
+	// 			.concat(state.choices[choiceId].drawings.map(did=>state.drawings[did]));
+			
+	// 		return {
+	// 			questionId,
+	// 			choiceId,
+	// 			drawings
+	// 		};
+	// 	});
+	// 	return {
+	// 		...response,
+	// 		background,
+	// 		identifier: response.id,
+	// 		encodings
+	// 	};
+		
+	// });
+
+export const makeGetResponseDrawings=()=>{
+	return createSelector(
+		(state, ownProps)=>ownProps.responseId,
+		(state)=>state.responses,
+		(state)=>state.drawings,
+		(responseId, responses, drawings)=>{
+			let response = responses[responseId];
+			drawings = Object.values(drawings);
+			let background = drawings.filter(d=>d.parentId==response.formId);
+			let questionIds = Object.keys(response).filter(key=>key.startsWith('question')).map(k=>k);
+			let questionDrawings = questionIds.reduce((acc, qid)=>
+				acc.concat(drawings.filter(d=>d.parentId==response[qid]))
+				,[]);
+			
+			return [...background, ...questionDrawings];
+		}
 	);
 };
 

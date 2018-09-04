@@ -42,8 +42,8 @@ export const requestForms = (username)=>{
 export const receiveForms = (forms)=>{
 	return {type:RECEIVE_FORMS, forms};
 };
-export const requestFormContent = (username, formId)=>{
-	return {type:REQUEST_FORM_CONTENT, username, formId};
+export const requestFormContent = (username, formId, viewMode=false)=>{
+	return {type:REQUEST_FORM_CONTENT, username, formId, viewMode};
 };
 export const receiveFormContent = (data)=>{
 	return {type:RECEIVE_FORM_CONTENT, ...data};
@@ -58,7 +58,7 @@ export const makeGetFormsByUser = () =>{
 };
 export const makeGetQuestionnaire = () =>{// except drawings
 	return createSelector(
-		(state)=>state.ui.selectedForm,
+		(state, ownProps)=>ownProps.formId,
 		(state)=>state.questions,
 		(state)=>state.options,
 		(formId, questions, options)=>{
