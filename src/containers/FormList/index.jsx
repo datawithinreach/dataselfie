@@ -90,7 +90,7 @@ const mapDispatchToProps = (dispatch) => {
 		createForm: (username)=>{
 			let action = createForm(username);
 			dispatch(action);
-			dispatch(push(`/forms/${action.formId}`));
+			dispatch(push(`/forms/edit/${action.formId}`));
 		}
 	};
 };

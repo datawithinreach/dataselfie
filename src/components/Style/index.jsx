@@ -45,8 +45,8 @@ export class Style extends React.PureComponent{
 		this.opacity = this.state.opacity;
 		this.opacitySliderWidth = e.target.parentNode.getBoundingClientRect().width;
 		this.opacitySliderX = e.clientX;
-		window.addEventListener('mousemove', this.handleOpacity);
-		window.addEventListener('mouseup', this.handleOpacityEnd);
+		window.addEventListener('pointermove', this.handleOpacity);
+		window.addEventListener('pointerup', this.handleOpacityEnd);
 	}
 	handleOpacity(e){
 		if (!this.opacitySliderX){
@@ -74,8 +74,8 @@ export class Style extends React.PureComponent{
 			return;
 		}
 		this.opacity = this.opacitySliderX = this.opacitySliderWidth = null;
-		window.removeEventListener('mousemove', this.handleOpacity);
-		window.removeEventListener('mouseup', this.handleOpacityEnd);
+		window.removeEventListener('pointermove', this.handleOpacity);
+		window.removeEventListener('pointerup', this.handleOpacityEnd);
 	
 	}
 	handleOpacityTap(e){
@@ -149,7 +149,7 @@ export class Style extends React.PureComponent{
 							onPointerUp={this.handleOpacityTap}
 						>
 						</div>
-						<div className={css.handle} 
+						<div className={css.handle}
 							style={{left:`${this.state.opacity*100}%`}}
 							onPointerDown={this.handleOpacityStart}
 						/>
