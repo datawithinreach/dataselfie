@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { push } from 'react-router-redux';
 import {createResponse} from 'ducks/responses';
 import {requestFormContent} from 'ducks/forms';
 import {makeGetQuestionnaire} from 'ducks/forms';
@@ -101,7 +102,8 @@ class LiveView extends Component {
 			// this.setState({response});
 			console.log('submitting', response);		
 			if (!this.props.preview){
-				this.props.createResponse(this.props.formId, response);
+				let {responseId} = this.props.createResponse(this.props.formId, response);
+				this.props.push(`/forms/view/${this.props.formId}/r/${responseId.replace('response_','')}`);
 			}else{
 				this.setState({showError:true, error:'You can not actually submit your response in the preview mode.'});
 			}
@@ -204,6 +206,7 @@ LiveView.propTypes = {
 	createResponse:PropTypes.func,
 	requestFormContent:PropTypes.func,
 	selectForm:PropTypes.func,
+	push:PropTypes.func,
 };
 LiveView.defaultProps = {
 	preview:false
@@ -235,7 +238,8 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		createResponse,
 		requestFormContent,
-		selectForm
+		selectForm,
+		push
 	}, dispatch);
 };
 
