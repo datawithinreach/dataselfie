@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {createDrawing, deleteDrawing, updateDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
+import FileLoader from 'components/FileLoader';
 import LayerView from 'containers/LayerView';
 import classNames from 'utils/classNames';
 import css from './index.css';
@@ -27,7 +28,8 @@ class DrawingCanvas extends Component {
 				color:'#000000',
 				width:2,
 				opacity:1.0
-			}
+			},
+			dragFile:false
 		};
 		this.paper = new PaperScope();  // always use this to create anything
 
@@ -46,6 +48,11 @@ class DrawingCanvas extends Component {
 
 		this.handleToggleLayer = this.handleToggleLayer.bind(this);
 		this.canvasRef = React.createRef();
+
+		this.handleDragEnter = this.handleDragEnter.bind(this);
+		this.handleDrop = this.handleDrop.bind(this);
+		this.handleDragLeave = this.handleDragLeave.bind(this);
+
 		// this.selectSuggestion = this.selectSuggestion.bind(this);
 		// this.layerMap = {};
 	}
@@ -55,7 +62,6 @@ class DrawingCanvas extends Component {
 	componentDidMount(){
 
 		// setup 
-		console.log('DrawingCanvas PaperScope', this.paper);
 		this.paper.setup(this.canvasRef.current);
 
 		let {color, stroke,opacity} = this.state.style;
@@ -79,7 +85,6 @@ class DrawingCanvas extends Component {
 	}
 
 	componentDidUpdate(prevProps){
-		console.log('componentDidUpdate', this.props);
 		// this is probably called every time & every stroke...TODO: improve!
 		if (prevProps.selectedQuestion!=this.props.selectedQuestion){// when question changed
 			//reset layer visibility
@@ -184,7 +189,67 @@ class DrawingCanvas extends Component {
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
+	handleDragEnter(){
+		this.setState({dragFile: true});
+	}
+	
+	handleDrop(e) {
+		console.log('dropped', e.clientX, e.clientY);
+		let rect = e.currentTarget.getBoundingClientRect();
+		let x = rect.left - e.clientX;
+		let y = rect.top - e.clientY;
+	
+		this.setState({dragFile: false});
 
+		let url = e.dataTransfer.getData('text/html');
+		
+		if (url.length>0){
+			var rex = /src="?([^"\s]+)"?\s*/;
+			url = rex.exec(url);
+			url = url[1];
+			console.log(url);
+			let raster = new this.paper.Raster({
+				source:url,
+				position: this.paper.view.center
+			});
+			if (raster.width>60){
+				raster.height  = 60/raster.width*raster.height;
+				raster.width= 60;
+			}
+			if (raster.height>60){
+				raster.width  = 60/raster.height*raster.width;
+				raster.height= 60;
+			}
+			
+			
+		}else if (e.dataTransfer.files.length>=1){
+			let file = e.dataTransfer.files[0];
+
+			if (file.size>1000000){// larger than 1 MB
+				// this.setState({showInfo:true, infoMessage:'File size greater than 1 MB is currently not supported.'});
+				// setTimeout(()=>{
+				// 	this.setState({showInfo:false});
+				// },5000);
+				return;
+			}
+			if (file.type.match(/image.*/)){
+				let reader = new FileReader();			
+				reader.onloadend = (e) => {
+					console.log(e.target.result);
+					new this.paper.Raster({
+						source:e.target.result,
+						position: new this.paper.Point(x,y)
+					});
+					// this.props.createDrawing(this.paper.project.activeLayer.data.id, path);
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+	}
+
+	handleDragLeave() {
+		this.setState({dragFile: false});
+	}
 	selectSuggestion(icon){
 		
 		this.paper.project.activeLayer.importSVG(icon, (item)=>{
@@ -286,7 +351,7 @@ class DrawingCanvas extends Component {
 					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='selection'})} 
 						data-tool='selection' 
 						onPointerUp={this.handleChangeTool}>
-						<i className="fas fa-mouse-pointer"></i>
+						<i className="flaticon-graphic-design"></i>
 					</div>
 					<div className={css.button} onPointerUp={this.showStylePanel}>
 						<i className="fas fa-palette"></i>
@@ -325,8 +390,12 @@ class DrawingCanvas extends Component {
 						opacity={this.state.style.opacity}
 						onStyleUpdate={this.handleStyleUpdate}/>
 				</div>
-				
-				<canvas ref={this.canvasRef} className={css.canvas}/>
+				<FileLoader onDrop={this.handleDrop}
+					onDragEnter={this.handleDragEnter}
+					onDragLeave={this.handleDragLeave}>
+					<canvas ref={this.canvasRef} className={css.canvas}
+						style={{ strokeDasharray: this.state.dragFile?'5,5':'none' }}/>
+				</FileLoader>
 				
 			</div>
 		);

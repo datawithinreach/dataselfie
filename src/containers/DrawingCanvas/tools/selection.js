@@ -5,7 +5,7 @@ export const createSelectionTool = (paper, onChanged)=>{
     
 	paper.settings.handleSize=10;
 	let mode = null;
-	let hitSize = 6.0; // a cursor positioned closer than rotation operation
+	// let hitSize = 4.0;
 	let selectionBoundsShape = null;
 	let selectionPath = null;
 	let selectedItems = null;
@@ -23,7 +23,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 	// 	return null;
 	// }
 	function scaleCheck(event){
-		
+		let hitSize = 6.0; // a cursor positioned closer than rotation operation
 		let scaleHit = null;
 
 		if (!selectionBoundsShape)
@@ -143,37 +143,32 @@ export const createSelectionTool = (paper, onChanged)=>{
 		}
 		return null;
 	}
-	// function flatten(item) {
-	// 	var items = [];
-	// 	if (!item.children) {
-	// 		items.push(item);
-	// 		return items;
-	// 	}
-    
+	function flatten(item) {
 		
-	// 	// task.call(this, item); //call task function
-	// 	function checkPathItem(item) {
-	// 		if (item.locked || !item.visible)
-	// 			return;
-	// 		var children = item.children;
+		if (!item.children) {
+			return [item];
+		}
+		var items = [];		
+		// task.call(this, item); //call task function
+		function checkPathItem(item) {
+			if (item.locked || !item.visible)
+				return;
+			var children = item.children;
     
-	// 		if (!children) {
-	// 			items.push(item);
-	// 		}
-	// 		for (var j = children.length - 1; j >= 0; j--)
-	// 			checkPathItem(children[j]);
+			if (!children) {
+				items.push(item);
+				return;
+			}
+			for (var j = children.length - 1; j >= 0; j--)
+				checkPathItem(children[j]);
     
-	// 	}
-	// 	for (var i = item.children.length - 1; i >= 0; i--) {
-	// 		if (!item.children) {
-	// 			items.push(item);
-	// 			continue;
-	// 		}
-	// 		checkPathItem(item.children[i]);
-	// 	}
+		}
+		for (var i = item.children.length - 1; i >= 0; i--) {
+			checkPathItem(item.children[i]);
+		}
     
-	// 	return items;
-	// }
+		return items;
+	}
 	function captureSelectionState(selected) {
 		// console.log(captureSelectionState, selected);
 		let originalContent = [];
@@ -209,9 +204,9 @@ export const createSelectionTool = (paper, onChanged)=>{
 		},  
 		deactivate:()=>{
 			console.log('activate', tool.name);
-			if (selectedItems){
-				// selectionPath.remove();
-				// selectionPath=null;
+			if (selectionPath){
+				selectionPath.remove();
+				selectionPath=null;
 				selectedItems=null;
 				clearSelectionBounds();
 			}
@@ -240,38 +235,23 @@ export const createSelectionTool = (paper, onChanged)=>{
 				corner 	= bounds[cornerName].clone();
 				originalSize	= corner.subtract(pivot);
 
-			}else if (selectionBoundsShape && selectionBoundsShape.contains(e.point)){
+			}else if (selectionPath && (selectionPath.contains(e.point)||
+                selectionBoundsShape.contains(e.point))){
 				mode='move';
 			}else{
-				hit = paper.project.activeLayer.hitTest(e.point,
-					{ fill:true, stroke:true, tolerance: hitSize });
-				console.log('hit',hit);
-				if (hit){
-					selectedItems = [hit.item];
-					updateSelectionState(selectedItems);
-					mode='move';
-				}else{
-					// if (selectionPath){
-					// 	selectionPath.remove();
-					// 	selectionPath = null;
-					// }
-					mode='lasso-select';
-					// selectionPath = new paper.Path({
-					// 	segments: [e.point],
-					// 	strokeWidth:1,
-					// 	strokeColor: '#757575',
-					// 	dashArray:[8, 4],
-					// 	guide:true
-					// });
-					// selectionPath = new paper.Path.Rectangle({
-					//     strokeWidth:1,
-					//     strokeColor: '#757575',
-					//     dashArray:[8, 4],
-					//     guide:true
-					// });
+				if (selectionPath){
+					selectionPath.remove();
+					selectionPath = null;
 				}
+				mode='lasso-select';
+				selectionPath = new paper.Path({
+					segments: [e.point],
+					strokeWidth:1,
+					strokeColor: '#757575',
+					dashArray:[8, 4],
+					guide:true
+				});
 			}
-            
 		},
 		mousedrag:(e)=>{
 			if (mode=='move'){
@@ -281,18 +261,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 				}
 			}else if (mode=='lasso-select'){
 				// dragSelect(e.downPoint, e.point);
-				// selectionPath.add(e.point);
-				let rect = new paper.Path.Rectangle(e.downPoint, e.point);
-				rect.strokeWidth=1;
-				rect.strokeColor= '#757575';
-				rect.dashArray=[8, 4];
-				rect.guide=true;
-				// });
-				rect.removeOn({
-					drag: true,
-					up: true
-				});
-       
+				selectionPath.add(e.point);
 			}else if (mode=='scale'){
 				var p = pivot;
 				var o = originalSize;
@@ -314,31 +283,29 @@ export const createSelectionTool = (paper, onChanged)=>{
 				}
 			}
 		},
-		mouseup:(e)=>{
+		mouseup:()=>{
 			if (mode=='lasso-select'){
-				let rect = new paper.Path.Rectangle(e.downPoint, e.point);
-				// rect.selected = true;
-				// rect.closed = true;
+				selectionPath.closed = true;
 				selectedItems = [];
 				let items = paper.project.activeLayer.children;
 				for (let i=0; i<items.length; i++){
 					let item = items[i];
-					if (rect.equals(item)){
+					if (selectionPath.equals(item)){
 						continue;
 					}
-					if (rect.intersects(item) || item.isInside(rect.bounds)){
+					let descendents = flatten(item);
+					if (descendents.some(descendent=>selectionPath.intersects(descendent)) || selectionPath.contains(item.bounds)){
 						selectedItems.push(item);
 					}
 				}
-				rect.remove();
 				if (selectedItems.length==0){
-					// selectionPath.remove();
-					// selectionPath=null;
+					selectionPath.remove();
+					selectionPath=null;
 					selectedItems=null;
 					clearSelectionBounds();
 				}else{
 					updateSelectionState(selectedItems);
-					// selectedItems.push(selectionPath);
+					selectedItems.push(selectionPath);
 					selectedItems.push(selectionBoundsShape);
 				}
 			}else if (mode=='scale'||mode=='move'){
