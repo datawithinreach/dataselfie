@@ -1,4 +1,5 @@
-let url = 'http://35.184.218.55:8889';
+// let url = 'http://35.184.218.55:8889';
+let url = 'http://10.41.40.157:8889';
 // console.log(window.location.hostname)
 let requestInfo = {
 	method:'POST', 

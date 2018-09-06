@@ -209,17 +209,21 @@ class DrawingCanvas extends Component {
 			url = url[1];
 			console.log(url);
 			let raster = new this.paper.Raster({
+				crossOrigin: 'anonymous',
 				source:url,
 				position: this.paper.view.center
 			});
-			if (raster.width>60){
-				raster.height  = 60/raster.width*raster.height;
-				raster.width= 60;
-			}
-			if (raster.height>60){
-				raster.width  = 60/raster.height*raster.width;
-				raster.height= 60;
-			}
+			raster.onLoad = function() {
+				if (raster.width>120){
+					raster.height  = 120/raster.width*raster.height;
+					raster.width= 120;
+				}
+				if (raster.height>120){
+					raster.width  = 120/raster.height*raster.width;
+					raster.height= 120;
+				}
+			};
+		
 			
 			
 		}else if (e.dataTransfer.files.length>=1){
@@ -237,6 +241,7 @@ class DrawingCanvas extends Component {
 				reader.onloadend = (e) => {
 					console.log(e.target.result);
 					new this.paper.Raster({
+						crossOrigin: 'anonymous',
 						source:e.target.result,
 						position: new this.paper.Point(x,y)
 					});
