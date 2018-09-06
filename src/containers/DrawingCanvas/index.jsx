@@ -13,6 +13,7 @@ import penTool from './tools/pen';
 import eraserTool from './tools/eraser';
 import autodrawTool from './tools/autodraw';
 import selectionTool from './tools/selection';
+import fillTool from './tools/fill';
 import {PaperScope} from 'paper';
 
 class DrawingCanvas extends Component {
@@ -186,6 +187,7 @@ class DrawingCanvas extends Component {
 			console.log('selected', selected);
 			// selected.forEach(drawing=>this.props.updateDrawing(drawing.name));
 		});
+		fillTool.create(this.paper);
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
@@ -358,9 +360,16 @@ class DrawingCanvas extends Component {
 						onPointerUp={this.handleChangeTool}>
 						<i className="flaticon-graphic-design"></i>
 					</div>
+					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='fill'})} 
+						data-tool='fill' 
+						onPointerUp={this.handleChangeTool}>
+						<i className="fas fa-fill"></i>
+					</div>
+
 					<div className={css.button} onPointerUp={this.showStylePanel}>
 						<i className="fas fa-palette"></i>
 					</div>
+
 					<div className={css.button} onPointerUp={this.showLayerPanel}>
 						<i className="fas fa-layer-group"></i>
 					</div>
