@@ -25,8 +25,12 @@ export const createDrawing = (parentId, path, attrs = {}) => {
 	};
 	return {type: CREATE_DRAWING, drawingId, attrs};
 };
-//never used
-export const updateDrawing = (drawingId, attrs = {}) => {
+export const updateDrawing = (drawingId, path, attrs = {}) => {
+	attrs.json = path.exportJSON();
+	attrs = {
+		...attrs,
+		id:drawingId
+	};
 	return {type: UPDATE_DRAWING, drawingId, attrs};
 };
 

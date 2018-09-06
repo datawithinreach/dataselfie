@@ -20,7 +20,7 @@ export const createPenTool = (paper, onPathCreated)=>{
 		},
 		mouseup:()=>{
 			if (path){
-				// path.simplify();				
+				path.simplify();				
 				onPathCreated(path);				
 				path = null;
 			}

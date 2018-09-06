@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {createDrawing, deleteDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
+import {createDrawing, deleteDrawing, updateDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
 import LayerView from 'containers/LayerView';
 import classNames from 'utils/classNames';
@@ -11,6 +11,7 @@ import autodraw from 'utils/autodraw';
 import penTool from './tools/pen';
 import eraserTool from './tools/eraser';
 import autodrawTool from './tools/autodraw';
+import selectionTool from './tools/selection';
 import {PaperScope} from 'paper';
 
 class DrawingCanvas extends Component {
@@ -24,7 +25,7 @@ class DrawingCanvas extends Component {
 			recognized:[],
 			style:{
 				color:'#000000',
-				width:1,
+				width:2,
 				opacity:1.0
 			}
 		};
@@ -62,7 +63,8 @@ class DrawingCanvas extends Component {
 			strokeColor:color,
 			strokeWidth:stroke,
 			opacity,
-			strokeCap:'round'
+			strokeCap:'round',
+			strokeJoin:'round'
 		};
 
 		this.setupTools();
@@ -175,6 +177,10 @@ class DrawingCanvas extends Component {
 				});				
 			});
 		});
+		selectionTool.create(this.paper, (selected)=>{
+			console.log('selected', selected);
+			// selected.forEach(drawing=>this.props.updateDrawing(drawing.name));
+		});
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
@@ -277,11 +283,16 @@ class DrawingCanvas extends Component {
 						onPointerUp={this.handleChangeTool}>
 						<i className="fas fa-magic"></i>
 					</div>
+					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='selection'})} 
+						data-tool='selection' 
+						onPointerUp={this.handleChangeTool}>
+						<i className="fas fa-mouse-pointer"></i>
+					</div>
 					<div className={css.button} onPointerUp={this.showStylePanel}>
 						<i className="fas fa-palette"></i>
 					</div>
 					<div className={css.button} onPointerUp={this.showLayerPanel}>
-						<i className="flaticon-layers"></i>
+						<i className="fas fa-layer-group"></i>
 					</div>
 				</div>
 				{this.state.tool=='autodraw' && 
@@ -329,6 +340,7 @@ DrawingCanvas.propTypes = {
 	selected:PropTypes.string,
 	selectedQuestion:PropTypes.string,
 	createDrawing:PropTypes.func,
+	updateDrawing:PropTypes.func,
 	deleteDrawing:PropTypes.func
 };
 
@@ -349,6 +361,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		...bindActionCreators({
 			createDrawing,
+			updateDrawing,
 			deleteDrawing
 		}, dispatch)//,
 		// createDrawing: (choiceId, attrs)=>{
