@@ -70,7 +70,7 @@ export class LayerView extends React.Component {
 
 		let {formId, title, questions, selected} = this.props;
 		return (
-			<div className={css.layers}>
+			<div className={css.layers} touch-action='pan-y'>
 				<div className={classNames(css.layer, {[css.invisible]:!this.visible(formId), [css.selected]:selected==formId})} 
 					onPointerUp={this.toggleLayer} data-id={formId}>
 					<div className={css.leftGroup}>
