@@ -5,7 +5,7 @@ export const createSelectionTool = (paper, onChanged)=>{
     
 	paper.settings.handleSize=10;
 	let mode = null;
-	// let hitSize = 4.0;
+	let hitSize = 6.0; // a cursor positioned closer than rotation operation
 	let selectionBoundsShape = null;
 	let selectionPath = null;
 	let selectedItems = null;
@@ -23,7 +23,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 	// 	return null;
 	// }
 	function scaleCheck(event){
-		let hitSize = 6.0; // a cursor positioned closer than rotation operation
+		
 		let scaleHit = null;
 
 		if (!selectionBoundsShape)
@@ -209,9 +209,9 @@ export const createSelectionTool = (paper, onChanged)=>{
 		},  
 		deactivate:()=>{
 			console.log('activate', tool.name);
-			if (selectionPath){
-				selectionPath.remove();
-				selectionPath=null;
+			if (selectedItems){
+				// selectionPath.remove();
+				// selectionPath=null;
 				selectedItems=null;
 				clearSelectionBounds();
 			}
@@ -240,22 +240,38 @@ export const createSelectionTool = (paper, onChanged)=>{
 				corner 	= bounds[cornerName].clone();
 				originalSize	= corner.subtract(pivot);
 
-			}else if (selectionPath && selectionPath.contains(e.point)){
+			}else if (selectionBoundsShape && selectionBoundsShape.contains(e.point)){
 				mode='move';
 			}else{
-				if (selectionPath){
-					selectionPath.remove();
-					selectionPath = null;
+				hit = paper.project.activeLayer.hitTest(e.point,
+					{ fill:true, stroke:true, tolerance: hitSize });
+				console.log('hit',hit);
+				if (hit){
+					selectedItems = [hit.item];
+					updateSelectionState(selectedItems);
+					mode='move';
+				}else{
+					// if (selectionPath){
+					// 	selectionPath.remove();
+					// 	selectionPath = null;
+					// }
+					mode='lasso-select';
+					// selectionPath = new paper.Path({
+					// 	segments: [e.point],
+					// 	strokeWidth:1,
+					// 	strokeColor: '#757575',
+					// 	dashArray:[8, 4],
+					// 	guide:true
+					// });
+					// selectionPath = new paper.Path.Rectangle({
+					//     strokeWidth:1,
+					//     strokeColor: '#757575',
+					//     dashArray:[8, 4],
+					//     guide:true
+					// });
 				}
-				mode='lasso-select';
-				selectionPath = new paper.Path({
-					segments: [e.point],
-					strokeWidth:1,
-					strokeColor: '#757575',
-					dashArray:[8, 4],
-					guide:true
-				});
 			}
+            
 		},
 		mousedrag:(e)=>{
 			if (mode=='move'){
@@ -265,7 +281,18 @@ export const createSelectionTool = (paper, onChanged)=>{
 				}
 			}else if (mode=='lasso-select'){
 				// dragSelect(e.downPoint, e.point);
-				selectionPath.add(e.point);
+				// selectionPath.add(e.point);
+				let rect = new paper.Path.Rectangle(e.downPoint, e.point);
+				rect.strokeWidth=1;
+				rect.strokeColor= '#757575';
+				rect.dashArray=[8, 4];
+				rect.guide=true;
+				// });
+				rect.removeOn({
+					drag: true,
+					up: true
+				});
+       
 			}else if (mode=='scale'){
 				var p = pivot;
 				var o = originalSize;
@@ -287,28 +314,31 @@ export const createSelectionTool = (paper, onChanged)=>{
 				}
 			}
 		},
-		mouseup:()=>{
+		mouseup:(e)=>{
 			if (mode=='lasso-select'){
-				selectionPath.closed = true;
+				let rect = new paper.Path.Rectangle(e.downPoint, e.point);
+				// rect.selected = true;
+				// rect.closed = true;
 				selectedItems = [];
 				let items = paper.project.activeLayer.children;
 				for (let i=0; i<items.length; i++){
 					let item = items[i];
-					if (selectionPath.equals(item)){
+					if (rect.equals(item)){
 						continue;
 					}
-					if (selectionPath.intersects(item) || selectionPath.contains(item.bounds)){
+					if (rect.intersects(item) || item.isInside(rect.bounds)){
 						selectedItems.push(item);
 					}
 				}
+				rect.remove();
 				if (selectedItems.length==0){
-					selectionPath.remove();
-					selectionPath=null;
+					// selectionPath.remove();
+					// selectionPath=null;
 					selectedItems=null;
 					clearSelectionBounds();
 				}else{
 					updateSelectionState(selectedItems);
-					selectedItems.push(selectionPath);
+					// selectedItems.push(selectionPath);
 					selectedItems.push(selectionBoundsShape);
 				}
 			}else if (mode=='scale'||mode=='move'){
