@@ -51,9 +51,8 @@ export class Legend extends React.Component {
 										<DrawingThumbnail key={question.id} 
 											className={css.drawing}
 											parentId={option.id}
-											fitted 
-											width={30}
-											height={30}
+											width={40}
+											height={40}
 											selected={this.state.visible[question.id]==option.id}/>
 										<div className={css.label}>{option.text}</div>
 									</div>
