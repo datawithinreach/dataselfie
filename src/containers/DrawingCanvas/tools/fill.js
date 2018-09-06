@@ -40,7 +40,7 @@ export const createEraserTool = (paper)=>{
 			let items = flatten(paper.project.activeLayer);
 			for (let i=0; i<items.length; i++){
 				let item =  items[i];
-				if (item.contains(e.point) && item instanceof paper.PathItem){
+				if (item.contains(e.point)){// && (item instanceof paper.PathItem||item instanceof paper.Shape)){
 					console.log(item, paper.project.currentStyle);
 					item.fillColor = paper.project.currentStyle.strokeColor;
 					break;

@@ -27,7 +27,7 @@ class DrawingCanvas extends Component {
 			recognized:[],
 			style:{
 				color:'#000000',
-				width:2,
+				width:1,
 				opacity:1.0
 			},
 			dragFile:false
@@ -196,7 +196,7 @@ class DrawingCanvas extends Component {
 	}
 	
 	handleDrop(e) {
-		console.log('dropped', e.clientX, e.clientY);
+		// console.log('dropped', e.clientX, e.clientY);
 		let rect = e.currentTarget.getBoundingClientRect();
 		let x = rect.left - e.clientX;
 		let y = rect.top - e.clientY;
@@ -209,7 +209,7 @@ class DrawingCanvas extends Component {
 			var rex = /src="?([^"\s]+)"?\s*/;
 			url = rex.exec(url);
 			url = url[1];
-			console.log(url);
+			// console.log(url);
 			let raster = new this.paper.Raster({
 				crossOrigin: 'anonymous',
 				source:url,
