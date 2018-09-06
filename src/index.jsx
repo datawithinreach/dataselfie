@@ -18,7 +18,7 @@ let env = 'development';//hack
 
 //disable context menu
 // document.addEventListener('contextmenu', event => event.preventDefault());
-document.body.addEventListener('touchmove', event => event.preventDefault(), { passive: false });
+// document.body.addEventListener('touchmove', event => event.preventDefault(), { passive: false });
 //disable default drag actions
 window.addEventListener('dragover',function(e){
 	e = e || event;
