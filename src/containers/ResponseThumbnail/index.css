@@ -81,3 +81,25 @@
     justify-content: center;
     align-items: center;
 }
+.confirmPopup{
+    box-sizing: border-box;
+    display: flex;
+    /*justify-content: center;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+.deleteBtn{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: 0.2s all;
+	/* color:white;
+	font-size: 36px; */
+  }

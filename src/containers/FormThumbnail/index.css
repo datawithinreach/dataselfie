@@ -32,7 +32,7 @@
   .title{
     position: absolute;
     color: #212121;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 300;
     top: 50%;
     left: 50%;
@@ -46,18 +46,13 @@
     left:0;
     width: 100%;
     height: 100%;
-    background-color: #212121;
-    animation: fadeInLoad 0.2s;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    transition: all 0.2s;
   }
   
-@keyframes fadeInLoad {
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
 
   .confirmPopup{
     box-sizing: border-box;
@@ -126,8 +121,8 @@
   }
   .deleteBtn{
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
     user-select: none;
     text-decoration: none;

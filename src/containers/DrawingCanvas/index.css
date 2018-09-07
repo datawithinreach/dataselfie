@@ -1,10 +1,21 @@
 
-.canvasContainer{
-    position: relative;
+.container{
+    
     width:100%;
     margin-left:30px;
 	box-sizing: border-box;
+	
 }
+.canvasContainer{
+	position: relative;
+	display: flex;
+}
+
+.menu{
+	display: flex;
+	flex-direction: column;
+}
+
 .canvas{
     border: 1px solid #BDBDBD;
     width:450px;
@@ -13,7 +24,6 @@
     margin-left: 5px;
     touch-action: none;
 }
-
 .drawing{
 	fill: none;
 	stroke-linejoin: round;
@@ -45,7 +55,7 @@
 	flex-direction: column;
 	align-items: flex-end;
     box-sizing: border-box; 
-    top:50px;
+    top:5px;
     width:300px;
     /* border: 1px solid  rgba(0, 0, 0, 0.28); */
 	box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.28);
@@ -85,14 +95,17 @@
 	color:white;
 	background-color: #212121;
 }
-
+.info{
+	margin: 15px 0px 10px 10px;
+    color:#BDBDBD;
+}
 .suggestions{
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
-	max-width:450px;
+	max-width:500px;
 	margin:0px 5px;
-
+	height:40px;
 }
 .suggestions p{
 	min-width:120px;
