@@ -8,8 +8,9 @@ import {selectQuestion} from 'ducks/ui';
 
 import css from './index.css';
 import TextField from 'components/TextField';
-import TextArea from 'components/TextArea';
+// import TextArea from 'components/TextArea';
 import Button from 'components/Button';
+import Switch from 'components/Switch';
 import Question from 'containers/Question';
 import classNames from 'utils/classNames';
 import DrawingCanvas from 'containers/DrawingCanvas';
@@ -19,7 +20,8 @@ class DesignView extends Component {
 		super(props);
 
 		this.handleTitleChange = this.handleTitleChange.bind(this);
-		this.handleDescChange = this.handleDescChange.bind(this);
+		this.handlePromptChange = this.handlePromptChange.bind(this);
+		this.handleCollectName = this.handleCollectName.bind(this);
 
 		this.changeQuestion = this.changeQuestion.bind(this);
 
@@ -73,13 +75,18 @@ class DesignView extends Component {
 	handleTitleChange(event){
 		this.props.updateForm(this.props.formId, {title:event.target.value});
 	}
-	handleDescChange(event){
-		this.props.updateForm(this.props.formId, {description:event.target.value});
+	handleCollectName(e){
+		let checked = e.target.checked;
+		this.props.updateForm(this.props.formId, { collectName: checked});
+	}
+	handlePromptChange(event){
+		this.props.updateForm(this.props.formId, {prompt:event.target.value});
 	}
 	
 
 	render() {
 		let {questions, selectedQuestion, formId} = this.props;
+		console.log('questions', questions);
 		return (
 			<div>				
 				<div className={css.progress}>
@@ -107,24 +114,37 @@ class DesignView extends Component {
 					<div className={css.columns}>	
 						<div className={css.column}>
 							<div className={css.navMenu}>
+								{selectedQuestion!=null&&
 								<Button onPointerUp={this.prevQuestion} outlined>
 									<i className="fas fa-arrow-left"></i> Prev
-								</Button>
+								</Button>}
+								{questions.length>0 && selectedQuestion!=questions[questions.length-1].id &&
 								<Button onPointerUp={this.nextQuestion} outlined>
 									<i className="fas fa-arrow-right"></i> Next
-								</Button>
+								</Button>}
 								<Button onPointerUp={this.deleteQuestion} outlined>
 									Delete
 								</Button>
 							</div>
 							{selectedQuestion==null?(	
 								<React.Fragment>
+									<br/>
 									<TextField placeholder='Title' value={this.props.title} 
 										size={36} onChange={this.handleTitleChange}/>
 									<br/>
-									<TextArea placeholder='Description' 
-										value={this.props.description} 
-										onChange={this.handleDescChange}/>
+									<Switch defaultChecked={this.props.collectName} 
+										onChange={this.handleCollectName}
+										label='Collect Response Name?'></Switch>
+									<br/>
+									{this.props.collectName &&									
+										<TextField placeholder="Write a message prompt for a response name."
+											value={this.props.prompt} 
+											onChange={this.handlePromptChange}/>
+									}
+									<div className={css.note}>
+										Note: &nbsp; a response name can be any identifier such as a person&#8217;s name or a specific date that characterizes each form response.
+									</div>
+									
 								
 								</React.Fragment>
 							):(
@@ -148,7 +168,8 @@ class DesignView extends Component {
 DesignView.propTypes = {
 	formId:PropTypes.string,
 	title:PropTypes.string,
-	description:PropTypes.string,
+	prompt:PropTypes.string,
+	collectName:PropTypes.bool,
 	questions:PropTypes.array,
 	// drawings:PropTypes.object,// contains all drawings in a nested structure
 	updateForm:PropTypes.func,
