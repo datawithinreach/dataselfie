@@ -6,6 +6,7 @@ import { push } from 'react-router-redux';
 import css from './index.css';
 import {selectForm, openForm} from 'ducks/ui';
 import {deleteForm} from 'ducks/forms';
+import Button from 'components/Button';
 /* encapsulate react-input-range*/
 export class FormThumbnail extends React.Component {
 	constructor(props) {
@@ -20,6 +21,15 @@ export class FormThumbnail extends React.Component {
 		
 		this.confirmDelete = this.confirmDelete.bind(this);
 		this.cancelDelete = this.cancelDelete.bind(this);
+
+		this.handleShowMenu = this.handleShowMenu.bind(this);
+		this.handleHideMenu = this.handleHideMenu.bind(this);
+	}
+	handleShowMenu(){
+		this.setState({showMenu:true});
+	}
+	handleHideMenu(){
+		this.setState({showMenu:false});
 	}
 	handleOpen(){
 		this.props.openForm(this.props.id);
@@ -54,28 +64,24 @@ export class FormThumbnail extends React.Component {
 					width: this.props.width + 'px',
 					height: this.props.height  + 'px'
 				}}
-				onPointerUp={this.handleSelect}>
+				onPointerUp={this.handleSelect}
+				onPointerEnter={this.handleShowMenu} onPointerLeave={this.handleHideMenu}>
 				<div className={css.title}>{this.props.title}</div>
-				{this.props.selected &&
-					<div className={css.overlay} >
-						<div className={css.deleteBtn}
-							onPointerUp={this.handleDelete}>
-							{/* <i className="fas fa-trash-alt"></i> */}
-							<img src="assets/icons/trash.svg"/>
+				<div className={css.overlay} style={{opacity:(this.props.selected || this.state.showMenu)?0.9:0.0}}>
+					<Button className={css.deleteBtn}
+						onPointerUp={this.handleDelete}>
+						<i className="fas fa-trash-alt"></i>
+						{/* <img src="assets/icons/trash.svg"/> */}
+					</Button>
+					{this.state.confirmDelete?
+						<div className={css.confirmPopup}>
+							<Button onPointerUp={this.confirmDelete}>Delete</Button>
+							<Button onPointerUp={this.cancelDelete}>Cancel</Button>
 						</div>
-						{this.state.confirmDelete?
-							<div className={css.confirmPopup}>
-								<div className={css.confirmDelete}
-									onPointerUp={this.confirmDelete}>Delete</div>
-								<div className={css.cancelDelete}
-									onPointerUp={this.cancelDelete}>Cancel</div>
-							</div>
-							:
-							<div className={css.openBtn}
-								onPointerUp={this.handleOpen}
-							>Open</div>
-						}
-					</div>}
+						:
+						<Button onPointerUp={this.handleOpen}>Open</Button>
+					}
+				</div>
 			</div>
 				
 		);
