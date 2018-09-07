@@ -156,24 +156,27 @@ class LiveView extends Component {
 						<a style={{marginLeft:'10px'}}onPointerUp={this.handleReleaseError}>Clear</a>
 					</div>
 					<div className={css.navMenu}>
+						{selectedQuestion!=null&&
 						<Button onPointerUp={this.prevQuestion} outlined>
 							<i className="fas fa-arrow-left"></i> Prev
-						</Button>
+						</Button>}
+						{questions.length>0 && selectedQuestion!=questions[questions.length-1].id &&
 						<Button onPointerUp={this.nextQuestion} outlined>
 							<i className="fas fa-arrow-right"></i> Next
-						</Button>
+						</Button>}
 						<Button onPointerUp={this.handleSubmit} outlined>
 							Submit
 						</Button>
 					</div>
 					{selectedQuestion==null?(
 						<Fragment>
+							<br/>
 							<div className={css.title}>{this.props.title}</div>
 							<br/>
-							<div>{this.props.description}</div>
+							<div>{this.props.prompt}</div>
 							<br/>				
 							{/* <div>Please write down any identifier for your response such as a name or date.</div>									 */}
-							<TextField placeholder='ID, e.g., name or date'	
+							<TextField placeholder='Write a response name.'	
 								value={response.name? response.name: ''}
 								onChange={this.handleResponseNameChange}/>
 						</Fragment>
@@ -200,7 +203,7 @@ LiveView.propTypes = {
 	title:PropTypes.string,
 	loggedInUsername:PropTypes.string,
 	username:PropTypes.string,
-	description:PropTypes.string,
+	prompt:PropTypes.string,
 	questions:PropTypes.array,
 	preview:PropTypes.bool,
 	createResponse:PropTypes.func,
