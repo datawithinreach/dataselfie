@@ -195,7 +195,7 @@ class DrawingCanvas extends Component {
 			selected.forEach(drawing=>this.props.updateDrawing(drawing.name, drawing));
 		});
 		fillTool.create(this.paper, (item)=>{
-			// console.log('selected', selected);
+			console.log('fill selected', item);
 			this.props.updateDrawing(item.data.id, item);
 		});
 		console.log('tools', this.paper.tools, this.paper.tool);
