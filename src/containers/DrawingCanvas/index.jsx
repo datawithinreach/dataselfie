@@ -39,10 +39,10 @@ class DrawingCanvas extends Component {
 		this.autodrawn = null;
 		
 
-		this.showStylePanel = this.showStylePanel.bind(this);
-		this.hideStylePanel = this.hideStylePanel.bind(this);
-		this.showLayerPanel = this.showLayerPanel.bind(this);
-		this.hideLayerPanel = this.hideLayerPanel.bind(this);
+		this.toggleStylePanel = this.toggleStylePanel.bind(this);
+		// this.hideStylePanel = this.hideStylePanel.bind(this);
+		this.toggleLayerPanel = this.toggleLayerPanel.bind(this);
+		// this.hideLayerPanel = this.hideLayerPanel.bind(this);
 
 		this.handleChangeTool = this.handleChangeTool.bind(this);
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
@@ -54,7 +54,7 @@ class DrawingCanvas extends Component {
 		this.handleDrop = this.handleDrop.bind(this);
 		this.handleDragLeave = this.handleDragLeave.bind(this);
 
-		// this.selectSuggestion = this.selectSuggestion.bind(this);
+		this.handlePointerDownCanvas = this.handlePointerDownCanvas.bind(this);
 		// this.layerMap = {};
 	}
 	componentWillUnmount(){
@@ -148,6 +148,9 @@ class DrawingCanvas extends Component {
 		});
 		//remove deleted
 		for (let i=0; i<layer.children.length;i++){
+			if (layer.children[i].guide){
+				continue;
+			}
 			if (!drawings.find(d=>d.id==layer.children[i].name)){
 				layer.children[i].remove();
 			}
@@ -184,10 +187,12 @@ class DrawingCanvas extends Component {
 			});
 		});
 		selectionTool.create(this.paper, (selected)=>{
-			console.log('selected', selected);
-			// selected.forEach(drawing=>this.props.updateDrawing(drawing.name));
+			selected.forEach(drawing=>this.props.updateDrawing(drawing.name, drawing));
 		});
-		fillTool.create(this.paper);
+		fillTool.create(this.paper, (item)=>{
+			// console.log('selected', selected);
+			this.props.updateDrawing(item.data.id, item);
+		});
 		console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
@@ -261,6 +266,7 @@ class DrawingCanvas extends Component {
 		
 		this.paper.project.activeLayer.importSVG(icon, (item)=>{
 			item.style = this.paper.project.currentStyle;
+			item.strokeWidth = this.paper.project.currentStyle.strokeWidth;
 			// bounds
 			if (this.paths.length>0){
 				let group = new this.paper.Group({children:this.paths, visible:false});
@@ -319,98 +325,97 @@ class DrawingCanvas extends Component {
 		this.paper.tools.find(tool=>tool.name==toolName).activate();
 		this.clearAutoDrawState();
 	}
-	showStylePanel(){
-		this.setState({showStylePanel:true, showLayerPanel:false});
+	toggleStylePanel(){
+		this.setState({showStylePanel:!this.state.showStylePanel, showLayerPanel:false});
 	}
-	showLayerPanel(){
-		this.setState({showLayerPanel:true, showStylePanel:false});
+	toggleLayerPanel(){
+		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false});
 	}
-	hideStylePanel(){
-		this.setState({showStylePanel:false});
-	}
-	hideLayerPanel(){
-		this.setState({showLayerPanel:false});
+	handlePointerDownCanvas(){
+		this.setState({showStylePanel:false, showLayerPanel:false});
 	}
 
 
 	render() {
 		// let style = this.paper.project? this.paper.project.currentStyle:this.initStyle;
 		// console.log('style', style)
+		let {selected, selectedText, formId} = this.props;
 		let layers = this.paper.project?this.paper.project.layers:null;
 		return (
-			<div className={css.canvasContainer}>
-				<div className={css.menu}>
-					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='pen'})} 
-						data-tool='pen' 
-						onPointerUp={this.handleChangeTool}>
-						<i className="fas fa-pencil-alt"></i>
-					</div>
-					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='eraser'})} 
-						data-tool='eraser' 
-						onPointerUp={this.handleChangeTool}>
-						<i className="fas fa-eraser"></i>
-					</div>
-					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='autodraw'})} 
-						data-tool='autodraw' 
-						onPointerUp={this.handleChangeTool}>
-						<i className="fas fa-magic"></i>
-					</div>
-					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='selection'})} 
-						data-tool='selection' 
-						onPointerUp={this.handleChangeTool}>
-						<i className="flaticon-graphic-design"></i>
-					</div>
-					<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='fill'})} 
-						data-tool='fill' 
-						onPointerUp={this.handleChangeTool}>
-						<i className="fas fa-fill"></i>
-					</div>
-
-					<div className={css.button} onPointerUp={this.showStylePanel}>
-						<i className="fas fa-palette"></i>
-					</div>
-
-					<div className={css.button} onPointerUp={this.showLayerPanel}>
-						<i className="fas fa-layer-group"></i>
-					</div>
+			<div className={css.container}>
+				<div className={css.info}><i className="fas fa-paint-brush"></i> &nbsp; 
+					{`Drawing ${selected==formId? 'a Background': 'for '+selectedText}`}
 				</div>
-				{this.state.tool=='autodraw' && 
-					<div className={css.suggestions}>
-						{this.state.recognized.length>0 &&
-							<p>Do you mean: </p>
-						}
-						<div className={css.thumbs}>
-							{this.state.recognized.map(shape=>
-								shape.icons.map((icon,i)=>
-									<figure key={[shape.name,i].join('-')} className={css.suggestion}
-										onPointerUp={this.selectSuggestion.bind(this, icon)}>
-										<img src={icon} alt={shape.name} title={shape.name}/>
-									</figure>
-								)							
-							)}
+				<div className={css.suggestions}>
+					{this.state.recognized.length>0 &&
+						<p>Do you mean: </p>
+					}
+					<div className={css.thumbs}>
+						{this.state.recognized.map(shape=>
+							shape.icons.map((icon,i)=>
+								<figure key={[shape.name,i].join('-')} className={css.suggestion}
+									onPointerUp={this.selectSuggestion.bind(this, icon)}>
+									<img src={icon} alt={shape.name} title={shape.name}/>
+								</figure>
+							)							
+						)}
+					</div>
+				</div>		
+				<div className={css.canvasContainer}>
+					<div className={css.menu}>
+						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='pen'})} 
+							data-tool='pen' 
+							onPointerUp={this.handleChangeTool}>
+							<i className="fas fa-pencil-alt"></i>
 						</div>
-					</div>						
-				}
-		
-				<div className={css.optionPanel} style={{left:'140px', display:this.state.showLayerPanel?'flex':'none'}}>
-					<div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div>
-					<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
-				</div>
+						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='eraser'})} 
+							data-tool='eraser' 
+							onPointerUp={this.handleChangeTool}>
+							<i className="fas fa-eraser"></i>
+						</div>
+						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='autodraw'})} 
+							data-tool='autodraw' 
+							onPointerUp={this.handleChangeTool}>
+							<i className="fas fa-magic"></i>
+						</div>
+						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='selection'})} 
+							data-tool='selection' 
+							onPointerUp={this.handleChangeTool}>
+							<i className="flaticon-graphic-design"></i>
+						</div>
+						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='fill'})} 
+							data-tool='fill' 
+							onPointerUp={this.handleChangeTool}>
+							<i className="fas fa-fill"></i>
+						</div>
 
-				<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
-					<div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div>
-					<Style color={this.state.style.color}
-						stroke={this.state.style.width}
-						opacity={this.state.style.opacity}
-						onStyleUpdate={this.handleStyleUpdate}/>
+						<div className={css.button} onPointerUp={this.toggleStylePanel}>
+							<i className="fas fa-palette"></i>
+						</div>
+
+						<div className={css.button} onPointerUp={this.toggleLayerPanel}>
+							<i className="fas fa-layer-group"></i>
+						</div>
+					</div>
+					<div className={css.optionPanel} style={{left:'80px', display:this.state.showLayerPanel?'flex':'none'}}>
+						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div> */}
+						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
+					</div>
+
+					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
+						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div> */}
+						<Style color={this.state.style.color}
+							stroke={this.state.style.width}
+							opacity={this.state.style.opacity}
+							onStyleUpdate={this.handleStyleUpdate}/>
+					</div>
+					<FileLoader onDrop={this.handleDrop}
+						onDragEnter={this.handleDragEnter}
+						onDragLeave={this.handleDragLeave}>
+						<canvas ref={this.canvasRef} className={css.canvas} onPointerDown={this.handlePointerDownCanvas}
+							style={{ strokeDasharray: this.state.dragFile?'5,5':'none' }}/>
+					</FileLoader>
 				</div>
-				<FileLoader onDrop={this.handleDrop}
-					onDragEnter={this.handleDragEnter}
-					onDragLeave={this.handleDragLeave}>
-					<canvas ref={this.canvasRef} className={css.canvas}
-						style={{ strokeDasharray: this.state.dragFile?'5,5':'none' }}/>
-				</FileLoader>
-				
 			</div>
 		);
 	}
@@ -421,6 +426,7 @@ DrawingCanvas.propTypes = {
 	drawings:PropTypes.array,
 	allDrawings:PropTypes.array,
 	selected:PropTypes.string,
+	selectedText:PropTypes.string,
 	selectedQuestion:PropTypes.string,
 	createDrawing:PropTypes.func,
 	updateDrawing:PropTypes.func,
@@ -431,11 +437,19 @@ const getDrawings = makeGetSelectedDrawings();
 
 const mapStateToProps = (state, ownProps) =>{
 	let drawings = getDrawings(state, ownProps);
+
+	let selected = ownProps.formId;
+	let selectedText = state.forms[selected].title;
+	if (state.ui.selectedOption){
+		selected = state.ui.selectedOption;
+		selectedText = state.options[selected].text;
+	}
 	console.log('drawings', drawings);
 	return {
 		drawings,
 		allDrawings:Object.values(state.drawings),
-		selected:state.ui.selectedOption?state.ui.selectedOption:ownProps.formId,//option or background
+		selected,//option or background
+		selectedText,
 		selectedQuestion:state.ui.selectedQuestion // to reset the visibility
 	};
 };
