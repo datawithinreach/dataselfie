@@ -16,6 +16,8 @@ import selectionTool from './tools/selection';
 import fillTool from './tools/fill';
 import {PaperScope} from 'paper';
 
+import { Picker } from 'emoji-mart';
+
 class DrawingCanvas extends Component {
 	constructor(props){
 		super(props);
@@ -24,6 +26,7 @@ class DrawingCanvas extends Component {
 			tool:'pen',
 			showStylePanel:false,
 			showLayerPanel:false,
+			showEmojiPanel:false,
 			recognized:[],
 			style:{
 				color:'#000000',
@@ -40,12 +43,14 @@ class DrawingCanvas extends Component {
 		
 
 		this.toggleStylePanel = this.toggleStylePanel.bind(this);
-		// this.hideStylePanel = this.hideStylePanel.bind(this);
+		this.toggleEmojiPanel = this.toggleEmojiPanel.bind(this);
 		this.toggleLayerPanel = this.toggleLayerPanel.bind(this);
 		// this.hideLayerPanel = this.hideLayerPanel.bind(this);
 
 		this.handleChangeTool = this.handleChangeTool.bind(this);
 		this.handleStyleUpdate = this.handleStyleUpdate.bind(this);
+		this.handleEmojiSelect = this.handleEmojiSelect.bind(this);
+		
 
 		this.handleToggleLayer = this.handleToggleLayer.bind(this);
 		this.canvasRef = React.createRef();
@@ -310,6 +315,18 @@ class DrawingCanvas extends Component {
 		};
 		this.setState({style});
 	}
+	handleEmojiSelect(emoji){
+		// console.log('selected', emoji);
+		if(emoji.native){
+			let textItem = new this.paper.PointText({
+				point:this.paper.view.center.add(new this.paper.Point(-32,32)),
+				content:emoji.native,
+				fontSize:64
+			});
+			this.props.createDrawing(this.paper.project.activeLayer.data.id, textItem);
+		}
+		
+	}
 	clearAutoDrawState(){
 		this.paths = [];
 		this.autodrawn = null;
@@ -326,13 +343,16 @@ class DrawingCanvas extends Component {
 		this.clearAutoDrawState();
 	}
 	toggleStylePanel(){
-		this.setState({showStylePanel:!this.state.showStylePanel, showLayerPanel:false});
+		this.setState({showStylePanel:!this.state.showStylePanel, showLayerPanel:false, showEmojiPanel:false});
+	}
+	toggleEmojiPanel(){
+		this.setState({showEmojiPanel:!this.state.showEmojiPanel, showLayerPanel:false, showStylePanel:false});
 	}
 	toggleLayerPanel(){
-		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false});
+		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false, showEmojiPanel:false});
 	}
 	handlePointerDownCanvas(){
-		this.setState({showStylePanel:false, showLayerPanel:false});
+		this.setState({showStylePanel:false, showLayerPanel:false, showEmojiPanel:false});
 	}
 
 
@@ -344,7 +364,7 @@ class DrawingCanvas extends Component {
 		return (
 			<div className={css.container}>
 				<div className={css.info}><i className="fas fa-paint-brush"></i> &nbsp; 
-					{`Drawing ${selected==formId? 'a Background': 'for '+selectedText}`}
+					{`Draw ${selected==formId? 'a Background': 'for '+selectedText}`}
 				</div>
 				<div className={css.suggestions}>
 					{this.state.recognized.length>0 &&
@@ -388,7 +408,9 @@ class DrawingCanvas extends Component {
 							onPointerUp={this.handleChangeTool}>
 							<i className="fas fa-fill"></i>
 						</div>
-
+						<div className={css.button} onPointerUp={this.toggleEmojiPanel}>
+							<i className="far fa-smile"></i>
+						</div>
 						<div className={css.button} onPointerUp={this.toggleStylePanel}>
 							<i className="fas fa-palette"></i>
 						</div>
@@ -397,11 +419,12 @@ class DrawingCanvas extends Component {
 							<i className="fas fa-layer-group"></i>
 						</div>
 					</div>
-					<div className={css.optionPanel} style={{left:'80px', display:this.state.showLayerPanel?'flex':'none'}}>
-						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div> */}
-						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
-					</div>
 
+					<div className={css.optionPanel} style={{left:'80px', width:'320px', display:this.state.showEmojiPanel?'flex':'none'}}>
+						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div> */}
+						<Picker 
+							onSelect={this.handleEmojiSelect} style={{width:'300px', borderWidth:'0px'}}/>
+					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
 						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div> */}
 						<Style color={this.state.style.color}
@@ -409,6 +432,11 @@ class DrawingCanvas extends Component {
 							opacity={this.state.style.opacity}
 							onStyleUpdate={this.handleStyleUpdate}/>
 					</div>
+					<div className={css.optionPanel} style={{left:'80px', display:this.state.showLayerPanel?'flex':'none'}}>
+						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div> */}
+						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
+					</div>
+
 					<FileLoader onDrop={this.handleDrop}
 						onDragEnter={this.handleDragEnter}
 						onDragLeave={this.handleDragLeave}>
