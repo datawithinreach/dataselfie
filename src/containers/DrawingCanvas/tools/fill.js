@@ -12,14 +12,16 @@ export const createEraserTool = (paper, onFilled)=>{
 		function checkPathItem(item) {
 			if (item.locked || !item.visible)
 				return;
-			var children = item.children;
-    
-			if (!children) {
+			if (item instanceof paper.Group) {
+				var children = item.children;
+				for (var j = children.length - 1; j >= 0; j--)
+					checkPathItem(children[j]);
+				
+			}else{
 				items.push(item);
 				return;
 			}
-			for (var j = children.length - 1; j >= 0; j--)
-				checkPathItem(children[j]);
+			
     
 		}
 		for (var i = item.children.length - 1; i >= 0; i--) {
@@ -42,7 +44,7 @@ export const createEraserTool = (paper, onFilled)=>{
 				let item =  paper.project.activeLayer.children[i];
 				let descendents = flatten(paper.project.activeLayer);
 				let found = descendents.find(d=>d.contains(e.point));
-
+				console.log('fill', descendents, found);
 				if (found){
 					found.fillColor = paper.project.currentStyle.strokeColor;
 					onFilled(item);
