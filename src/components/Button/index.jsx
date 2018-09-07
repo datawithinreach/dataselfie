@@ -13,8 +13,8 @@ export default class Button extends React.Component {
 			this.props.onPointerDown(arguments);
 		}
 		if (this.props.link){
-			location.href=this.props.href;
-			// window.open(this.props.href, '_blank');
+			// location.href=this.props.href;
+			window.open(this.props.href, this.props.target);
 		}
 	}
 	render() {
@@ -64,12 +64,14 @@ Button.propTypes = {
 	link:PropTypes.bool,
 	onPointerDown:PropTypes.func,
 	href:PropTypes.string,
+	target:PropTypes.string,
 };
 Button.defaultProps = {
 	outlined:false,
 	filled:false,
 	stretch:false,
 	link:false,
-	href:'/'
+	href:'/',
+	target:'_blank'
 };
 
