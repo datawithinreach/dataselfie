@@ -6,6 +6,8 @@ import {CREATE_FORM, DELETE_FORM,
 	REQUEST_FORM_CONTENT, RECEIVE_FORM_CONTENT,
 	REQUEST_FORMS, RECEIVE_FORMS} from './forms';
 
+import {NOTIFY_AUTH_FAILURE} from 'ducks/auth';
+
 export const SELECT_FORM = 'SELECT_FORM';
 export const OPEN_FORM = 'OPEN_FORM';
 
@@ -99,6 +101,11 @@ export default (state=initState, action)=>{
 				...state,
 				isFetching:false
 			};
+		case NOTIFY_AUTH_FAILURE:
+			return {
+				...state,
+				serverError: action.status
+			};	
 		case ALERT_SERVER_ERROR:
 			return {
 				...state,
