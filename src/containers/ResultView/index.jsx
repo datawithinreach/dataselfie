@@ -10,7 +10,15 @@ import css from './index.css';
 class ResultView extends Component {
 	constructor(props){
 		super(props);
+
+		this.state={
+			selected:null
+		};
 	}
+	selectResponse(selected){
+		this.setState({selected});
+	}
+	
 
 	render() {
 		
@@ -22,9 +30,9 @@ class ResultView extends Component {
 				<div className={css.title}>{title}</div>
 				<Legend formId={formId}/>
 				<div className={css.header}>Responses</div>
-				<div className={css.responses}>
+				<div className={css.responses} >
 					{responses.map(response=>(
-						<ResponseThumbnail key={response.id} responseId={response.id}/>	
+						<ResponseThumbnail key={response.id} selected={this.state.selected==response.id} responseId={response.id} onPointerUp={this.selectResponse.bind(this,response.id)}/>	
 					))}
 				</div>
 				

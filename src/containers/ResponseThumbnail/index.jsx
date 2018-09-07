@@ -15,11 +15,13 @@ const propTypes = {
 	name:PropTypes.string,
 	createdAt:PropTypes.string,
 	answer:PropTypes.object,
+	selected:PropTypes.bool,
 	width:PropTypes.number,
 	height:PropTypes.number,
 	editable:PropTypes.bool, // delete, show menu
 	drawings:PropTypes.array,
 	push:PropTypes.func,
+	deleteResponse:PropTypes.func,
 };
 
 const defaultProps = {
@@ -30,10 +32,16 @@ const defaultProps = {
 export class ResponseThumbnail extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			confirmDelete:false 
+		};
 		this.handleShowMenu = this.handleShowMenu.bind(this);
 		this.handleHideMenu = this.handleHideMenu.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
+		
 		this.openResponseView = this.openResponseView.bind(this);
+		this.confirmDelete = this.confirmDelete.bind(this);
+		this.cancelDelete = this.cancelDelete.bind(this);
 	}
 	handleShowMenu(){
 		this.setState({showMenu:true});
@@ -44,19 +52,43 @@ export class ResponseThumbnail extends React.Component {
 	openResponseView(){
 		this.props.push(`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`);
 	}
+	handleDelete(){
+		this.setState({confirmDelete:true});
+	}
+	confirmDelete(){
+		this.props.deleteResponse(this.props.responseId);
+	}
+	cancelDelete(){
+		this.setState({confirmDelete:false});
+	}
 	render() {
-		let {name, createdAt,formId, width, height, answer} = this.props;
-		console.log(answer);
+		let {name, createdAt,formId, width, height, answer, selected} = this.props;
 		let parentIds = [formId, ... Object.values(answer)];
+		let otherProps = {...this.props};
+		Object.keys(ResponseThumbnail.propTypes).forEach(k=>delete otherProps[k]);
 		return (
-			<div>
+			<div {...otherProps}>
 				<div className={css.header}> {name} </div>
 				<div className={css.note}> {createdAt} </div>
 				<div className={css.drawing} onPointerEnter={this.handleShowMenu} onPointerLeave={this.handleHideMenu}>
 					<DrawingThumbnail parentIds={parentIds} width={width} height={height} />
-					<div className={css.menu} style={{opacity:this.state.showMenu?0.9:0.0,width:`${width+4}px`, height:`${height+4}px`}}>
-						<Button onPointerUp={this.openResponseView}>Open</Button>
+					<div className={css.menu} style={{opacity:(this.state.showMenu || selected)?0.9:0.0,width:`${width+4}px`, height:`${height+4}px`}}>
+						<Button className={css.deleteBtn}
+							onPointerUp={this.handleDelete}>
+							<i className="fas fa-trash-alt"></i>
+							{/* <img src="assets/icons/trash.svg"/> */}
+						</Button>
+						{this.state.confirmDelete?
+							<div className={css.confirmPopup}>
+								<Button onPointerUp={this.confirmDelete}>Delete</Button>
+								<Button onPointerUp={this.cancelDelete}>Cancel</Button>
+							</div>
+							:
+							<Button onPointerUp={this.openResponseView}>Open</Button>
+						}
+						
 					</div>
+					
 				</div>
 			</div>
 		);
@@ -71,7 +103,6 @@ ResponseThumbnail.defaultProps = defaultProps;
 const mapStateToProps = (state, ownProps) => {
 	let response = state.responses[ownProps.responseId];
 	// let drawings = getResponseDrawings(state, ownProps);
-	console.log('response', response);
 	return {
 		...response,
 	};
