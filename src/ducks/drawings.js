@@ -45,7 +45,6 @@ export const makeGetDrawings=()=>{ //accept multiple drawings
 		(state)=>state.drawings,
 		(parentId, parentIds, drawings)=>{
 			drawings = Object.values(drawings);
-			console.log('parentIds', parentIds, parentId);
 			if (parentIds){
 				
 				return parentIds.reduce((acc,parentId)=>acc.concat(drawings.filter(d=>d.parentId==parentId)),[]);
