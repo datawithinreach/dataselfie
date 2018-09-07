@@ -1,4 +1,4 @@
-export const createEraserTool = (paper)=>{
+export const createEraserTool = (paper, onFilled)=>{
 	let tool = new paper.Tool();
 	tool.name = 'fill';
     
@@ -41,8 +41,8 @@ export const createEraserTool = (paper)=>{
 			for (let i=0; i<items.length; i++){
 				let item =  items[i];
 				if (item.contains(e.point)){// && (item instanceof paper.PathItem||item instanceof paper.Shape)){
-					console.log(item, paper.project.currentStyle);
 					item.fillColor = paper.project.currentStyle.strokeColor;
+					onFilled(item);
 					break;
 				}
 			}
