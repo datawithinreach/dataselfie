@@ -37,14 +37,26 @@ export const createEraserTool = (paper, onFilled)=>{
 		},
 	
 		mouseup:(e)=>{
-			let items = flatten(paper.project.activeLayer);
-			for (let i=0; i<items.length; i++){
-				let item =  items[i];
-				if (item.contains(e.point)){// && (item instanceof paper.PathItem||item instanceof paper.Shape)){
-					item.fillColor = paper.project.currentStyle.strokeColor;
+			
+			for (let i=0; i<paper.project.activeLayer.children.length; i++){
+				let item =  paper.project.activeLayer.children[i];
+				let descendents = flatten(paper.project.activeLayer);
+				if (descendents.some(d=>d.contains(e.point))){
+					descendents.forEach(d=>{
+						if (d.contains(e.point)){
+							item.fillColor = paper.project.currentStyle.strokeColor;
+						}
+					});
 					onFilled(item);
 					break;
 				}
+
+				// descendents.forEach(d=>{})
+				// if (item.contains(e.point)){// && (item instanceof paper.PathItem||item instanceof paper.Shape)){
+				// 	item.fillColor = paper.project.currentStyle.strokeColor;
+				// 	onFilled(item);
+				// 	break;
+				// }
 			}
 		}
 	});
