@@ -72,6 +72,6 @@ Button.defaultProps = {
 	stretch:false,
 	link:false,
 	href:'/',
-	target:'_blank'
+	target:'_self'
 };
 
