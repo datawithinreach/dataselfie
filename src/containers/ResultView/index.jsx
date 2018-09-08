@@ -15,7 +15,8 @@ class ResultView extends Component {
 			selected:null
 		};
 	}
-	selectResponse(selected){
+	selectResponse(selected,e){
+		e.stopPropagation();
 		this.setState({selected});
 	}
 	
@@ -30,7 +31,7 @@ class ResultView extends Component {
 				<div className={css.title}>{title}</div>
 				<Legend formId={formId}/>
 				<div className={css.header}>Responses</div>
-				<div className={css.responses} >
+				<div className={css.responses} onPointerUp={this.selectResponse.bind(this,null)}>
 					{responses.map(response=>(
 						<ResponseThumbnail key={response.id} selected={this.state.selected==response.id} responseId={response.id} onPointerUp={this.selectResponse.bind(this,response.id)}/>	
 					))}

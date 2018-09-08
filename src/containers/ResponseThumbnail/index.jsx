@@ -35,20 +35,20 @@ export class ResponseThumbnail extends React.Component {
 		this.state = {
 			confirmDelete:false 
 		};
-		this.handleShowMenu = this.handleShowMenu.bind(this);
-		this.handleHideMenu = this.handleHideMenu.bind(this);
+		// this.handleShowMenu = this.handleShowMenu.bind(this);
+		// this.handleHideMenu = this.handleHideMenu.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 		
 		// this.openResponseView = this.openResponseView.bind(this);
 		this.confirmDelete = this.confirmDelete.bind(this);
 		this.cancelDelete = this.cancelDelete.bind(this);
 	}
-	handleShowMenu(){
-		this.setState({showMenu:true});
-	}
-	handleHideMenu(){
-		this.setState({showMenu:false});
-	}
+	// handleShowMenu(){
+	// 	this.setState({showMenu:true});
+	// }
+	// handleHideMenu(){
+	// 	this.setState({showMenu:false});
+	// }
 	// openResponseView(){
 	// 	this.props.push(`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`);
 	// }
@@ -80,12 +80,14 @@ export class ResponseThumbnail extends React.Component {
 		let otherProps = {...this.props};
 		Object.keys(ResponseThumbnail.propTypes).forEach(k=>delete otherProps[k]);
 		return (
-			<div {...otherProps}>
+			<div className={css.container} {...otherProps}>
 				<div className={css.header}> {name} </div>
 				<div className={css.note}> {createdAt} </div>
-				<div className={css.drawing} onPointerEnter={this.handleShowMenu} onPointerLeave={this.handleHideMenu}>
+				<div className={css.drawing} 
+					// onPointerEnter={this.handleShowMenu} onPointerLeave={this.handleHideMenu}
+				>
 					<DrawingThumbnail parentIds={parentIds} width={width} height={height} />
-					<div className={css.menu} style={{opacity:(this.state.showMenu || selected)?0.9:0.0,width:`${width+4}px`, height:`${height+4}px`}}>
+					{(this.state.showMenu || selected) && <div className={css.menu} style={{opacity:0.9,width:`${width+4}px`, height:`${height+4}px`}}>
 						<Button className={css.deleteBtn}
 							onPointerUp={this.handleDelete}>
 							<i className="fas fa-trash-alt"></i>
@@ -100,7 +102,7 @@ export class ResponseThumbnail extends React.Component {
 							<Button link href={`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`} target='_blank'>Open</Button>
 						}
 						
-					</div>
+					</div>}
 					
 				</div>
 			</div>
