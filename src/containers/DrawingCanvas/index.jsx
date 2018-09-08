@@ -121,11 +121,14 @@ class DrawingCanvas extends Component {
 			// 	.forEach(po=>this.paper.project.layers[po.id].remove());
 			// console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
 		}
-		if (prevProps.selected!=this.props.selected || prevProps.drawings!=this.props.drawings){
+		if (prevProps.selected!=this.props.selected){
 			// setup  drawings again
-			if (this.props.formId!=this.paper.project.activeLayer.name){
-				this.paper.project.activeLayer.visible=false;
+			for (let i=0; i<this.paper.project.layers.length; i++){
+				if (this.props.formId!=this.paper.project.layers[i].name){
+					this.paper.project.layers[i].visible=false;
+				}
 			}
+			
 			
 			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
 			console.log('selected', this.props.selected);
@@ -369,7 +372,6 @@ class DrawingCanvas extends Component {
 		// console.log('style', style)
 		let {selected, selectedText, formId} = this.props;
 		let {style} = this.state;
-		let layers = this.paper.project?this.paper.project.layers:null;
 		return (
 			<div className={css.container}>
 				<div className={css.info}><i className="fas fa-paint-brush"></i> &nbsp; 
@@ -443,7 +445,7 @@ class DrawingCanvas extends Component {
 					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showLayerPanel?'flex':'none'}}>
 						<div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div>
-						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
+						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} selected={this.props.selected}/>
 					</div>
 
 					<FileLoader onDrop={this.handleDrop}

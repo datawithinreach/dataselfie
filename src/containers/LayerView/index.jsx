@@ -25,16 +25,22 @@ const defaultProps = {
 export class LayerView extends React.Component {
 	constructor(props) {
 		super(props);
-		// this.state = {
-		// 	visible:{
-		// 		[this.props.selected]:true
-		// 	}
-		// };
+		this.state = {
+			visible:{
+				[props.selected]:true,
+				[props.formId]:true
+			}
+		};
 		this.toggleLayer = this.toggleLayer.bind(this);
 	}
-	// componentDidUpdate(prevProps){
-	// 	if (prevProps)
-	// }
+	componentDidUpdate(prevProps){
+		if (prevProps.selected!=this.props.selected){
+			this.setState({visible:{
+				[this.props.selected]:true,
+				[this.props.formId]:true
+			}});
+		}
+	}
 	toggleLayer(e){
 		let id = e.currentTarget.dataset.id;
 		if (id==this.props.selected){
@@ -50,6 +56,10 @@ export class LayerView extends React.Component {
 		if (this.props.onToggleLayer){
 			this.props.onToggleLayer(id);
 		}
+		this.setState({visible:{
+			...this.state.visible,
+			[id]:!this.state.visible[id]
+		}});
 		this.forceUpdate();// necessary hack..
 	}
 	abbreviate(text, limit=60){
@@ -59,12 +69,13 @@ export class LayerView extends React.Component {
 		return text;
 	}
 	visible(id){
-		let {layers, selected} = this.props;
-		if (id==selected){
-			return true;
-		}
-		
-		return layers? (layers[id]?layers[id].visible:false):false;
+		return this.state.visible[id];
+		// let {layers, selected} = this.props;
+		// if (id==selected){
+		// 	return true;
+		// }
+		// console.log('layers', layers, selected);
+		// return layers? (layers[id]?layers[id].visible:false):false;
 	}
 	render() {
 
