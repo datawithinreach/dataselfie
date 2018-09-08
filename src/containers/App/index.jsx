@@ -23,7 +23,7 @@ export class App extends React.Component {
 	render() {
 		
 		return (			
-			<div className={css.app} touch-action="none">
+			<div className={css.app} touch-action="pan-y">
 				<Route exact path='/' component={NavBar}/>
 				<Route exact path='/forms' component={NavBar}/>
 				<Route path='/forms/edit/:formId' component={NavBar}/>
