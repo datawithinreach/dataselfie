@@ -434,7 +434,7 @@ class DrawingCanvas extends Component {
 
 					<div className={css.optionPanel} style={{left:'80px', width:'320px', display:this.state.showEmojiPanel?'flex':'none'}}>
 						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div> */}
-						<Picker 
+						<Picker emojiSize={32}
 							onSelect={this.handleEmojiSelect} style={{width:'300px', borderWidth:'0px'}}/>
 					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
