@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {deleteResponse} from 'ducks/responses';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 import Button from 'components/Button';
 // import {makeGetResponseDrawings} from 'ducks/drawings';
 import DrawingThumbnail from 'containers/DrawingThumbnail';
@@ -20,7 +20,7 @@ const propTypes = {
 	height:PropTypes.number,
 	editable:PropTypes.bool, // delete, show menu
 	// drawings:PropTypes.array,
-	push:PropTypes.func,
+	// push:PropTypes.func,
 	deleteResponse:PropTypes.func,
 };
 
@@ -39,7 +39,7 @@ export class ResponseThumbnail extends React.Component {
 		this.handleHideMenu = this.handleHideMenu.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 		
-		this.openResponseView = this.openResponseView.bind(this);
+		// this.openResponseView = this.openResponseView.bind(this);
 		this.confirmDelete = this.confirmDelete.bind(this);
 		this.cancelDelete = this.cancelDelete.bind(this);
 	}
@@ -49,9 +49,9 @@ export class ResponseThumbnail extends React.Component {
 	handleHideMenu(){
 		this.setState({showMenu:false});
 	}
-	openResponseView(){
-		this.props.push(`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`);
-	}
+	// openResponseView(){
+	// 	this.props.push(`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`);
+	// }
 	handleDelete(){
 		this.setState({confirmDelete:true});
 	}
@@ -97,7 +97,7 @@ export class ResponseThumbnail extends React.Component {
 								<Button onPointerUp={this.cancelDelete}>Cancel</Button>
 							</div>
 							:
-							<Button onPointerUp={this.openResponseView}>Open</Button>
+							<Button link href={`/forms/view/${this.props.formId}/r/${this.props.responseId.replace('response_','')}`} target='_blank'>Open</Button>
 						}
 						
 					</div>
@@ -124,7 +124,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => { 	
 	return bindActionCreators({
 		deleteResponse,
-		push
 	}, dispatch);
 };
 
