@@ -37,12 +37,7 @@
 	border-radius: 15px;
 	
 }
-.marker:hover{
 
-	/* border:2px solid #212121; */
-	background-color: #212121;
-	color:white;
-}
 .current.marker{
 
 
@@ -65,9 +60,18 @@
 	border:2px solid #212121;
 	border-radius: 25px;
 }
-.end.marker:hover{
-	color:white;
-	background-color: #212121;
+
+@media (hover:hover) {
+	.marker:hover{
+
+		/* border:2px solid #212121; */
+		background-color: #212121;
+		color:white;
+	}
+	.end.marker:hover{
+		color:white;
+		background-color: #212121;
+	}
 }
 
 

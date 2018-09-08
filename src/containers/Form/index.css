@@ -26,11 +26,12 @@
   /* background-color: black; */
   border-bottom: 4px solid black;
 }
-
-.menuItem:hover{
-  /* color:white; */
-  /* background-color: black; */
-  border-bottom: 4px solid black;
+@media (hover:hover) {
+  .menuItem:hover{
+    /* color:white; */
+    /* background-color: black; */
+    border-bottom: 4px solid black;
+  }
 }
 
 .content{

@@ -14,11 +14,12 @@
     font-size: 18px;
   }
   
-
-.button:hover{
-  color:white;
-  background-color: #212121;
-}
-.filled:hover{
-  opacity: 0.8;
+@media (hover:hover) {
+  .button:hover{
+    color:white;
+    background-color: #212121;
+  }
+  .filled:hover{
+    opacity: 0.8;
+  }
 }

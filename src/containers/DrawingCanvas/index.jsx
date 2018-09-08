@@ -333,6 +333,7 @@ class DrawingCanvas extends Component {
 			});
 			this.props.createDrawing(this.paper.project.activeLayer.data.id, textItem);
 			this.closeOptionPanel();
+			this.paper.view.update();
 		}
 		
 	}
