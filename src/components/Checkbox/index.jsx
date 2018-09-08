@@ -2,30 +2,30 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import css from './index.css';
 
-class TextField extends Component {
+class Checkbox extends Component {
 	constructor(props) {
 		super(props);
-		this.handleChange = this.handleChange.bind(this);
-		this.state = {
-			checked:this.props.defaultChecked
-		};
+		// this.handleChange = this.handleChange.bind(this);
+		// this.state = {
+		// 	checked:this.props.defaultChecked
+		// };
 	}
 
-	handleChange(e) {
-		if (this.props.onChange) {
-			this.props.onChange(e);
-		}
-		this.setState({checked: e.target.checked});
-	}
+	// handleChange(e) {
+	// 	if (this.props.onChange) {
+	// 		this.props.onChange(e, this.props.data);
+	// 	}
+	// 	this.setState({checked: e.target.checked});
+	// }
 	render() {
 		let otherProps = {...this.props};
-		Object.keys(TextField.propTypes).forEach(k=>delete otherProps[k]);
+		Object.keys(Checkbox.propTypes).forEach(k=>delete otherProps[k]);
         
 		return (
-			<label className={css.container}>
+			<label className={css.container} {...otherProps}>
 				<input className={css.checkbox} type="checkbox" 
-					{...otherProps}
-					onChange={this.handleChange} checked={this.state.checked}/>
+					name={this.props.name}
+					onChange={this.props.onChange} checked={this.props.checked?this.props.checked:false}/>
 				<span className={css.checkmark}></span>
 				<span className={css.label}>{this.props.label}</span>
 			</label>
@@ -35,13 +35,14 @@ class TextField extends Component {
 
 }
 
-TextField.propTypes = {
+Checkbox.propTypes = {
 	onChange: PropTypes.func,
 	label:PropTypes.string,
-	defaultChecked:PropTypes.bool,
+	name:PropTypes.string,
+	checked:PropTypes.bool
 };
 
-TextField.defaultProps = {
+Checkbox.defaultProps = {
 	label:''
 };
-export default TextField;
+export default Checkbox;

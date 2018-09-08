@@ -19,7 +19,7 @@ const propTypes = {
 	width:PropTypes.number,
 	height:PropTypes.number,
 	editable:PropTypes.bool, // delete, show menu
-	drawings:PropTypes.array,
+	// drawings:PropTypes.array,
 	push:PropTypes.func,
 	deleteResponse:PropTypes.func,
 };
@@ -63,7 +63,20 @@ export class ResponseThumbnail extends React.Component {
 	}
 	render() {
 		let {name, createdAt,formId, width, height, answer, selected} = this.props;
-		let parentIds = [formId, ... Object.values(answer)];
+		let parentIds = [formId];
+		for (const qId of Object.keys(answer)){
+			if (!answer[qId]) continue;
+			if (typeof answer[qId]=='string'){
+				parentIds.push(answer[qId]);
+			}else{//multiple answers
+				for (const oId of Object.keys(answer[qId])){
+					if (answer[qId][oId]){
+						parentIds.push(oId);
+					}
+					
+				}
+			}
+		}
 		let otherProps = {...this.props};
 		Object.keys(ResponseThumbnail.propTypes).forEach(k=>delete otherProps[k]);
 		return (

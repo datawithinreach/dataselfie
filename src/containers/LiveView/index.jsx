@@ -10,6 +10,7 @@ import {selectForm} from 'ducks/ui';
 import classNames from 'utils/classNames';
 import TextField from 'components/TextField';
 import RadioGroup from 'components/RadioGroup';
+import Checkbox from 'components/Checkbox';
 import Button from 'components/Button';
 
 import css from './index.css';
@@ -28,7 +29,7 @@ class LiveView extends Component {
 		this.changeQuestion = this.changeQuestion.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.prevQuestion = this.prevQuestion.bind(this);
-		this.handleSelect = this.handleSelect.bind(this);
+		this.handleRadioChange = this.handleRadioChange.bind(this);
 		this.handleResponseNameChange = this.handleResponseNameChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleReleaseError = this.handleReleaseError.bind(this);
@@ -67,7 +68,7 @@ class LiveView extends Component {
 	getQuestion(){
 		return this.props.questions.find(q=>q.id==this.state.selectedQuestion);
 	}
-	handleSelect(event){
+	handleRadioChange(event){
 		// console.log('selected',event.target.value);
 		let question = this.getQuestion();
 		this.setState({response:{
@@ -75,6 +76,21 @@ class LiveView extends Component {
 			answer:{
 				...this.state.response.answer,
 				[question.id]:event.target.value
+			}
+		}});
+	}
+	handleCheckboxChange(optionId, event){
+		let question = this.getQuestion();
+		let {response} = this.state;
+		console.log(optionId, event.target.checked);
+		this.setState({response:{
+			...this.state.response,
+			answer : {
+				...this.state.response.answer,
+				[question.id]:{
+					...(response.answer[question.id]||{}),
+					[optionId]:event.target.checked
+				}
 			}
 			
 		}});
@@ -93,7 +109,7 @@ class LiveView extends Component {
 	handleSubmit(){
 		let {response} = this.state;
 		let {questions} = this.props;
-		if (response.name && questions.every(item=>response.answer[item.id])){
+		if ((this.props.collectName?response.name:true) && questions.every(item=>response.answer[item.id])){
 			// add question order
 			// response = {
 			// 	...this.state.response,
@@ -110,16 +126,21 @@ class LiveView extends Component {
 			
 		}else{
 			let missing =  questions.length - questions.filter(item=>response.answer[item.id]).length;
-			missing += (response.name?0:1);
-			this.setState({showError:true, error:`There ${missing>1?'are':'is'} ${missing} missing fields in this form.`});
+			if (this.props.collectName){
+				missing += (response.name?0:1);	
+				this.setState({showError:true, error:`There ${missing>1?'are':'is'} ${missing} missing fields in this form.`});
+			}else{
+				this.setState({showError:true, error:`There ${missing>0?'are':'is'} ${missing} missing fields in this form.`});
+			}
+			
 		}
 		
 	}
 	render() {
 		let {selectedQuestion, response, showError} = this.state;
 		
-		let {questions, loggedInUsername, username, preview} = this.props;
-		console.log(username, loggedInUsername);
+		let {questions, loggedInUsername, username, collectName, preview} = this.props;
+		// console.log(username, loggedInUsername);
 		let curQuestion = this.getQuestion();
 		return (
 			<div style={{margin:preview?'0px':'10px'}}>
@@ -136,7 +157,7 @@ class LiveView extends Component {
 				</div>
 				}
 				<div className={css.progress}>
-					<div className={classNames(css.start,css.marker,{[css.current]:selectedQuestion==null,  [css.incomplete]: showError&&response.name==null})} data-id={null} onPointerUp={this.changeQuestion}>
+					<div className={classNames(css.start,css.marker,{[css.current]:selectedQuestion==null,  [css.incomplete]: showError&&(collectName?response.name==null:false)})} data-id={null} onPointerUp={this.changeQuestion}>
 						<i className="fas fa-arrow-right"></i>
 					</div>
 					{questions.map((question,i)=>
@@ -173,12 +194,14 @@ class LiveView extends Component {
 							<br/>
 							<div className={css.title}>{this.props.title}</div>
 							<br/>
-							<div>{this.props.prompt}</div>
-							<br/>				
-							{/* <div>Please write down any identifier for your response such as a name or date.</div>									 */}
-							<TextField placeholder='Write a response name.'	
-								value={response.name? response.name: ''}
-								onChange={this.handleResponseNameChange}/>
+							{collectName &&
+							<Fragment>
+								<div>{this.props.prompt}</div>
+								<br/>				
+								<TextField placeholder='Write a response name.'	
+									value={response.name? response.name: ''}
+									onChange={this.handleResponseNameChange}/>
+							</Fragment>}
 						</Fragment>
 						
 					):(
@@ -186,9 +209,22 @@ class LiveView extends Component {
 							<div className={css.question}>
 								<div>{curQuestion.text}</div>
 							</div>
-							<RadioGroup items={curQuestion.options}
-								checked={response.answer[curQuestion.id]} 
-								onChange={this.handleSelect}/>
+							{curQuestion.allowMultipleAnswers?
+								<div style={{display:'flex', flexDirection:'column'}}>
+									{curQuestion.options.map((option)=>
+										<Checkbox key={option.id} 
+											style={{margin:'5px'}}
+											checked={response.answer[curQuestion.id]?response.answer[curQuestion.id][option.id]:false}
+											label={option.text}
+											data-id={option.id}
+											onChange={this.handleCheckboxChange.bind(this, option.id)}/>)}
+								</div>
+								:
+								<RadioGroup items={curQuestion.options}
+									checked={response.answer[curQuestion.id]} 
+									onChange={this.handleRadioChange}/>
+								
+							}
 						</Fragment>
 					)}
 				</div>
@@ -205,6 +241,7 @@ LiveView.propTypes = {
 	username:PropTypes.string,
 	prompt:PropTypes.string,
 	questions:PropTypes.array,
+	collectName:PropTypes.bool,
 	preview:PropTypes.bool,
 	createResponse:PropTypes.func,
 	requestFormContent:PropTypes.func,

@@ -8,6 +8,7 @@ import {updateQuestion} from 'ducks/questions';
 import {selectOption} from 'ducks/ui';
 import TextField from 'components/TextField';
 import Button from 'components/Button';
+import Switch from 'components/Switch';
 import DrawingThumbnail from 'containers/DrawingThumbnail';
 import css from './index.css';
 class Question extends Component {
@@ -17,6 +18,8 @@ class Question extends Component {
 		this.handleCreateOption = this.handleCreateOption.bind(this);
 		this.editDrawing = this.editDrawing.bind(this);
 		this.handleQuestionChange = this.handleQuestionChange.bind(this);
+		this.handleAllowMultipleAnswers = this.handleAllowMultipleAnswers.bind(this);
+		
 	}
 	componentDidMount(){
 		this.selectOptionSanityCheck();
@@ -64,7 +67,11 @@ class Question extends Component {
 	handleQuestionChange(event){
 		this.props.updateQuestion(this.props.questionId, {text:event.target.value});
 	}
+	handleAllowMultipleAnswers(event){
+		this.props.updateQuestion(this.props.questionId, {allowMultipleAnswers:event.target.checked});
+	}
 	render() {
+		console.log('Question---', this.props.questionId, this.props.allowMultipleAnswers);
 		return (
 			<div>
 			
@@ -102,7 +109,13 @@ class Question extends Component {
 					)}
 									
 				</div>
-				<Button onPointerUp={this.handleCreateOption} outlined>Add Option</Button>
+				<div style={{display:'flex', justifyContent:'space-between'}}>
+					<Button onPointerUp={this.handleCreateOption} outlined>Add Option</Button>
+					<Switch label='Allow multiple answers?' 
+						checked={this.props.allowMultipleAnswers}
+						onChange={this.handleAllowMultipleAnswers}/>
+				</div>
+				
 			</div>
 		);
 	}
@@ -114,6 +127,7 @@ Question.propTypes = {
 	options:PropTypes.array,
 	drawings:PropTypes.array,
 	selectedOption:PropTypes.string,
+	allowMultipleAnswers:PropTypes.bool,
 	selectOption:PropTypes.func,
 	createOption:PropTypes.func,
 	deleteOption:PropTypes.func,

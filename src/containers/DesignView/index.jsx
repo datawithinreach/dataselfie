@@ -132,7 +132,7 @@ class DesignView extends Component {
 									<TextField placeholder='Title' value={this.props.title} 
 										size={36} onChange={this.handleTitleChange}/>
 									<br/>
-									<Switch defaultChecked={this.props.collectName} 
+									<Switch checked={this.props.collectName} 
 										onChange={this.handleCollectName}
 										label='Collect Response Name?'></Switch>
 									<br/>

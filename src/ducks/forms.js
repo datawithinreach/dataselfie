@@ -18,7 +18,7 @@ export const createForm = (username, attrs={}) => {
 	let formId = uniqueId();
 	attrs = {
 		title:'Untitled',
-		description: '',
+		collectName:true,
 		...attrs,
 		username,
 		id:formId

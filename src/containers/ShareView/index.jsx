@@ -132,7 +132,7 @@ export class ShareView extends React.Component {
 					<div className={css.header}>
                         Link
 					</div>
-					<Switch defaultChecked={this.props.public} onChange={this.handlePublicShare} label="Share Public?" style={{marginLeft:'0px'}}/>
+					<Switch checked={this.props.public} onChange={this.handlePublicShare} label="Share Public?" style={{marginLeft:'0px'}}/>
 					<div className={css.flex}>
 						<TextField value={window.location.href.replace('edit', 'view')} style={{flexGrow:1, marginRight:'10px'}}/>
 						<Button link href={window.location.href.replace('edit', 'view')} outlined>Go to the Link</Button>
@@ -147,7 +147,7 @@ export class ShareView extends React.Component {
 					<div className={css.header}>
                         Reminder
 					</div>
-					<Switch defaultChecked={this.props.reminder!=null} onChange={this.handleReminderOn} label="On?" style={{marginLeft:'0px'}}/>
+					<Switch checked={this.props.reminder!=null} onChange={this.handleReminderOn} label="On?" style={{marginLeft:'0px'}}/>
 
 					{this.props.reminder&&
 					<React.Fragment>

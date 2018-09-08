@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import css from './index.css';
 class RadioGroup extends Component {
 	render() {
-		console.log(this.props.checked);
+		// console.log(this.props.checked);
+		let otherProps = {...this.props};
+		Object.keys(RadioGroup.propTypes).forEach(k=>delete otherProps[k]);
 		return (
-			<div className={css.group} style={{...this.props.style, display:this.props.horizontal?'flex':'block'}}>
+			<div className={css.group} style={{...this.props.style, display:this.props.horizontal?'flex':'block'}}
+				{...otherProps}>
 				{this.props.items.map((item,i)=>
 					<label key={i} className={css.item}>{this.props.getLabel(item)}
 						<input type="radio" name={this.props.name}

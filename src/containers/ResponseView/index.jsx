@@ -41,7 +41,24 @@ export class ResponseView extends React.Component {
 	render() {
 
 		let {name, createdAt, formId, questions=[], loggedInUsername, form={}, answer={}} = this.props;
-		let parentIds = [formId, ...Object.values(answer)];
+		let parentIds = [formId];
+		let visible = {};
+		for (const qId of Object.keys(answer)){
+			if (!answer[qId]) continue;
+			if (typeof answer[qId]=='string'){
+				parentIds.push(answer[qId]);
+				visible[answer[qId]]=true;
+			}else{//multiple answers
+				for (const oId of Object.keys(answer[qId])){
+					if (answer[qId][oId]){
+						parentIds.push(oId);
+						visible[oId]=true;
+					}
+					
+				}
+			}
+		}
+		
 		return (
 		
 
@@ -69,13 +86,13 @@ export class ResponseView extends React.Component {
 								</div>
 								<div className={css.options}>
 									{question.options.map((option,i)=>
-										<div key={i} className={[css.option, answer[question.id]==option.id?css.selected:''].join(' ')}>
+										<div key={i} className={[css.option, visible[option.id]?css.selected:''].join(' ')}>
 											<DrawingThumbnail key={question.id} 
 												parentId={option.id}
 												// fitted 
 												// width={50}
 												// height={50}
-												selected={answer[question.id]==option.id}/>
+												selected={visible[option.id]}/>
 											<div className={css.label}>{option.text}</div>
 										</div>
 									)}

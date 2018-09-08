@@ -17,7 +17,11 @@ export class Legend extends React.Component {
 		super(props);
 		this.state = {
 			visible:props.questions.reduce((acc,q)=>{
-				acc[q.id] = q.options.length>0? q.options[0].id:null;
+				acc[q.id] = q.options.length>0? (
+					q.allowMultipleAnswers?
+						{[q.options[0].id]:true}
+						:q.options[0].id
+				):null;
 				return acc;
 			},{})
 		};
@@ -25,16 +29,43 @@ export class Legend extends React.Component {
 	}
 
 	selectOption(option){
+		let {visible} = this.state;
+		let q = this.props.questions.find(q=>q.id==option.questionId);
+		let oneVisible= (q)=>Object.values(visible[q.id]).filter(v=>v==true).length==1;
 		this.setState({
 			visible:{
-				...this.state.visible,
-				[option.questionId]:option.id
+				...visible,
+				[option.questionId]:q.allowMultipleAnswers?{
+					...(visible[q.id]||{}),
+					[option.id]:oneVisible(q)?true:!visible[q.id][option.id]
+				}:option.id
 			}
 		});
+
+	}
+	isVisible(option){
+		let {visible} = this.state;
+		let q = this.props.questions.find(q=>q.id==option.questionId);
+		return q.allowMultipleAnswers? visible[q.id][option.id]:visible[q.id]==option.id;
 	}
 	render() {
 		let {formId, questions} = this.props;
-		let parentIds = [formId, ...Object.values(this.state.visible)];
+		let {visible} = this.state;
+		let parentIds = [formId];
+		for (const qId of Object.keys(visible)){
+			if (!visible[qId]) continue;
+			if (typeof visible[qId]=='string'){
+				parentIds.push(visible[qId]);
+			}else{//multiple answers
+				for (const oId of Object.keys(visible[qId])){
+					if (visible[qId][oId]){
+						parentIds.push(oId);
+					}
+					
+				}
+			}
+		}
+
 		return (
 			<div className={css.legend} ref={this.legend}>
 				<DrawingThumbnail width={300} height={300} parentIds={parentIds} selectable={false}/>
@@ -46,14 +77,15 @@ export class Legend extends React.Component {
 							</div>
 							<div className={css.options}>
 								{question.options.map((option,i)=>
-									<div key={i} className={[css.option, this.state.visible[question.id]==option.id?css.selected:''].join(' ')}
-										onPointerUp={this.selectOption.bind(this, option)} >
+									<div key={i} className={[css.option, 
+										this.isVisible(option)?css.selected:''].join(' ')}
+									onPointerUp={this.selectOption.bind(this, option)} >
 										<DrawingThumbnail key={question.id} 
 											className={css.drawing}
 											parentId={option.id}
 											width={40}
 											height={40}
-											selected={this.state.visible[question.id]==option.id}/>
+											selected={this.isVisible(option)}/>
 										<div className={css.label}>{option.text}</div>
 									</div>
 								)}

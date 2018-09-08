@@ -150,7 +150,7 @@ export class NavBar extends React.Component {
 
 							<div className={css.loginOption}>
 								<a>Forgot password?</a>
-								<Checkbox label="Remember me?" name="remember" defaultChecked={this.state.form.remember} onChange={this.handleFormChange}/>
+								<Checkbox label="Remember me?" name="remember" checked={this.state.form.remember} onChange={this.handleFormChange}/>
 							</div>
 							<div className={css.message}>{this.props.authStatus}</div>
 							{notConfirmed&&
