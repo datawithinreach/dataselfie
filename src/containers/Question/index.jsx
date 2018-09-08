@@ -71,7 +71,6 @@ class Question extends Component {
 		this.props.updateQuestion(this.props.questionId, {allowMultipleAnswers:event.target.checked});
 	}
 	render() {
-		console.log('Question---', this.props.questionId, this.props.allowMultipleAnswers);
 		return (
 			<div>
 			
