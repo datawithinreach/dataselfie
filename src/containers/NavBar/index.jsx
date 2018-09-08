@@ -48,10 +48,10 @@ export class NavBar extends React.Component {
 		
 		this.props.requestLogin(username, password, remember);
 
-		this.setState({
-			showLogin:false,
-			showSignup:false
-		});
+		// this.setState({
+		// 	showLogin:false,
+		// 	showSignup:false
+		// });
 	}
 	resendConfirmEmail(){
 		let {username=null} = this.state.form;
