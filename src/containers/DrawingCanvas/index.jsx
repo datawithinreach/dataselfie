@@ -5,10 +5,12 @@ import { bindActionCreators } from 'redux';
 import {createDrawing, deleteDrawing, updateDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
 import Style from 'components/Style';
 import FileLoader from 'components/FileLoader';
+import Button from 'components/Button';
 import LayerView from 'containers/LayerView';
 import classNames from 'utils/classNames';
 import css from './index.css';
 import autodraw from 'utils/autodraw';
+
 import penTool from './tools/pen';
 import eraserTool from './tools/eraser';
 import autodrawTool from './tools/autodraw';
@@ -59,7 +61,7 @@ class DrawingCanvas extends Component {
 		this.handleDrop = this.handleDrop.bind(this);
 		this.handleDragLeave = this.handleDragLeave.bind(this);
 
-		this.handlePointerDownCanvas = this.handlePointerDownCanvas.bind(this);
+		this.closeOptionPanel = this.closeOptionPanel.bind(this);
 		// this.layerMap = {};
 	}
 	componentWillUnmount(){
@@ -305,15 +307,18 @@ class DrawingCanvas extends Component {
 		// this.forceUpdate();// necessary?
 	}
 	handleStyleUpdate(style){
-		let {color, stroke,opacity} = style;
-		
+		let {color, stroke, opacity} = style;
+		console.log('opacity', opacity);
 		this.paper.project.currentStyle = {
 			...this.paper.project.currentStyle,
 			strokeColor:color,
 			strokeWidth:stroke,
 			opacity
 		};
+		//HACK: style does not have opacity property
+		this.paper.project.currentStyle.opacity=opacity;
 		this.setState({style});
+		this.closeOptionPanel();
 	}
 	handleEmojiSelect(emoji){
 		// console.log('selected', emoji);
@@ -324,6 +329,7 @@ class DrawingCanvas extends Component {
 				fontSize:64
 			});
 			this.props.createDrawing(this.paper.project.activeLayer.data.id, textItem);
+			this.closeOptionPanel();
 		}
 		
 	}
@@ -339,7 +345,9 @@ class DrawingCanvas extends Component {
 		this.setState({
 			tool:toolName
 		});
+		this.closeOptionPanel();
 		this.paper.tools.find(tool=>tool.name==toolName).activate();
+		// if (toolName)
 		this.clearAutoDrawState();
 	}
 	toggleStylePanel(){
@@ -351,7 +359,7 @@ class DrawingCanvas extends Component {
 	toggleLayerPanel(){
 		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false, showEmojiPanel:false});
 	}
-	handlePointerDownCanvas(){
+	closeOptionPanel(){
 		this.setState({showStylePanel:false, showLayerPanel:false, showEmojiPanel:false});
 	}
 
@@ -360,6 +368,7 @@ class DrawingCanvas extends Component {
 		// let style = this.paper.project? this.paper.project.currentStyle:this.initStyle;
 		// console.log('style', style)
 		let {selected, selectedText, formId} = this.props;
+		let {style} = this.state;
 		let layers = this.paper.project?this.paper.project.layers:null;
 		return (
 			<div className={css.container}>
@@ -383,64 +392,64 @@ class DrawingCanvas extends Component {
 				</div>		
 				<div className={css.canvasContainer}>
 					<div className={css.menu}>
-						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='pen'})} 
+						<Button className={this.state.tool=='pen'?css.selectedTool:''} outlined
 							data-tool='pen' 
 							onPointerUp={this.handleChangeTool}>
 							<i className="fas fa-pencil-alt"></i>
-						</div>
-						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='eraser'})} 
+						</Button>
+						<Button className={this.state.tool=='eraser'?css.selectedTool:''} outlined
 							data-tool='eraser' 
 							onPointerUp={this.handleChangeTool}>
 							<i className="fas fa-eraser"></i>
-						</div>
-						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='autodraw'})} 
+						</Button>
+						<Button className={this.state.tool=='autodraw'?css.selectedTool:''} outlined
 							data-tool='autodraw' 
 							onPointerUp={this.handleChangeTool}>
 							<i className="fas fa-magic"></i>
-						</div>
-						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='selection'})} 
+						</Button>
+						<Button className={this.state.tool=='selection'?css.selectedTool:''} outlined
 							data-tool='selection' 
 							onPointerUp={this.handleChangeTool}>
 							<i className="flaticon-graphic-design"></i>
-						</div>
-						<div className={classNames(css.button,{[css.selectedTool]: this.state.tool=='fill'})} 
+						</Button>
+						<Button className={this.state.tool=='fill'?css.selectedTool:''} outlined
 							data-tool='fill' 
 							onPointerUp={this.handleChangeTool}>
 							<i className="fas fa-fill"></i>
-						</div>
-						<div className={css.button} onPointerUp={this.toggleEmojiPanel}>
+						</Button>
+						<Button  onPointerUp={this.toggleEmojiPanel} outlined>
 							<i className="far fa-smile"></i>
-						</div>
-						<div className={css.button} onPointerUp={this.toggleStylePanel}>
-							<i className="fas fa-palette"></i>
-						</div>
+						</Button>
+						<Button  onPointerUp={this.toggleStylePanel} outlined>
+							<i style={{color:style.color, opacity:style.opacity}}className="fas fa-palette"></i>
+						</Button>
 
-						<div className={css.button} onPointerUp={this.toggleLayerPanel}>
+						<Button  onPointerUp={this.toggleLayerPanel} outlined>
 							<i className="fas fa-layer-group"></i>
-						</div>
+						</Button>
 					</div>
 
 					<div className={css.optionPanel} style={{left:'80px', width:'320px', display:this.state.showEmojiPanel?'flex':'none'}}>
-						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div> */}
+						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div> */}
 						<Picker 
 							onSelect={this.handleEmojiSelect} style={{width:'300px', borderWidth:'0px'}}/>
 					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
-						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideStylePanel}>Close</div> */}
+						<div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div>
 						<Style color={this.state.style.color}
 							stroke={this.state.style.width}
 							opacity={this.state.style.opacity}
 							onStyleUpdate={this.handleStyleUpdate}/>
 					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showLayerPanel?'flex':'none'}}>
-						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.hideLayerPanel}>Close</div> */}
+						<div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div>
 						<LayerView formId={this.props.formId} onToggleLayer={this.handleToggleLayer} layers={layers} selected={this.props.selected}/>
 					</div>
 
 					<FileLoader onDrop={this.handleDrop}
 						onDragEnter={this.handleDragEnter}
 						onDragLeave={this.handleDragLeave}>
-						<canvas ref={this.canvasRef} className={css.canvas} onPointerDown={this.handlePointerDownCanvas}
+						<canvas ref={this.canvasRef} className={css.canvas} onPointerDown={this.closeOptionPanel}
 							style={{ strokeDasharray: this.state.dragFile?'5,5':'none' }}/>
 					</FileLoader>
 				</div>

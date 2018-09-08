@@ -67,12 +67,13 @@ export class Style extends React.PureComponent{
 		this.setState({
 			opacity:newOpacity
 		});
-		this.props.onStyleUpdate({...this.state, opacity:newOpacity});
+
 	}
 	handleOpacityEnd(){
 		if (!this.opacitySliderX){
 			return;
 		}
+		this.props.onStyleUpdate({...this.state});
 		this.opacity = this.opacitySliderX = this.opacitySliderWidth = null;
 		window.removeEventListener('pointermove', this.handleOpacity);
 		window.removeEventListener('pointerup', this.handleOpacityEnd);

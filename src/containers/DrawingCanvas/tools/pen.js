@@ -3,8 +3,8 @@ export const createPenTool = (paper, onPathCreated)=>{
 	tool.name = 'pen';
 	let path = null;
 	tool.on({
-		activate: ()=>{
-			console.log('activate', tool.name);
+		activate: (opacity)=>{
+			console.log('activate', tool.name, opacity);
 		},
 		deactivate:()=>{
 			console.log('activate', tool.name);
@@ -14,6 +14,8 @@ export const createPenTool = (paper, onPathCreated)=>{
 				path = new paper.Path({
 					segments: [e.point]
 				});
+				let {opacity=1.0} = paper.project.currentStyle;
+				path.opacity = opacity;
 			}else{
 				path.add(e.point);
 			}

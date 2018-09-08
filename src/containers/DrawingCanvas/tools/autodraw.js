@@ -16,6 +16,8 @@ export const createAutoDrawTool = (paper, onNewPathAdded)=>{
 				path = new paper.Path({
 					segments: [e.point]
 				});
+				let {opacity=1.0} = paper.project.currentStyle;
+				path.opacity = opacity;
 			}else{
 				path.add(e.point);
 			}
