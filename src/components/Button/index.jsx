@@ -44,7 +44,7 @@ export default class Button extends React.Component {
 		let Tag = this.props.link? 'a':'button';
 		console.log('tag', Tag);
 		return (
-			<Tag className={[this.props.className, css.button, filled?css.filled:''].join(' ')} {...otherProps}
+			<Tag className={[this.props.className, css.button, disabled? css.disabled:'', filled?css.filled:''].join(' ')} {...otherProps}
 				onPointerDown = {this.handlePointerDown}
 				style={{...style, ...this.props.style}}>
 				{children}
@@ -60,6 +60,7 @@ Button.propTypes = {
 	stretch:PropTypes.bool,
 	children:PropTypes.node.isRequired,
 	outlined:PropTypes.bool,
+	// disabled:PropTypes.bool,
 	filled:PropTypes.bool,
 	selected:PropTypes.bool,
 	link:PropTypes.bool,

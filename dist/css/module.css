@@ -217,6 +217,9 @@
   .button--1mmZbGG:visited{ color: #212121 }
 
   
+  .button--1mmZbGG.disabled--2ednvmp{
+    pointer-events: none;
+  }
 @media (hover:hover) {
   .button--1mmZbGG:hover{
     color:white;
@@ -224,6 +227,10 @@
   }
   .filled--u_PCJOP:hover{
     opacity: 0.8;
+  }
+  .button--1mmZbGG.disabled--2ednvmp:hover{
+    color:#212121;
+    background-color: white;
   }
 }
 

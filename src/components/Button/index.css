@@ -29,6 +29,9 @@
   .button:visited{ color: #212121 }
 
   
+  .button.disabled{
+    pointer-events: none;
+  }
 @media (hover:hover) {
   .button:hover{
     color:white;
@@ -36,5 +39,9 @@
   }
   .filled:hover{
     opacity: 0.8;
+  }
+  .button.disabled:hover{
+    color:#212121;
+    background-color: white;
   }
 }

@@ -177,14 +177,12 @@ class LiveView extends Component {
 						<a style={{marginLeft:'10px'}}onPointerUp={this.handleReleaseError}>Clear</a>
 					</div>
 					<div className={css.navMenu}>
-						{selectedQuestion!=null&&
-						<Button onPointerUp={this.prevQuestion} outlined>
+						<Button onPointerUp={this.prevQuestion} outlined disabled={selectedQuestion==null}>
 							<i className="fas fa-arrow-left"></i> Prev
-						</Button>}
-						{questions.length>0 && selectedQuestion!=questions[questions.length-1].id &&
-						<Button onPointerUp={this.nextQuestion} outlined>
+						</Button>
+						<Button onPointerUp={this.nextQuestion} outlined disabled={questions.length==0 || selectedQuestion==questions[questions.length-1].id}>
 							<i className="fas fa-arrow-right"></i> Next
-						</Button>}
+						</Button>
 						<Button onPointerUp={this.handleSubmit} outlined>
 							Submit
 						</Button>
