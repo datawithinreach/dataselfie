@@ -26,11 +26,12 @@
   /* background-color: black; */
   border-bottom: 4px solid black;
 }
-
-.menuItem--3sLyjP2:hover{
-  /* color:white; */
-  /* background-color: black; */
-  border-bottom: 4px solid black;
+@media (hover:hover) {
+  .menuItem--3sLyjP2:hover{
+    /* color:white; */
+    /* background-color: black; */
+    border-bottom: 4px solid black;
+  }
 }
 
 .content--1i_RqfV{
@@ -75,12 +76,7 @@
 	border-radius: 15px;
 	
 }
-.marker--3rNPqec:hover{
 
-	/* border:2px solid #212121; */
-	background-color: #212121;
-	color:white;
-}
 .current--3KM_Al9.marker--3rNPqec{
 
 
@@ -103,9 +99,18 @@
 	border:2px solid #212121;
 	border-radius: 25px;
 }
-.end--33Rkx9z.marker--3rNPqec:hover{
-	color:white;
-	background-color: #212121;
+
+@media (hover:hover) {
+	.marker--3rNPqec:hover{
+
+		/* border:2px solid #212121; */
+		background-color: #212121;
+		color:white;
+	}
+	.end--33Rkx9z.marker--3rNPqec:hover{
+		color:white;
+		background-color: #212121;
+	}
 }
 
 
@@ -197,18 +202,21 @@
     font-size: 18px;
   }
   
+@media (hover:hover) {
+  .button--1mmZbGG:hover{
+    color:white;
+    background-color: #212121;
+  }
+  .filled--u_PCJOP:hover{
+    opacity: 0.8;
+  }
+}
 
-.button--1mmZbGG:hover{
-  color:white;
-  background-color: #212121;
-}
-.filled--u_PCJOP:hover{
-  opacity: 0.8;
-}
 /* The switch - the box around the slider */
 .container--2z3Ou4A{
 	display: flex;
 	margin:5px;
+	align-items: center;
 }
 .switch--1PhPT0U {
 	position: relative;
@@ -673,6 +681,61 @@
 	border-radius: 50%;
 	background: white;
 }
+.container--371m_Bp{
+    position: relative;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+}
+.container--371m_Bp input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.container--371m_Bp .label--3XPnRwL{
+    /* line-height: 1.5; */
+    margin-left:5px;
+}
+.checkmark--1qlTTzb {
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border: 2px solid #212121;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+.container--371m_Bp:hover input ~ .checkmark--1qlTTzb {
+    background-color: #eee;
+}
+.container--371m_Bp input:focus ~ .checkmark--1qlTTzb {
+    background-color: #eee;
+}       
+.checkmark--1qlTTzb:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.container--371m_Bp input:checked ~ .checkmark--1qlTTzb {
+	background-color: #212121;
+}
+.container--371m_Bp input:checked ~ .checkmark--1qlTTzb:after {
+    display: block;
+}
+
+.container--371m_Bp .checkmark--1qlTTzb:after {
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
 .progress--1c0ifh1{
 	display:flex;
 	flex-wrap: wrap;
@@ -883,7 +946,9 @@
 .option--3fK0L8D:hover .label--JryZKeW{
     color:#212121;
 }
-
+.container--3BTA6HQ{
+    cursor: pointer;
+}
 .header--3ohO_Mp{
 	font-weight: 500;
     margin:5px;
@@ -1144,6 +1209,7 @@ a:visited{ color: #0091EA }
     /* box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.28); */
     user-select:none;
     overflow: visible;
+    cursor: pointer;
     
   }
   .formThumbnailImg--12imElg{
@@ -1622,61 +1688,6 @@ a:visited{ color: #0091EA }
 }
 .resend--bvm4Xop{
     margin:10px 0px;
-}
-.container--371m_Bp{
-    position: relative;
-    user-select: none;
-    display: inline-flex;
-    align-items: center;
-}
-.container--371m_Bp input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-.container--371m_Bp .label--3XPnRwL{
-    /* line-height: 1.5; */
-    margin-left:5px;
-}
-.checkmark--1qlTTzb {
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    height: 25px;
-    width: 25px;
-    background-color: white;
-    border: 2px solid #212121;
-    transition-duration: 0.2s;
-    cursor: pointer;
-}
-.container--371m_Bp:hover input ~ .checkmark--1qlTTzb {
-    background-color: #eee;
-}
-.container--371m_Bp input:focus ~ .checkmark--1qlTTzb {
-    background-color: #eee;
-}       
-.checkmark--1qlTTzb:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-.container--371m_Bp input:checked ~ .checkmark--1qlTTzb {
-	background-color: #212121;
-}
-.container--371m_Bp input:checked ~ .checkmark--1qlTTzb:after {
-    display: block;
-}
-
-.container--371m_Bp .checkmark--1qlTTzb:after {
-    left: 9px;
-    top: 5px;
-    width: 7px;
-    height: 12px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
 }
 
 .header--3EXSRQK{
