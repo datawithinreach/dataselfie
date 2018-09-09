@@ -212,11 +212,22 @@ class DrawingCanvas extends Component {
 	
 	handleDrop(e) {
 		// console.log('dropped', e.clientX, e.clientY);
-		let rect = e.currentTarget.getBoundingClientRect();
-		let x = rect.left - e.clientX;
-		let y = rect.top - e.clientY;
+		// let rect = e.currentTarget.getBoundingClientRect();
+		// let x = rect.left - e.clientX;
+		// let y = rect.top - e.clientY;
 	
 		this.setState({dragFile: false});
+
+		let resize = raster=>{
+			let factor = raster.width/(this.paper.view.size.width/2);
+			if (factor>1){
+				raster.scale(1/factor);
+			}
+			factor = raster.height/(this.paper.view.size.height/2);
+			if (factor>1){
+				raster.scale(1/factor);
+			}
+		};
 
 		let url = e.dataTransfer.getData('text/html');
 		
@@ -230,16 +241,12 @@ class DrawingCanvas extends Component {
 				source:url,
 				position: this.paper.view.center
 			});
-			raster.onLoad = function() {
-				if (raster.width>120){
-					raster.height  = 120/raster.width*raster.height;
-					raster.width= 120;
-				}
-				if (raster.height>120){
-					raster.width  = 120/raster.height*raster.width;
-					raster.height= 120;
-				}
+
+			raster.onLoad = ()=> {
+				resize(raster);
+				raster.onLoad = null;
 			};
+			this.props.createDrawing(this.paper.project.activeLayer.data.id, raster);
 		
 			
 			
@@ -257,12 +264,17 @@ class DrawingCanvas extends Component {
 				let reader = new FileReader();			
 				reader.onloadend = (e) => {
 					console.log(e.target.result);
-					new this.paper.Raster({
+					let raster = new this.paper.Raster({
 						crossOrigin: 'anonymous',
 						source:e.target.result,
-						position: new this.paper.Point(x,y)
+						position: this.paper.view.center
 					});
-					// this.props.createDrawing(this.paper.project.activeLayer.data.id, path);
+					raster.onLoad = ()=> {
+						resize(raster);
+						raster.onLoad = null;
+					};
+		
+					this.props.createDrawing(this.paper.project.activeLayer.data.id, raster);
 				};
 				reader.readAsDataURL(file);
 			}
@@ -434,7 +446,7 @@ class DrawingCanvas extends Component {
 
 					<div className={css.optionPanel} style={{left:'80px', width:'320px', display:this.state.showEmojiPanel?'flex':'none'}}>
 						{/* <div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div> */}
-						<Picker emojiSize={32}
+						<Picker emojiSize={32} native={true}
 							onSelect={this.handleEmojiSelect} style={{width:'300px', borderWidth:'0px'}}/>
 					</div>
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
