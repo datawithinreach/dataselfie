@@ -197,10 +197,25 @@
     user-select: none;
 	text-decoration: none;
 	margin:5px;
-    transition-duration: 0.2s;
+  transition: all 0.2s;
     background: white;
     font-size: 18px;
+    color:#212121;
+    opacity: 1.0;
   }
+ 
+
+  .button--1mmZbGG:before{
+    content: none;
+    width: 0px;
+    height: 0px;
+    z-index: 10;
+  }
+  /* a:hover:before {
+    transform: scaleX(1);
+  } */
+  .button--1mmZbGG:visited{ color: #212121 }
+
   
 @media (hover:hover) {
   .button--1mmZbGG:hover{
