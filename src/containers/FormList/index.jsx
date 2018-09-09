@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createForm} from 'ducks/forms';
-import { push } from 'react-router-redux';
 import {selectForm} from 'ducks/ui';
 import {requestForms, makeGetFormsByUser} from 'ducks/forms';
 import FormThumbnail from '../FormThumbnail';
@@ -90,7 +89,6 @@ const mapDispatchToProps = (dispatch) => {
 		createForm: (username)=>{
 			let action = createForm(username);
 			dispatch(action);
-			dispatch(push(`/forms/edit/${action.formId}`));
 		}
 	};
 };

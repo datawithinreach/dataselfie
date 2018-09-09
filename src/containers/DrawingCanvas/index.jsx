@@ -32,7 +32,7 @@ class DrawingCanvas extends Component {
 			recognized:[],
 			style:{
 				color:'#000000',
-				width:1,
+				width:3,
 				opacity:1.0
 			},
 			dragFile:false

@@ -1,5 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-// import { push } from 'react-router-redux';
+import { push } from 'react-router-redux';
+
+
 import {send} from 'sagas/api';
 
 import {
@@ -51,7 +53,9 @@ import {
 // 		yield put(alertServerError(error.message));
 // 	}
 // }
-
+function onCreateForm(data, prevAction){
+	return push(`/forms/edit/${prevAction.formId}`);
+}
 function makeHandler(path, postAction){
 	return function* (action){
 		try{
@@ -60,7 +64,7 @@ function makeHandler(path, postAction){
 				throw Error (response.message);
 			}
 			if (postAction){
-				yield put(postAction(response.data));
+				yield put(postAction(response.data, action));
 			}
 			
 		}catch (error){
@@ -95,7 +99,7 @@ function makeHandler(path, postAction){
 export default [
 	takeLatest(REQUEST_FORMS, makeHandler('request_forms', receiveForms)),
 	takeLatest(REQUEST_FORM_CONTENT, makeHandler('request_form_content', receiveFormContent)),
-	takeLatest(CREATE_FORM, makeHandler('upsert_form')),
+	takeLatest(CREATE_FORM, makeHandler('upsert_form', onCreateForm)),
 	takeLatest(UPDATE_FORM, makeHandler('upsert_form')),
 	takeLatest(DELETE_FORM, makeHandler('delete_form')),
 
