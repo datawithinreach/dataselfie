@@ -69,7 +69,7 @@ export class ResponseView extends React.Component {
 					{form.username ==loggedInUsername &&
 						<div className={css.rightMenu}>
 							<div className={css.menuItem}>
-								<Button  link href={window.location.href.replace('view', 'edit')} outlined>Edit</Button>
+								<Button  link href={`/forms/edit/${this.props.formId}`} outlined>Edit</Button>
 							</div>
 						</div>
 					}
