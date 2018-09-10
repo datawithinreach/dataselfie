@@ -42,9 +42,8 @@ export const createEraserTool = (paper, onFilled)=>{
 			
 			for (let i=0; i<paper.project.activeLayer.children.length; i++){
 				let item =  paper.project.activeLayer.children[i];
-				let descendents = flatten(paper.project.activeLayer);
+				let descendents = flatten(item);
 				let found = descendents.find(d=>d.contains(e.point));
-				console.log('fill', descendents, found);
 				if (found){
 					found.fillColor = paper.project.currentStyle.strokeColor;
 					onFilled(item);
