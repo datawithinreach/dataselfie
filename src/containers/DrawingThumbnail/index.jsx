@@ -47,7 +47,7 @@ export class DrawingThumbnail extends React.Component {
 			// console.log(scale);
 			this.paper.view.scale(scale);
 		}else{
-			this.paper.view.scale(this.props.width/450, new this.paper.Point(0,0));
+			this.paper.view.scale(this.paper.view.size.width/450, new this.paper.Point(0,0));
 		}
 
 	}

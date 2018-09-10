@@ -75,8 +75,8 @@ export class NavBar extends React.Component {
 			this.props.notifyAuthFailure('Password does not match the confirm password.');
 			return;
 		}
-		if (form['password'].length<8){
-			this.props.notifyAuthFailure('Password must be at least 8 characters in length.');
+		if (form['password'].length<4){
+			this.props.notifyAuthFailure('Password must be at least 4 characters in length.');
 			return;
 		}
 		function validateEmail(email) {
