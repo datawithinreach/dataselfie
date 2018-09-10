@@ -134,7 +134,7 @@ export class ShareView extends React.Component {
 					</div>
 					<Switch checked={this.props.public} onChange={this.handlePublicShare} label="Share Public?" style={{marginLeft:'0px'}}/>
 					<div className={css.flex}>
-						<TextField value={`/forms/view/${this.props.formId}`} style={{flexGrow:1, marginRight:'10px'}}/>
+						<TextField value={window.location.href.replace('edit', 'view')} style={{flexGrow:1, marginRight:'10px'}}/>
 						<Button link href={`/forms/view/${this.props.formId}`} outlined target='_blank'>Go to the Link</Button>
 					</div>
 					<div className={css.note}>
