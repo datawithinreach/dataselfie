@@ -93,6 +93,7 @@ class DrawingCanvas extends Component {
 	}
 
 	componentDidUpdate(prevProps){
+		console.log('prevProps', prevProps);
 		// this is probably called every time & every stroke...TODO: improve!
 		if (prevProps.selectedQuestion!=this.props.selectedQuestion){// when question changed
 			//reset layer visibility
@@ -121,7 +122,7 @@ class DrawingCanvas extends Component {
 			// 	.forEach(po=>this.paper.project.layers[po.id].remove());
 			// console.log('if (prevProps.drawings!=this.props.drawings){', this.paper.project.layers,  this.props.drawings);
 		}
-		if (prevProps.selected!=this.props.selected){
+		if (prevProps.selected!=this.props.selected || prevProps.drawings!=this.props.drawings){
 			// setup  drawings again
 			for (let i=0; i<this.paper.project.layers.length; i++){
 				if (this.props.formId!=this.paper.project.layers[i].name){
