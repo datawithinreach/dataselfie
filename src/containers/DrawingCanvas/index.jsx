@@ -137,6 +137,8 @@ class DrawingCanvas extends Component {
 		}
 
 		// if question changed, reset layer visibility??
+		this.paper.view.update();
+
 	}
 
 	setupLayer(paper, drawings, layerId){
