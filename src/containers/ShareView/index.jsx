@@ -21,7 +21,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-	subscribers:['hyejinim@gmail.com']
+	subscribers:[]
 };
 
 export class ShareView extends React.Component {

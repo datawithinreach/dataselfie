@@ -85,7 +85,7 @@ export class Legend extends React.Component {
 											parentId={option.id}
 											width={40}
 											height={40}
-											selected={this.isVisible(option)}/>
+											selected={true}/>
 										<div className={css.label}>{option.text}</div>
 									</div>
 								)}

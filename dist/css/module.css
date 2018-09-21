@@ -950,7 +950,8 @@
     margin-bottom:10px;
 }
 .option--3fK0L8D{
-    color:#BDBDBD;
+    /* color:#BDBDBD; */
+    color:#212121;
     display: flex;
     align-items: center;
     cursor: pointer;
