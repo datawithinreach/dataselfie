@@ -3,23 +3,31 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {createDrawing, deleteDrawing, updateDrawing, makeGetSelectedDrawings} from 'ducks/drawings';
+import {makeGetOptions} from 'ducks/options';
 import Style from 'components/Style';
 import FileLoader from 'components/FileLoader';
 import Button from 'components/Button';
+import Checkbox from 'components/Checkbox';
 import LayerView from 'containers/LayerView';
 import classNames from 'utils/classNames';
 import css from './index.css';
 import autodraw from 'utils/autodraw';
-
+import uniqueId from 'utils/uniqueId';
 import penTool from './tools/pen';
 import eraserTool from './tools/eraser';
 import autodrawTool from './tools/autodraw';
 import selectionTool from './tools/selection';
 import fillTool from './tools/fill';
 import {PaperScope} from 'paper';
+import {scaleOrdinal, scaleLinear} from 'd3-scale';
 
 import { Picker } from 'emoji-mart';
 
+let defaultPalette = ['#F44336', '#9C27B0',  '#3F51B5', '#03A9F4', '#009688', '#8BC34A',
+	'#FFEB3B', '#FF9800', '#795548','#E91E63', '#673AB7','#2196F3',
+	'#00BCD4','#4CAF50','#CDDC39', '#FFC107',  '#FF5722'];
+let colorMap = scaleOrdinal().range(defaultPalette);
+let sizeMap = scaleLinear().range([0.5, 1.5]);
 class DrawingCanvas extends Component {
 	constructor(props){
 		super(props);
@@ -29,16 +37,17 @@ class DrawingCanvas extends Component {
 			showStylePanel:false,
 			showLayerPanel:false,
 			showEmojiPanel:false,
+			showEditPanel:false,
 			recognized:[],
 			style:{
 				color:'#000000',
 				width:3,
 				opacity:1.0
 			},
-			dragFile:false
+			dragFile:false,
+			selectedDrawings:null
 		};
 		this.paper = new PaperScope();  // always use this to create anything
-
 		//for auto draw
 		this.paths = [];
 		this.autodrawn = null;
@@ -47,6 +56,7 @@ class DrawingCanvas extends Component {
 		this.toggleStylePanel = this.toggleStylePanel.bind(this);
 		this.toggleEmojiPanel = this.toggleEmojiPanel.bind(this);
 		this.toggleLayerPanel = this.toggleLayerPanel.bind(this);
+		this.toggleEditPanel = this.toggleEditPanel.bind(this);
 		// this.hideLayerPanel = this.hideLayerPanel.bind(this);
 
 		this.handleChangeTool = this.handleChangeTool.bind(this);
@@ -62,6 +72,11 @@ class DrawingCanvas extends Component {
 		this.handleDragLeave = this.handleDragLeave.bind(this);
 
 		this.closeOptionPanel = this.closeOptionPanel.bind(this);
+
+		this.handlePropagate = this.handlePropagate.bind(this);
+		this.handleSizeEncoding = this.handleSizeEncoding.bind(this);
+		this.handleColorEncoding = this.handleColorEncoding.bind(this);
+		
 		// this.layerMap = {};
 	}
 	componentWillUnmount(){
@@ -124,11 +139,14 @@ class DrawingCanvas extends Component {
 		}
 		if (prevProps.selected!=this.props.selected || prevProps.drawings!=this.props.drawings){
 			// setup  drawings again
-			for (let i=0; i<this.paper.project.layers.length; i++){
-				if (this.props.formId!=this.paper.project.layers[i].name){
-					this.paper.project.layers[i].visible=false;
+			if (prevProps.selected!=this.props.selected){
+				for (let i=0; i<this.paper.project.layers.length; i++){
+					if (this.props.formId!=this.paper.project.layers[i].name){
+						this.paper.project.layers[i].visible=false;
+					}
 				}
 			}
+
 			
 			
 			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
@@ -175,16 +193,49 @@ class DrawingCanvas extends Component {
 		paper.project.layers[this.props.selected].activate();//activeLayer should remain the same
 		console.log('AFTER: activeLayer remain the same?', paper.project.activeLayer.name, layerId);
 	}
-
+	getDrawing(layerId, drawingId){
+		let layer = this.paper.project.layers[layerId];
+		if (!layer){
+			return null;
+		}
+		if (layer.children[drawingId]){
+			return layer.children[drawingId];
+		}
+		return null;
+	}
 	setupTools(){
 		penTool.create(this.paper, (path)=>{
 			this.props.createDrawing(this.paper.project.activeLayer.data.id, path);
 		});
 		eraserTool.create(this.paper, (removed)=>{
-			removed.map(item=>{
-				console.log('delete', item.data);
-				if (!item.data.parentId) return;
-				this.props.deleteDrawing(item.data.id);
+			removed.map(drawing=>{
+				console.log('delete', drawing.data);
+				if (!drawing.data.parentId) return;
+				// find siblings if there is any
+				let layer = this.paper.project.activeLayer;
+				this.props.options.forEach((option)=>{// for each option drawings
+					// if (option.id==layer.data.id){//skip current layer
+					// 	return;
+					// }
+					//find the drawing for each option
+					let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
+					drawings.forEach(d=>{
+						let sibling = this.getDrawing(option.id, d.id);
+						console.log('--------------', sibling.data, drawing.data);
+						let remove = sibling?false:true;
+						sibling = sibling?sibling:layer.importJSON(d.json);
+						// if the drawing is in the same group
+						if (sibling && sibling.data.groupId &&
+								sibling.data.groupId==drawing.data.groupId){
+							this.props.deleteDrawing(sibling.name, sibling);
+						}
+						if (remove){
+							sibling.remove();
+						}
+						
+					});
+				});
+				// this.props.deleteDrawing(drawing.data.id);
 			});
 		});
 		autodrawTool.create(this.paper, (path)=>{
@@ -199,8 +250,48 @@ class DrawingCanvas extends Component {
 				});				
 			});
 		});
-		selectionTool.create(this.paper, (selected)=>{
-			selected.forEach(drawing=>this.props.updateDrawing(drawing.name, drawing));
+		selectionTool.create(this.paper, (selected, mode, sx, sy,p)=>{
+			selected.forEach(drawing=>{
+				//find groups if necessary
+				let layer = this.paper.project.activeLayer;
+				this.props.options.forEach((option)=>{// for each option drawings
+					
+					// if (option.id==layer.data.id){//skip current layer
+					// 	console.log('skip', layer.data.id);
+					// 	return;
+					// }
+					console.log('option:',option.id);
+					//find the drawing for each option
+					let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
+					drawings.forEach(d=>{
+						let sibling = this.getDrawing(option.id, d.id);
+						let remove = sibling?false:true;
+						sibling = sibling?sibling:layer.importJSON(d.json);
+						console.log('potential',sibling.data);
+						// if the drawing is in the same group
+						if (sibling && sibling.data.groupId &&
+							sibling.data.groupId==drawing.data.groupId){
+							console.log('----- same group',sibling);
+							sibling.position = drawing.position;
+							if (mode=='scale' && drawing.id!=sibling.id){
+								console.log('sx,sy,p',sx,sy,p);
+								sibling.scale(sx,sy, p);
+								// sibling.scaling = drawing.scaling;
+							}
+							this.props.updateDrawing(sibling.name, sibling);
+						}
+						if (remove){
+							sibling.remove();
+						}
+						
+					});
+				});
+				
+				this.props.updateDrawing(drawing.name, drawing);
+			});
+		}, (selectedDrawings)=>{
+			console.log('selected Items', selectedDrawings);
+			this.setState({selectedDrawings});
 		});
 		fillTool.create(this.paper, (item)=>{
 			console.log('fill selected', item);
@@ -370,19 +461,127 @@ class DrawingCanvas extends Component {
 		this.clearAutoDrawState();
 	}
 	toggleStylePanel(){
-		this.setState({showStylePanel:!this.state.showStylePanel, showLayerPanel:false, showEmojiPanel:false});
+		this.setState({showStylePanel:!this.state.showStylePanel, showLayerPanel:false, showEmojiPanel:false, showEditPanel:false});
 	}
 	toggleEmojiPanel(){
-		this.setState({showEmojiPanel:!this.state.showEmojiPanel, showLayerPanel:false, showStylePanel:false});
+		this.setState({showEmojiPanel:!this.state.showEmojiPanel, showLayerPanel:false, showStylePanel:false, showEditPanel:false});
 	}
 	toggleLayerPanel(){
-		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false, showEmojiPanel:false});
+		this.setState({showLayerPanel:!this.state.showLayerPanel, showStylePanel:false, showEmojiPanel:false, showEditPanel:false});
+	}
+	toggleEditPanel(){
+		this.setState({showLayerPanel:false, showStylePanel:false, showEmojiPanel:false, showEditPanel:!this.showEditPanel});
 	}
 	closeOptionPanel(){
-		this.setState({showStylePanel:false, showLayerPanel:false, showEmojiPanel:false});
+		this.setState({showStylePanel:false, showLayerPanel:false, showEmojiPanel:false, showEditPanel:false});
 	}
+	
+	handlePropagate(){
+		let {selectedDrawings=null} = this.state;
+		if (!selectedDrawings || selectedDrawings.length==0){//just in case
+			return;
+		}
+		if (!this.props.selectedQuestion || this.props.options.length==0){
+			return;
+		}
+		console.log('propagate to ', this.props.options);
+		// duplicate the shapes
+		selectedDrawings.filter(d=>!d.data.groupId).forEach(d=>{
+			let groupId = uniqueId('group');
+			d.data.groupId = groupId;
+			this.props.options
+				.forEach(option=>{
+					// only for siblings
+					if (this.paper.project.activeLayer.data.id==option.id){
+						return;
+					}
+					let copy = d.clone();
+					copy.data.groupId = groupId;
+					this.props.createDrawing(option.id, copy);
+				});
+			
+		});
+	}
+	handleSizeEncoding(event){
+		console.log('--handleSizeEncoding--',event.target.checked);
+		//find groups if necessary
+		let layer = this.paper.project.activeLayer;
+		sizeMap.domain([0,this.props.options.length]);
 
+		// for each drawing
+		this.state.selectedDrawings.filter(d=>!d.data.group).forEach(drawing=>{
+			// find siblings and resize 
+			let siblings = [];
+			this.props.options.forEach((option)=>{// for each option drawings
+				//find the drawing for each option
+				let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
+				drawings.forEach(d=>{
+					let sibling = this.getDrawing(option.id, d.id);
+					let remove = sibling?false:true;
+					sibling = sibling?sibling:layer.importJSON(d.json);
+					if (remove){
+						sibling.data.remove = true;
+					}
+					siblings.push(sibling);
+				});
+			});
+			// if the drawing is in the same group
+			siblings.forEach((sibling,i)=>{
+				if (sibling && sibling.data.groupId &&
+					sibling.data.groupId==drawing.data.groupId){
+					if (event.target.checked){
+						sibling.scale(sizeMap(i));
+						sibling.data.sizeEncoding = true;
+					}else{
+						sibling.data.sizeEncoding = false;
+						sibling.fitBounds(drawing.bounds);
+					}
+					this.props.updateDrawing(sibling.name, sibling);
+				}
 
+				if (sibling.data.remove){
+					sibling.remove();
+				}
+			});
+			
+
+		});
+	}
+	handleColorEncoding(event){
+		console.log('--handleColorEncoding--',event.target.checked);
+		//find groups if necessary
+		let layer = this.paper.project.activeLayer;
+	
+		// for each drawing
+		this.state.selectedDrawings.filter(d=>!d.data.group).forEach(drawing=>{
+			// find siblings and resize 
+			this.props.options.forEach((option,i)=>{// for each option drawings
+				//find the drawing for each option
+				let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
+				drawings.forEach(d=>{
+					let sibling = this.getDrawing(option.id, d.id);
+					let remove = sibling?false:true;
+					sibling = sibling?sibling:layer.importJSON(d.json);
+					// if the drawing is in the same group
+					if (sibling && sibling.data.groupId &&
+						sibling.data.groupId==drawing.data.groupId){
+						sibling.position = drawing.position;
+						if (event.target.checked){
+							sibling.strokeColor = sibling.fillColor = colorMap(i);
+							sibling.data.colorEncoding = true;
+						}else{
+							sibling.strokeColor = sibling.fillColor = drawing.fillColor;
+							sibling.data.colorEncoding = false;
+						}
+						this.props.updateDrawing(sibling.name, sibling);
+					}
+					if (remove){
+						sibling.remove();
+					}
+				});
+			});
+		});
+	}
 	render() {
 		// let style = this.paper.project? this.paper.project.currentStyle:this.initStyle;
 		// console.log('style', style)
@@ -393,20 +592,35 @@ class DrawingCanvas extends Component {
 				<div className={css.info}><i className="fas fa-paint-brush"></i> &nbsp; 
 					{`Draw ${selected==formId? 'a Background': 'for '+selectedText}`}
 				</div>
-				<div className={css.suggestions}>
+				<div className={css.submenu}>
 					{this.state.recognized.length>0 &&
-						<p>Do you mean: </p>
+						<React.Fragment>
+							<p>Do you mean: </p>
+							<div className={css.thumbs}>
+								{this.state.recognized.map(shape=>
+									shape.icons.map((icon,i)=>
+										<figure key={[shape.name,i].join('-')} className={css.suggestion}
+											onPointerUp={this.selectSuggestion.bind(this, icon)}>
+											<img src={icon} alt={shape.name} title={shape.name}/>
+										</figure>
+									)							
+								)}
+							</div>
+						</React.Fragment>
+						
 					}
-					<div className={css.thumbs}>
-						{this.state.recognized.map(shape=>
-							shape.icons.map((icon,i)=>
-								<figure key={[shape.name,i].join('-')} className={css.suggestion}
-									onPointerUp={this.selectSuggestion.bind(this, icon)}>
-									<img src={icon} alt={shape.name} title={shape.name}/>
-								</figure>
-							)							
-						)}
-					</div>
+					{this.state.selectedDrawings && this.props.selectedQuestion && 
+						this.state.selectedDrawings.some(d=>!d.data.groupId) &&
+						<Button style={{marginLeft:'70px'}} outlined onPointerUp={this.handlePropagate}>
+							Propagate
+						</Button>
+					}
+					{this.state.selectedDrawings && this.props.selectedQuestion && 
+						this.state.selectedDrawings.every(d=>d.data.groupId) &&
+						<Button style={{marginLeft:'70px'}} outlined onPointerUp={this.toggleEditPanel}>
+							Edit
+						</Button>
+					}
 				</div>		
 				<div className={css.canvasContainer}>
 					<div className={css.menu}>
@@ -452,6 +666,21 @@ class DrawingCanvas extends Component {
 						<Picker emojiSize={32} native={true}
 							onSelect={this.handleEmojiSelect} style={{width:'300px', borderWidth:'0px'}}/>
 					</div>
+					{this.state.selectedDrawings && <div className={css.optionPanel} style={{left:'80px', width:'200px', display:this.state.showEditPanel?'flex':'none'}}>
+						<div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div>
+						<div className={css.editPanel}>
+							<Checkbox 
+								style={{margin:'5px'}}
+								checked={this.state.selectedDrawings[0].data.sizeEncoding}
+								label={'Size Variation'}
+								onChange={this.handleSizeEncoding}/>
+							<Checkbox 
+								style={{margin:'5px'}}
+								checked={this.state.selectedDrawings[0].data.colorEncoding}
+								label={'Color Variation'}
+								onChange={this.handleColorEncoding}/>
+						</div>
+					</div>}
 					<div className={css.optionPanel} style={{left:'80px', display:this.state.showStylePanel?'flex':'none'}}>
 						<div className={classNames(css.button,css.mute)} onPointerUp={this.closeOptionPanel}>Close</div>
 						<Style color={this.state.style.color}
@@ -483,13 +712,14 @@ DrawingCanvas.propTypes = {
 	selected:PropTypes.string,
 	selectedText:PropTypes.string,
 	selectedQuestion:PropTypes.string,
+	options:PropTypes.array,
 	createDrawing:PropTypes.func,
 	updateDrawing:PropTypes.func,
 	deleteDrawing:PropTypes.func
 };
 
 const getDrawings = makeGetSelectedDrawings();
-
+const getOptions = makeGetOptions();
 const mapStateToProps = (state, ownProps) =>{
 	let drawings = getDrawings(state, ownProps);
 
@@ -499,12 +729,14 @@ const mapStateToProps = (state, ownProps) =>{
 		selected = state.ui.selectedOption;
 		selectedText = state.options[selected].text;
 	}
+	let options = getOptions(state, {questionId:state.ui.selectedQuestion});
 	console.log('drawings', drawings);
 	return {
 		drawings,
 		allDrawings:Object.values(state.drawings),
 		selected,//option or background
 		selectedText,
+		options,
 		selectedQuestion:state.ui.selectedQuestion // to reset the visibility
 	};
 };

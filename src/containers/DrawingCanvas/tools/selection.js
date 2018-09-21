@@ -1,5 +1,5 @@
 
-export const createSelectionTool = (paper, onChanged)=>{
+export const createSelectionTool = (paper, onChanged, onSelected)=>{
 	let tool = new paper.Tool();
 	tool.name = 'selection';
     
@@ -10,6 +10,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 	let selectionPath = null;
 	let selectedItems = null;
 	let pivot = null, corner = null, originalSize = null, originalContent=null;
+	var sx = 1.0, sy = 1.0;
 	// let selectedItems = null;
 	// function translateCheck(event){
 	// 	let transHit = null;
@@ -201,6 +202,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 	tool.on({
 		activate: ()=>{
 			console.log('activate', tool.name);
+			onSelected(null);
 		},  
 		deactivate:()=>{
 			console.log('activate', tool.name);
@@ -210,6 +212,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 				selectedItems=null;
 				clearSelectionBounds();
 			}
+			onSelected(null);
 			// deselect all
 		},
 		mousedown:(e)=>{
@@ -268,7 +271,7 @@ export const createSelectionTool = (paper, onChanged)=>{
 				corner = corner.add(e.delta);
 
 				var size = corner.subtract(p);
-				var sx = 1.0, sy = 1.0;
+				sx = 1.0, sy = 1.0;
 				if (Math.abs(o.x) > 0.0000001)
 					sx = size.x / o.x;
 				if (Math.abs(o.y) > 0.0000001)
@@ -303,13 +306,18 @@ export const createSelectionTool = (paper, onChanged)=>{
 					selectionPath=null;
 					selectedItems=null;
 					clearSelectionBounds();
+					onSelected(null);
 				}else{
 					updateSelectionState(selectedItems);
+					onSelected(selectedItems.filter(item=>item.guide==false));
 					selectedItems.push(selectionPath);
 					selectedItems.push(selectionBoundsShape);
 				}
-			}else if (mode=='scale'||mode=='move'){
-				onChanged(selectedItems.filter(item=>item!=selectionPath && item!=selectionBoundsShape));
+			}else if (mode=='scale'){
+				onChanged(selectedItems.filter(item=>item!=selectionPath && item!=selectionBoundsShape), mode, sx,sy,pivot);
+			}else if (mode=='move'){
+				
+				onChanged(selectedItems.filter(item=>item!=selectionPath && item!=selectionBoundsShape), mode);
 			}
 			mode=null;
 			
