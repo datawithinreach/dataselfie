@@ -108,7 +108,7 @@ class DrawingCanvas extends Component {
 	}
 
 	componentDidUpdate(prevProps){
-		console.log('prevProps', prevProps);
+		// console.log('prevProps', prevProps);
 		// this is probably called every time & every stroke...TODO: improve!
 		if (prevProps.selectedQuestion!=this.props.selectedQuestion){// when question changed
 			//reset layer visibility
@@ -150,7 +150,7 @@ class DrawingCanvas extends Component {
 			
 			
 			this.setupLayer(this.paper, this.props.drawings, this.props.selected);
-			console.log('selected', this.props.selected);
+			// console.log('selected', this.props.selected);
 			this.paper.project.layers[this.props.selected].activate();
 			this.paper.project.activeLayer.visible=true;
 		}
@@ -189,9 +189,9 @@ class DrawingCanvas extends Component {
 
 		// add drawings that belong to all items in the form...
 		// drawings.questions.forEach(q=>q.options.forEach(option=>createLayer(option)));
-		console.log('activeLayer remain the same?', paper.project.activeLayer.name, layerId);
+		// console.log('activeLayer remain the same?', paper.project.activeLayer.name, layerId);
 		paper.project.layers[this.props.selected].activate();//activeLayer should remain the same
-		console.log('AFTER: activeLayer remain the same?', paper.project.activeLayer.name, layerId);
+		// console.log('AFTER: activeLayer remain the same?', paper.project.activeLayer.name, layerId);
 	}
 	getDrawing(layerId, drawingId){
 		let layer = this.paper.project.layers[layerId];
@@ -209,19 +209,19 @@ class DrawingCanvas extends Component {
 		});
 		eraserTool.create(this.paper, (removed)=>{
 			removed.map(drawing=>{
-				console.log('delete', drawing.data);
+				// console.log('delete', drawing.data);
 				if (!drawing.data.parentId) return;
 				// find siblings if there is any
 				let layer = this.paper.project.activeLayer;
 				this.props.options.forEach((option)=>{// for each option drawings
-					// if (option.id==layer.data.id){//skip current layer
-					// 	return;
-					// }
+					if (option.id==layer.data.id){//skip current layer
+						return;
+					}
 					//find the drawing for each option
 					let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
 					drawings.forEach(d=>{
 						let sibling = this.getDrawing(option.id, d.id);
-						console.log('--------------', sibling.data, drawing.data);
+						// console.log('--------------', sibling.data, drawing.data);
 						let remove = sibling?false:true;
 						sibling = sibling?sibling:layer.importJSON(d.json);
 						// if the drawing is in the same group
@@ -235,13 +235,13 @@ class DrawingCanvas extends Component {
 						
 					});
 				});
-				// this.props.deleteDrawing(drawing.data.id);
+				this.props.deleteDrawing(drawing.data.id);
 			});
 		});
 		autodrawTool.create(this.paper, (path)=>{
 			this.paths.push(path);
 			let query = this.paths.map(path=>path.segments.map(seg=>({x:seg.point.x,y:seg.point.y})));
-			console.log('query',query);
+			// console.log('query',query);
 			autodraw(query).then(results=>{
 				console.log('recognized',results);
 				this.autodrawn = null;
@@ -260,21 +260,21 @@ class DrawingCanvas extends Component {
 					// 	console.log('skip', layer.data.id);
 					// 	return;
 					// }
-					console.log('option:',option.id);
+					// console.log('option:',option.id);
 					//find the drawing for each option
 					let drawings = this.props.allDrawings.filter(d=>d.parentId==option.id);
 					drawings.forEach(d=>{
 						let sibling = this.getDrawing(option.id, d.id);
 						let remove = sibling?false:true;
 						sibling = sibling?sibling:layer.importJSON(d.json);
-						console.log('potential',sibling.data);
+						// console.log('potential',sibling.data);
 						// if the drawing is in the same group
 						if (sibling && sibling.data.groupId &&
 							sibling.data.groupId==drawing.data.groupId){
-							console.log('----- same group',sibling);
+							// console.log('----- same group',sibling);
 							sibling.position = drawing.position;
 							if (mode=='scale' && drawing.id!=sibling.id){
-								console.log('sx,sy,p',sx,sy,p);
+								// console.log('sx,sy,p',sx,sy,p);
 								sibling.scale(sx,sy, p);
 								// sibling.scaling = drawing.scaling;
 							}
@@ -290,14 +290,14 @@ class DrawingCanvas extends Component {
 				this.props.updateDrawing(drawing.name, drawing);
 			});
 		}, (selectedDrawings)=>{
-			console.log('selected Items', selectedDrawings);
+			// console.log('selected Items', selectedDrawings);
 			this.setState({selectedDrawings});
 		});
 		fillTool.create(this.paper, (item)=>{
-			console.log('fill selected', item);
+			// console.log('fill selected', item);
 			this.props.updateDrawing(item.data.id, item);
 		});
-		console.log('tools', this.paper.tools, this.paper.tool);
+		// console.log('tools', this.paper.tools, this.paper.tool);
 		
 	}
 	handleDragEnter(){
@@ -357,7 +357,7 @@ class DrawingCanvas extends Component {
 			if (file.type.match(/image.*/)){
 				let reader = new FileReader();			
 				reader.onloadend = (e) => {
-					console.log(e.target.result);
+					// console.log(e.target.result);
 					let raster = new this.paper.Raster({
 						crossOrigin: 'anonymous',
 						source:e.target.result,
@@ -398,7 +398,7 @@ class DrawingCanvas extends Component {
 
 			this.paths = [];
 			this.autodrawn = item;
-			console.log('auto drawn', item);
+			// console.log('auto drawn', item);
 		});
 		
 	}
@@ -417,7 +417,7 @@ class DrawingCanvas extends Component {
 	}
 	handleStyleUpdate(style){
 		let {color, stroke, opacity} = style;
-		console.log('opacity', opacity);
+		// console.log('opacity', opacity);
 		this.paper.project.currentStyle = {
 			...this.paper.project.currentStyle,
 			strokeColor:color,
@@ -484,7 +484,7 @@ class DrawingCanvas extends Component {
 		if (!this.props.selectedQuestion || this.props.options.length==0){
 			return;
 		}
-		console.log('propagate to ', this.props.options);
+		// console.log('propagate to ', this.props.options);
 		// duplicate the shapes
 		selectedDrawings.filter(d=>!d.data.groupId).forEach(d=>{
 			let groupId = uniqueId('group');
@@ -696,7 +696,7 @@ class DrawingCanvas extends Component {
 					<FileLoader onDrop={this.handleDrop}
 						onDragEnter={this.handleDragEnter}
 						onDragLeave={this.handleDragLeave}>
-						<canvas ref={this.canvasRef} className={css.canvas} onPointerDown={this.closeOptionPanel}
+						<canvas touch-action="none" ref={this.canvasRef} className={css.canvas} onPointerDown={this.closeOptionPanel}
 							style={{ strokeDasharray: this.state.dragFile?'5,5':'none' }}/>
 					</FileLoader>
 				</div>
@@ -730,7 +730,7 @@ const mapStateToProps = (state, ownProps) =>{
 		selectedText = state.options[selected].text;
 	}
 	let options = getOptions(state, {questionId:state.ui.selectedQuestion});
-	console.log('drawings', drawings);
+	// console.log('drawings', drawings);
 	return {
 		drawings,
 		allDrawings:Object.values(state.drawings),
