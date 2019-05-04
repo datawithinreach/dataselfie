@@ -1610,12 +1610,15 @@ a:visited{ color: #0091EA }
     border:1px solid #eeeeee;
 }
 
+.publication--1860IaE{
+    line-height: 1.2;
+}
 @media only screen and (min-width: 600px) {
-    .section--1sRLpia {
+    .firstsection--3kq1QtE {
         display: flex;
         justify-content: space-around;
     }
-    .subsection--3uZKceR{        
+    .firstsection--3kq1QtE .subsection--3uZKceR{        
         width:50%;
         margin-right:10px;
     }
@@ -1630,8 +1633,27 @@ a:visited{ color: #0091EA }
     font-weight: 300;
 }
 .description--3_k8iFI{
-    margin: 10px 0px 20px 0px;
+    margin: 40px 0px 0px 0px;
     font-size:24px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+.publication--1860IaE{
+    line-height: 1.5;
+}
+.sectionTitle--3zxWMoE{
+    margin: 5px 0px 10px 0px;
+    font-size: 32px;
+    font-weight: 300;
+}
+.pubMaterials--3BYwIou{
+    margin-top: 10px;
+}
+.pubTitle--1vGHQiy{
+    font-size: 20px;
+}
+.venue--1sM2phB, .authors--3ugGiWx{
+    margin-top: 10px;
     font-weight: 300;
     line-height: 1.5;
 }
