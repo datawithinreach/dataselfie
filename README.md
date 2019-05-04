@@ -1,2 +1,2 @@
-# dataportraits
-Designing Personal Visual Language
+# DataSelfie
+Empowering people to determine the visual representation of their data.
