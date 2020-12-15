@@ -1,4 +1,4 @@
-let url = 'https://portraitserver.namwkim.org';
+let url = 'https://selfieserver.namwkim.org';
 // let url = 'http://10.252.146.254:8889';
 // let url = 'http://10.41.40.157:8889';
 // console.log(window.location.hostname)
