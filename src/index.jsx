@@ -9,7 +9,7 @@ import rootSaga from './sagas';
 import App from './containers/App';
 // import localforage from 'localforage';
 // import throttle from 'utils/throttle';
-import createHistory from 'history/createBrowserHistory';
+import createHashHistory from 'history/createHashHistory';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
@@ -30,7 +30,7 @@ window.addEventListener('drop',function(e){
 },false);
 
 // Create a history of your choosing (we're using a browser history in this case)
-const history = createHistory({basename: process.env.PUBLIC_URL});
+const history = createHashHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const router = routerMiddleware(history);
