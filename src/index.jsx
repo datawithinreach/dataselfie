@@ -30,7 +30,7 @@ window.addEventListener('drop',function(e){
 },false);
 
 // Create a history of your choosing (we're using a browser history in this case)
-const history = createHistory();
+const history = createHistory({basename: process.env.PUBLIC_URL});
 
 // Build the middleware for intercepting and dispatching navigation actions
 const router = routerMiddleware(history);
