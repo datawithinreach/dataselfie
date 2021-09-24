@@ -19,7 +19,7 @@ export class LandingPage extends React.Component {
 							<Button outlined style={{ marginLeft: 0 }} link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/paper.pdf" target="_blank">Paper</Button>
 							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/supplement.zip" target="_blank">Supplement</Button>
 							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/video.mp4" target="_blank">Video</Button>
-							<Button outlined link href="https://github.com/namwkim/dataselfie/" target="_blank">Code</Button>
+							<Button outlined link href="https://github.com/playfuldata/dataselfie" target="_blank">Code</Button>
 						</div>
 						<div className={css.venue}>
 							Published in <a href="http://chi2019.acm.org/" target="_blank" rel="noopener noreferrer">CHI 2019</a>
