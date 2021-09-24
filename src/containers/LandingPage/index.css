@@ -12,6 +12,16 @@
 
     /* color:white; */
 }
+.nosupport{
+    font-size: 32px;
+    color:white;
+    margin-bottom: 10px;
+    background-color: red;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    
+}
 .subsection{
     width:100%;
     box-sizing: border-box;

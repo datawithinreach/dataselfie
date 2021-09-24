@@ -145,7 +145,7 @@ export class ShareView extends React.Component {
 				</div>
 				<div className={css.section}>
 					<div className={css.header}>
-                        Reminder
+                        Reminder (No longer supported)
 					</div>
 					<Switch checked={this.props.reminder!=null} onChange={this.handleReminderOn} label="On?" style={{marginLeft:'0px'}}/>
 

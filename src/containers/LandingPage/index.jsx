@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import css from './index.css';
 import Button from 'components/Button';
@@ -10,14 +10,16 @@ export class LandingPage extends React.Component {
 			<div className={css.container}>
 				<div className={css.firstsection}>
 					<div className={css.subsection}>
+						<div className={css.nosupport}>Sorry, the app is no longer supported.</div>
 						<div className={css.header}>Designing a Personalized Visual Questionnaire</div>
+
 						<div className={css.description}>Create a questionnaire to ask questions about qualitative and nuanced aspects of ourselves and to design a personalized visual vocabulary to represent the collected data.</div>
 						<br></br>
 						<div className={css.pubMaterials}>
-							<Button outlined style={{marginLeft:0}} link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/paper.pdf" target="_blank">Paper</Button>	
-							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/supplement.zip" target="_blank">Supplement</Button>	
-							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/video.mp4" target="_blank">Video</Button>	
-							<Button outlined link href="https://github.com/namwkim/dataselfie/" target="_blank">Code</Button>	
+							<Button outlined style={{ marginLeft: 0 }} link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/paper.pdf" target="_blank">Paper</Button>
+							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/supplement.zip" target="_blank">Supplement</Button>
+							<Button outlined link href="https://www.namwkim.org/assets/files/publications/conference/dataselfie-empowering-people-to-design-personalized-visuals-to-represent-their-data/video.mp4" target="_blank">Video</Button>
+							<Button outlined link href="https://github.com/namwkim/dataselfie/" target="_blank">Code</Button>
 						</div>
 						<div className={css.venue}>
 							Published in <a href="http://chi2019.acm.org/" target="_blank" rel="noopener noreferrer">CHI 2019</a>
@@ -30,7 +32,7 @@ export class LandingPage extends React.Component {
 					</div>
 					<div className={css.subsection}>
 						<video autoPlay muted loop>
-							<source src="assets/videos/teaser.m4v" type="video/mp4"/>
+							<source src="assets/videos/teaser.m4v" type="video/mp4" />
 						</video>
 					</div>
 				</div>
@@ -49,7 +51,7 @@ export class LandingPage extends React.Component {
 					</div>
 				</div> */}
 			</div>
-	
+
 		);
 	}
 }
